@@ -10,7 +10,7 @@ export const LoginRoute: RouteRecordRaw = {
   name: PageEnum.BASE_LOGIN_NAME,
   component: () => import('@/views/login/index.vue'),
   meta: {
-    title: '登录',
+    title: 'Login',
   },
 };
 

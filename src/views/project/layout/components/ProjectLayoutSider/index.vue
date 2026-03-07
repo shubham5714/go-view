@@ -24,10 +24,6 @@
           :default-expanded-keys="defaultExpandedKeys"
        ></n-menu>
       </aside>
-      <!-- 底部提示 -->
-      <div class="sider-bottom">
-        <project-layout-aside-footer :collapsed="collapsed"></project-layout-aside-footer>
-      </div>
     </div>
   </n-layout-sider>
 </template>
@@ -35,7 +31,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, toRefs } from 'vue'
 import { ProjectLayoutCreate } from '../ProjectLayoutCreate/index'
-import { ProjectLayoutAsideFooter } from '../ProjectLayoutAsideFooter/index'
 import { asideWidth } from '@/settings/designSetting'
 import { useRoute } from 'vue-router'
 import { useSettingStore } from '@/store/modules/settingStore/settingStore'

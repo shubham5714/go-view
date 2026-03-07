@@ -11,7 +11,7 @@ const chartRoutes: RouteRecordRaw = {
   name: PreviewEnum.CHART_PREVIEW_NAME,
   component: importPath['PreviewEnum.CHART_PREVIEW_NAME'],
   meta: {
-    title: '预览',
+    title: 'Preview',
     isRoot: true
   }
 }

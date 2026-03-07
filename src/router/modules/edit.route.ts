@@ -11,7 +11,7 @@ const chartRoutes: RouteRecordRaw = {
   name: EditEnum.CHART_EDIT_NAME,
   component: importPath[EditEnum.CHART_EDIT_NAME],
   meta: {
-    title: '编辑',
+    title: 'Edit',
     isRoot: true
   }
 }
