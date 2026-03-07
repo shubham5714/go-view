@@ -13,7 +13,7 @@
     <n-list bordered class="go-system-setting">
       <template #header>
         <n-space justify="space-between">
-          <n-h3 class="go-mb-0">发布管理</n-h3>
+          <n-h3 class="go-mb-0">Release Management</n-h3>
           <n-icon size="20" class="go-cursor-pointer" @click="closeHandle">
             <close-icon></close-icon>
           </n-icon>
@@ -22,13 +22,13 @@
 
       <n-list-item>
         <n-space :size="10">
-          <n-alert :show-icon="false" title="预览地址：" type="success">
+          <n-alert :show-icon="false" title="Preview URL:" type="success">
             {{ previewPath() }}
           </n-alert>
           <n-space vertical>
-            <n-button tertiary type="primary" @click="copyPreviewPath()"> 复制地址 </n-button>
+            <n-button tertiary type="primary" @click="copyPreviewPath()"> Copy URL </n-button>
             <n-button :type="release ? 'warning' : 'primary'" @click="sendHandle">
-              {{ release ? '取消发布' : '发布大屏' }}
+              {{ release ? 'Unpublish' : 'Publish Dashboard' }}
             </n-button>
           </n-space>
         </n-space>
@@ -36,7 +36,7 @@
 
       <n-list-item>
         <n-space :size="10">
-          <n-button @click="modelShowHandle">关闭弹窗</n-button>
+          <n-button @click="modelShowHandle">Close</n-button>
         </n-space>
       </n-list-item>
     </n-list>
@@ -129,9 +129,9 @@ const modelShowHandle = () => {
 const copyPreviewPath = (successText?: string, failureText?: string) => {
   if (isSupported) {
     copy()
-    window['$message'].success(successText || '复制成功！')
+    window['$message'].success(successText || 'Copied successfully!')
   } else {
-    window['$message'].error(failureText || '复制失败！')
+    window['$message'].error(failureText || 'Copy failed!')
   }
 }
 
@@ -146,9 +146,9 @@ const sendHandle = async () => {
   if (res && res.code === ResultEnum.SUCCESS) {
     modelShowHandle()
     if (!release.value) {
-      copyPreviewPath('发布成功！已复制地址到剪贴板~', '发布成功！')
+      copyPreviewPath('Published successfully! URL copied to clipboard~', 'Published successfully!')
     } else {
-      window['$message'].success(`已取消发布`)
+      window['$message'].success(`Unpublished successfully`)
     }
     chartEditStore.setProjectInfo(ProjectInfoEnum.RELEASE, !release.value)
   } else {
@@ -159,21 +159,21 @@ const sendHandle = async () => {
 const btnList = [
   {
     select: true,
-    title: () => '同步内容',
+    title: () => 'Sync Content',
     type: () => 'primary',
     icon: renderIcon(AnalyticsIcon),
     event: syncData
   },
   {
     key: 'preview',
-    title: () => '预览',
+    title: () => 'Preview',
     type: () => 'default',
     icon: renderIcon(BrowsersOutlineIcon),
     event: previewHandle
   },
   {
     key: 'release',
-    title: () => (release.value ? '已发布' : '发布'),
+    title: () => (release.value ? 'Published' : 'Publish'),
     icon: renderIcon(SendIcon),
     type: () => (release.value ? 'primary' : 'default'),
     event: modelShowHandle

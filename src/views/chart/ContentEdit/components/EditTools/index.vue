@@ -144,7 +144,7 @@ const toolsMouseoutHandle = () => {
 
 // 编辑处理
 const editHandle = () => {
-  window['$message'].warning('请通过顶部【同步内容】按钮同步最新数据！')
+  window['$message'].warning('Please sync the latest data through the [Sync Content] button at the top!')
   chartEditStore.setEditCanvas(EditCanvasTypeEnum.IS_CODE_EDIT, true)
   setTimeout(() => {
     // 获取id路径
@@ -181,27 +181,27 @@ const btnList: BtnListType[] = [
   {
     key: 'import',
     type: TypeEnum.IMPORTUPLOAD,
-    name: '导入',
+    name: 'Import',
     icon: ShareIcon
   },
   {
     key: 'export',
     type: TypeEnum.BUTTON,
-    name: '导出',
+    name: 'Export',
     icon: DownloadIcon,
     handle: exportHandle
   },
   {
     key: 'edit',
     type: TypeEnum.BUTTON,
-    name: '编辑',
+    name: 'Edit',
     icon: CreateIcon,
     handle: editHandle
   },
   {
     key: 'setting',
     type: TypeEnum.BUTTON,
-    name: '设置',
+    name: 'Settings',
     icon: SettingsSharpIcon,
     handle: () => {
       globalSettingModel.value = true

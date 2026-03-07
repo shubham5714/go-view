@@ -42,7 +42,7 @@
     </div>
     <n-space vertical :size="12">
       <n-space>
-        <n-text>背景颜色</n-text>
+        <n-text>Background Color</n-text>
         <div class="picker-height">
           <n-color-picker
             v-if="!switchSelectColorLoading"
@@ -55,7 +55,7 @@
         </div>
       </n-space>
       <n-space>
-        <n-text>应用类型</n-text>
+        <n-text>Apply Type</n-text>
         <n-select
           size="small"
           style="width: 250px"
@@ -66,16 +66,16 @@
         />
       </n-space>
       <n-space>
-        <n-text>背景控制</n-text>
+        <n-text>Background Control</n-text>
         <n-button class="clear-btn" size="small" :disabled="!canvasConfig.backgroundImage" @click="clearImage">
-          清除背景
+          Clear Background
         </n-button>
         <n-button class="clear-btn" size="small" :disabled="!canvasConfig.background" @click="clearColor">
-          清除颜色
+          Clear Color
         </n-button>
       </n-space>
       <n-space>
-        <n-text>适配方式</n-text>
+        <n-text>Adaptation Mode</n-text>
         <n-button-group>
           <n-button
             v-for="item in previewTypeList"
@@ -98,7 +98,7 @@
       </n-space>
     </n-space>
 
-    <!-- 滤镜 -->
+    <!-- Filter -->
     <styles-setting :isCanvas="true" :chartStyles="canvasConfig"></styles-setting>
     <n-divider style="margin: 10px 0"></n-divider>
 
@@ -159,11 +159,11 @@ const VChartThemeColor = loadAsyncComponent(() => import('./components/VChartThe
 // 默认应用类型
 const selectColorOptions = [
   {
-    label: '应用颜色',
+    label: 'Apply Color',
     value: 0
   },
   {
-    label: '应用背景',
+    label: 'Apply Background',
     value: 1
   }
 ]
@@ -171,13 +171,13 @@ const selectColorOptions = [
 const globalTabList = [
   {
     key: 'ChartTheme',
-    title: '默认主题',
+    title: 'Default Theme',
     icon: ColorPaletteIcon,
     render: ChartThemeColor
   },
   {
     key: 'VChartTheme',
-    title: 'VChart主题',
+    title: 'VChart Theme',
     icon: ColorPaletteIcon,
     render: VChartThemeColor
   }
@@ -186,27 +186,27 @@ const globalTabList = [
 const previewTypeList = [
   {
     key: PreviewScaleEnum.FIT,
-    title: '自适应',
+    title: 'Auto Fit',
     icon: ScaleIcon,
-    desc: '自适应比例展示，页面会有留白'
+    desc: 'Auto-fit scale display, page will have margins'
   },
   {
     key: PreviewScaleEnum.SCROLL_Y,
-    title: 'Y轴滚动',
+    title: 'Y-Axis Scroll',
     icon: FitToWidthIcon,
-    desc: 'X轴铺满，Y轴自适应滚动'
+    desc: 'X-axis fills, Y-axis auto-scrolls'
   },
   {
     key: PreviewScaleEnum.SCROLL_X,
-    title: 'X轴滚动',
+    title: 'X-Axis Scroll',
     icon: FitToHeightIcon,
-    desc: 'Y轴铺满，X轴自适应滚动'
+    desc: 'Y-axis fills, X-axis auto-scrolls'
   },
   {
     key: PreviewScaleEnum.FULL,
-    title: '铺满',
+    title: 'Full Screen',
     icon: FitToScreenIcon,
-    desc: '强行拉伸画面，填充所有视图'
+    desc: 'Force stretch to fill all views'
   }
 ]
 

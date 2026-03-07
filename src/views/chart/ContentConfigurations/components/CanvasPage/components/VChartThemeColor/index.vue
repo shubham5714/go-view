@@ -19,7 +19,7 @@
       </div>
     </n-gi>
   </n-grid>
-  <div class="go-my-4">行业模板</div>
+  <div class="go-my-4">Industry Templates</div>
   <n-grid :x-gap="8" :y-gap="8" :cols="2">
     <n-gi v-for="item in industryList" :key="item.value">
       <div
@@ -71,52 +71,52 @@ const list = ref<
   }>
 >([
   {
-    name: '火山蓝（默认）',
+    name: 'Volcano Blue (Default)',
     value: 'vScreenVolcanoBlue',
     colors: ['#2D64DD', '#284588', '#58B4B6']
   },
   {
-    name: '党建红',
+    name: 'Party Red',
     value: 'vScreenPartyRed',
     colors: ['#d3d3d4', '#d68a46', '#d74f3c']
   },
   {
-    name: '清新蜡笔',
+    name: 'Fresh Crayon',
     value: 'vScreenClean',
     colors: ['#94AF60', '#7696B8', '#d6837a']
   },
   {
-    name: '郊外',
+    name: 'Outskirts',
     value: 'vScreenOutskirts',
     colors: ['#A7C4E6', '#e1bf99', '#c0bcbb']
   },
   {
-    name: '汽车蓝橙',
+    name: 'Auto Blue Orange',
     value: 'vScreenBlueOrange',
     colors: ['#acd5fa', '#cc896b', '#5ea4dd']
   },
   {
-    name: '金融黄',
+    name: 'Finance Yellow',
     value: 'vScreenFinanceYellow',
     colors: ['#d7d7d7', '#f09761', '#f7d177']
   },
   {
-    name: '文旅青',
+    name: 'Cultural Tourism Cyan',
     value: 'vScreenWenLvCyan',
     colors: ['#63c6ba', '#dcb974', '#a34440']
   },
   {
-    name: '电力绿',
+    name: 'Electric Green',
     value: 'vScreenElectricGreen',
     colors: ['#75faf2', '#ee813e', '#f4ce7f']
   },
   {
-    name: '电商紫',
+    name: 'E-Commerce Purple',
     value: 'vScreenECommercePurple',
     colors: ['#6d4cf6', '#ed7266', '#5f83f7']
   },
   {
-    name: '红蓝',
+    name: 'Red Blue',
     value: 'vScreenRedBlue',
     colors: ['#2e6cf6', '#bc4741', '#c1e4fb']
   }
@@ -131,82 +131,82 @@ const industryList = ref<
   }>
 >([
   {
-    name: '明亮（适用白背景）',
+    name: 'Bright (for white background)',
     value: 'light',
     colors: ['#3063f6', '#5dc3f9', '#f1f2f5']
   },
   {
-    name: '暗黑（适用黑背景）',
+    name: 'Dark (for black background)',
     value: 'dark',
     colors: ['#3063f6', '#5dc3f9', '#414348']
   },
   {
-    name: '亮-金融行业',
+    name: 'Light - Finance',
     value: 'veODesignLightFinance',
     colors: ['#dbba95', '#314b5e', '#f1f2f5']
   },
   {
-    name: '暗-金融行业',
+    name: 'Dark - Finance',
     value: 'veODesignDarkFinance',
     colors: ['#dbba95', '#314b5e', '#414348']
   },
   {
-    name: '亮-政府行业',
+    name: 'Light - Government',
     value: 'veODesignLightGovernment',
     colors: ['#c0403a', '#f6c552', '#f1f2f5']
   },
   {
-    name: '暗-政府行业',
+    name: 'Dark - Government',
     value: 'veODesignDarkGovernment',
     colors: ['#c0403a', '#f6c552', '#414348']
   },
   {
-    name: '亮-消费行业',
+    name: 'Light - Consumer',
     value: 'veODesignLightConsumer',
     colors: ['#3f36ab', '#eb4854', '#f1f2f5']
   },
   {
-    name: '暗-消费行业',
+    name: 'Dark - Consumer',
     value: 'veODesignDarkConsumer',
     colors: ['#3f36ab', '#eb4854', '#414348']
   },
   {
-    name: '亮-汽车行业',
+    name: 'Light - Automobile',
     value: 'veODesignLightAutomobile',
     colors: ['#1515d1', '#abb6cd', '#f1f2f5']
   },
   {
-    name: '暗-汽车行业',
+    name: 'Dark - Automobile',
     value: 'veODesignDarkAutomobile',
     colors: ['#1515d1', '#abb6cd', '#414348']
   },
   {
-    name: '亮-文旅行业',
+    name: 'Light - Cultural Tourism',
     value: 'veODesignLightCulturalTourism',
     colors: ['#77b897', '#3c5a4b', '#f1f2f5']
   },
   {
-    name: '暗-文旅行业',
+    name: 'Dark - Cultural Tourism',
     value: 'veODesignDarkCulturalTourism',
     colors: ['#77b897', '#3c5a4b', '#414348']
   },
   {
-    name: '亮-医疗行业',
+    name: 'Light - Medical',
     value: 'veODesignLightMedical',
     colors: ['#76d0d1', '#314787', '#f1f2f5']
   },
   {
-    name: '暗-医疗行业',
+    name: 'Dark - Medical',
     value: 'veODesignDarkMedical',
     colors: ['#76d0d1', '#314787', '#414348']
   },
   {
-    name: '亮-新能源行业',
+    name: 'Light - New Energy',
     value: 'veODesignLightNewEnergy',
     colors: ['#64d886', '#1f3b76', '#f1f2f5']
   },
   {
-    name: '暗-新能源行业',
+    name: 'Dark - New Energy',
     value: 'veODesignDarkNewEnergy',
     colors: ['#64d886', '#1f3b76', '#414348']
   }

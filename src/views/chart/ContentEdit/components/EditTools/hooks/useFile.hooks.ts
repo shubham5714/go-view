@@ -13,7 +13,7 @@ export const useFile = () => {
     importUploadFileListRef.value = []
     const type = file.file.type
     if (type !== FileTypeEnum.JSON && type !== FileTypeEnum.TXT) {
-      window['$message'].warning('仅支持上传 【JSON】 格式文件，请重新上传！')
+      window['$message'].warning('Only JSON format files are supported. Please upload again!')
       return false
     }
     return true
@@ -26,19 +26,19 @@ export const useFile = () => {
       if (file.file) {
         readFile(file.file).then((fileData: any) => {
           goDialog({
-            message: '请选择导入方式:',
-            positiveText: '新增（可撤回）',
-            negativeText: '覆盖（不可撤回）',
+            message: 'Please select import method:',
+            positiveText: 'Add (Can be undone)',
+            negativeText: 'Replace (Cannot be undone)',
             negativeButtonProps: { type: 'info', ghost: false },
             // 新增
             onPositiveCallback: async () => {
               try {
                 fileData = JSONParse(fileData)
                 await updateComponent(fileData, false, true)
-                window['$message'].success('导入成功！')
+                window['$message'].success('Import successful!')
               } catch (error) {
                 console.log(error)
-                window['$message'].error('组件导入失败，请检查文件完整性!')
+                window['$message'].error('Component import failed. Please check file integrity!')
               }
             },
             // 覆盖
@@ -46,16 +46,16 @@ export const useFile = () => {
               try {
                 fileData = JSONParse(fileData)
                 await updateComponent(fileData, true, true)
-                window['$message'].success('导入成功！')
+                window['$message'].success('Import successful!')
               } catch (error) {
                 console.log(error)
-                window['$message'].error('组件导入失败，请检查文件完整性!')
+                window['$message'].error('Component import failed. Please check file integrity!')
               }
             }
           })
         })
       } else {
-        window['$message'].error('导入失败，请检查数据或联系管理员！')
+        window['$message'].error('Import failed. Please check the data or contact the administrator!')
       }
     })
   }

@@ -1,6 +1,6 @@
 <template>
   <!-- 左侧所有组件的展示列表 -->
-  <content-box class="go-content-charts" :class="{ scoped: !getCharts }" title="组件" :depth="1" :backIcon="false">
+  <content-box class="go-content-charts" :class="{ scoped: !getCharts }" title="Components" :depth="1" :backIcon="false">
     <template #icon>
       <n-icon size="14" :depth="2">
         <bar-chart-icon></bar-chart-icon>

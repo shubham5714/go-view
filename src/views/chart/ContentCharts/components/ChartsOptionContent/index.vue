@@ -56,7 +56,7 @@ let packages = reactive<{
     all: []
   },
   categoryNames: {
-    all: '所有'
+    all: 'All'
   },
   // 分类归档数量
   categorysNum: 0,

@@ -186,13 +186,13 @@ export enum PackagesCategoryEnum {
 
 // 包分类名称
 export enum PackagesCategoryName {
-  CHARTS = '图表',
+  CHARTS = 'Chart',
   VCHART = 'VChart',
-  TABLES = '列表',
-  INFORMATIONS = '信息',
-  PHOTOS = '图片',
-  ICONS = '图标',
-  DECORATES = '小组件'
+  TABLES = 'List',
+  INFORMATIONS = 'Information',
+  PHOTOS = 'Image',
+  ICONS = 'Icon',
+  DECORATES = 'Widget'
 }
 
 // 获取组件

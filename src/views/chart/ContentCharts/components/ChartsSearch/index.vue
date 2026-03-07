@@ -13,7 +13,7 @@
           <n-input-group>
             <n-input
               size="small"
-              placeholder="搜索组件"
+              placeholder="Search Components"
               v-model:value.trim="search"
               :loading="loading"
               @focus="focusHandle(true)"
@@ -29,7 +29,7 @@
 
         <div class="search-list-box">
           <n-scrollbar style="max-height: 500px">
-            <n-empty v-show="!searchRes.length" size="small" description="没有找到组件~"></n-empty>
+            <n-empty v-show="!searchRes.length" size="small" description="No components found~"></n-empty>
             <div
               class="list-item go-flex-items-center go-ellipsis-1"
               v-for="item in searchRes"
@@ -99,8 +99,8 @@ const searchRes = ref<ConfigType[]>([])
 const chartMode = ref<ChartModeEnum>(chartLayoutStore.getChartType)
 
 const chartModeList = [
-  { label: '单列', icon: AlbumsIcon, value: ChartModeEnum.SINGLE },
-  { label: '双列', icon: GridIcon, value: ChartModeEnum.DOUBLE }
+  { label: 'Single Column', icon: AlbumsIcon, value: ChartModeEnum.SINGLE },
+  { label: 'Double Column', icon: GridIcon, value: ChartModeEnum.DOUBLE }
 ]
 
 // 组件数组提取

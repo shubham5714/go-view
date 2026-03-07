@@ -38,25 +38,25 @@ export const divider = (n: number = 3) => {
 // * 默认单组件选项
 export const defaultOptions: MenuOptionsItemType[] = [
   {
-    label: '锁定',
+    label: 'Lock',
     key: MenuEnum.LOCK,
     icon: renderIcon(LockClosedOutlineIcon),
     fnHandle: chartEditStore.setLock
   },
   {
-    label: '解锁',
+    label: 'Unlock',
     key: MenuEnum.UNLOCK,
     icon: renderIcon(LockOpenOutlineIcon),
     fnHandle: chartEditStore.setUnLock
   },
   {
-    label: '隐藏',
+    label: 'Hide',
     key: MenuEnum.HIDE,
     icon: renderIcon(EyeOffOutlineIcon),
     fnHandle: chartEditStore.setHide
   },
   {
-    label: '显示',
+    label: 'Show',
     key: MenuEnum.SHOW,
     icon: renderIcon(EyeOutlineIcon),
     fnHandle: chartEditStore.setShow
@@ -66,19 +66,19 @@ export const defaultOptions: MenuOptionsItemType[] = [
     key: 'd0'
   },
   {
-    label: '复制',
+    label: 'Copy',
     key: MenuEnum.COPY,
     icon: renderIcon(CopyIcon),
     fnHandle: chartEditStore.setCopy
   },
   {
-    label: '剪切',
+    label: 'Cut',
     key: MenuEnum.CUT,
     icon: renderIcon(CutIcon),
     fnHandle: chartEditStore.setCut
   },
   {
-    label: '粘贴',
+    label: 'Paste',
     key: MenuEnum.PARSE,
     icon: renderIcon(ClipboardOutlineIcon),
     fnHandle: chartEditStore.setParse
@@ -88,25 +88,25 @@ export const defaultOptions: MenuOptionsItemType[] = [
     key: 'd1'
   },
   {
-    label: '置顶',
+    label: 'Bring to Front',
     key: MenuEnum.TOP,
     icon: renderIcon(UpToTopIcon),
     fnHandle: chartEditStore.setTop
   },
   {
-    label: '置底',
+    label: 'Send to Back',
     key: MenuEnum.BOTTOM,
     icon: renderIcon(DownToBottomIcon),
     fnHandle: chartEditStore.setBottom
   },
   {
-    label: '上移',
+    label: 'Move Up',
     key: MenuEnum.UP,
     icon: renderIcon(ChevronUpIcon),
     fnHandle: chartEditStore.setUp
   },
   {
-    label: '下移',
+    label: 'Move Down',
     key: MenuEnum.DOWN,
     icon: renderIcon(ChevronDownIcon),
     fnHandle: chartEditStore.setDown
@@ -116,13 +116,13 @@ export const defaultOptions: MenuOptionsItemType[] = [
     key: 'd2'
   },
   {
-    label: '清空剪贴板',
+    label: 'Clear Clipboard',
     key: MenuEnum.CLEAR,
     icon: renderIcon(PaintBrushIcon),
     fnHandle: chartEditStore.setRecordChart
   },
   {
-    label: '删除',
+    label: 'Delete',
     key: MenuEnum.DELETE,
     icon: renderIcon(TrashIcon),
     fnHandle: chartEditStore.removeComponentList
@@ -132,13 +132,13 @@ export const defaultOptions: MenuOptionsItemType[] = [
 // * 默认多选组件选项
 export const defaultMultiSelectOptions: MenuOptionsItemType[] = [
   {
-    label: '创建分组',
+    label: 'Create Group',
     key: MenuEnum.GROUP,
     icon: renderIcon(Carbon3DSoftwareIcon),
     fnHandle: chartEditStore.setGroup
   },
   {
-    label: '解除分组',
+    label: 'Ungroup',
     key: MenuEnum.UN_GROUP,
     icon: renderIcon(Carbon3DCursorIcon),
     fnHandle: chartEditStore.setUnGroup

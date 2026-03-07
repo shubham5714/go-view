@@ -14,11 +14,11 @@ const chartEditStore = useChartEditStore()
 
 export const syncData = () => {
   goDialog({
-    message: '是否覆盖源视图内容，此操作不可撤回?',
+    message: 'Do you want to overwrite the source view content? This operation cannot be undone.',
     isMaskClosable: true,
     transformOrigin: 'center',
     onPositiveCallback: async () => {
-      window['$message'].success('正在同步编辑器...')
+      window['$message'].success('Synchronizing editor...')
       dataSyncUpdate && (await dataSyncUpdate())
       dispatchEvent(new CustomEvent(SavePageEnum.CHART, { detail: chartEditStore.getStorageInfo() }))
     }
@@ -37,7 +37,7 @@ const useSyncUpdateHandle = () => {
 
   // 更新处理
   const updateFn = (e: any) => {
-    window['$message'].success('正在进行更新...')
+    window['$message'].success('Updating...')
     updateComponent(e!.detail, true)
   }
 

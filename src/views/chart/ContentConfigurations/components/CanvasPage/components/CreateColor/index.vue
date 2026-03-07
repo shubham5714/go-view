@@ -13,7 +13,7 @@
           <!-- 无数据 -->
           <div v-else class="no-data go-flex-center">
             <img :src="noData" alt="暂无数据" />
-            <n-text :depth="3">暂未选择自定义颜色</n-text>
+            <n-text :depth="3">No custom color selected</n-text>
           </div>
         </div>
         <div class="color-list-box">
@@ -32,7 +32,7 @@
                 :secondary="!!selectColorId"
                 @click="createColor"
               >
-                <span> 创建 </span>
+                <span> Create </span>
                 <template #icon>
                   <n-icon>
                     <duplicate-outline-icon></duplicate-outline-icon>
@@ -41,7 +41,7 @@
               </n-button>
               <n-badge v-if="selectColorId" :show="updateColor !== undefined" dot>
                 <n-button class="create-btn" type="info" secondary @click="saveHandle">
-                  <span> 应用数据 </span>
+                  <span> Apply Data </span>
                   <template #icon>
                     <n-icon>
                       <arrow-down-icon></arrow-down-icon>
@@ -52,8 +52,8 @@
             </n-space>
             <n-divider style="margin: 10px 0"></n-divider>
             <n-text v-if="!selectColorId" class="not-data-text" :depth="3">
-              暂无自定义颜色，
-              <n-a @click="createColor">立即创建</n-a>
+              No custom colors yet,
+              <n-a @click="createColor">Create Now</n-a>
             </n-text>
             <!-- 列表 -->
             <div class="color-card-box" v-for="(item, index) in colorList" :key="index">
@@ -84,7 +84,7 @@
                     </n-icon>
                   </n-button>
                 </template>
-                删除自定义颜色
+                Delete Custom Color
               </n-tooltip>
             </div>
           </div>
@@ -93,7 +93,7 @@
       <!-- 底部 -->
       <template #action>
         <n-space justify="end">
-          <n-button @click="closeHandle">操作完成</n-button>
+          <n-button @click="closeHandle">Done</n-button>
         </n-space>
       </template>
     </n-card>

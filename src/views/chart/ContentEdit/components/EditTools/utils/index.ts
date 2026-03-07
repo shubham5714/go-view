@@ -19,7 +19,7 @@ export const exportHandle = () => {
   const watermark = document.getElementById('go-edit-watermark')
   // 隐藏边距线
   if (!range || !watermark) {
-    window['$message'].error('导出失败！')
+    window['$message'].error('Export failed!')
     return
   }
 

@@ -2,7 +2,7 @@
   <content-box
     class="go-content-layers"
     :class="{ scoped: !chartLayoutStore.getLayers }"
-    title="图层"
+    title="Layers"
     :depth="2"
     @back="backHandle"
     @mousedown="boxMousedownHandle($event)"
@@ -33,7 +33,7 @@
 
     <!-- 图层内容 -->
     <n-space v-if="reverseList.length === 0" justify="center">
-      <n-text class="not-layer-text">暂无图层~</n-text>
+      <n-text class="not-layer-text">No layers yet~</n-text>
     </n-space>
 
     <!-- https://github.com/SortableJS/vue.draggable.next -->
@@ -87,8 +87,8 @@ const chartEditStore = useChartEditStore()
 const { handleContextMenu, onClickOutSide } = useContextMenu()
 
 const layerModeList = [
-  { label: '缩略图', icon: LaptopIcon, value: LayerModeEnum.THUMBNAIL },
-  { label: '文本列表', icon: ListIcon, value: LayerModeEnum.TEXT }
+  { label: 'Thumbnail', icon: LaptopIcon, value: LayerModeEnum.THUMBNAIL },
+  { label: 'Text List', icon: ListIcon, value: LayerModeEnum.TEXT }
 ]
 
 const layerList = ref<any>([])

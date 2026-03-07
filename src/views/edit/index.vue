@@ -3,27 +3,27 @@
     <n-layout>
       <n-layout-header class="go-edit-header go-px-5 go-flex-items-center" bordered>
         <div>
-          <n-text class="go-edit-title go-mr-4">页面在线编辑器</n-text>
+          <n-text class="go-edit-title go-mr-4">Online Page Editor</n-text>
           <n-button v-if="showOpenFilePicker" class="go-mr-3" size="medium" @click="importJSON">
             <template #icon>
               <n-icon>
                 <download-icon></download-icon>
               </n-icon>
             </template>
-            导入
+            Import
           </n-button>
         </div>
         <n-space>
           <!-- 暂时关闭 -->
           <!-- <n-tag :bordered="false" type="warning"> 「页面失焦保存」 </n-tag> -->
-          <n-tag :bordered="false" type="warning"> 「Ctrl + S 更新视图」 </n-tag>
+          <n-tag :bordered="false" type="warning"> 「Ctrl + S Update View」 </n-tag>
           <n-button v-if="showOpenFilePicker" class="go-mr-3" size="medium" @click="updateSync">
             <template #icon>
               <n-icon>
                 <analytics-icon></analytics-icon>
               </n-icon>
             </template>
-            保存
+            Save
           </n-button>
         </n-space>
       </n-layout-header>
@@ -61,12 +61,12 @@ const { ChevronBackOutlineIcon, DownloadIcon, AnalyticsIcon } = icon.ionicons5
 const showOpenFilePicker: Function = (window as any).showOpenFilePicker
 const content = ref('')
 
-window['$message'].warning('请不要刷新此窗口！')
+window['$message'].warning('Please do not refresh this window!')
 
 // 从sessionStorage 获取数据
 async function getDataBySession() {
   const localStorageInfo: ChartEditStorageType = (await getSessionStorageInfo()) as unknown as ChartEditStorageType
-  setTitle(`编辑-${localStorageInfo.editCanvasConfig.projectName}`)
+  setTitle(`Edit-${localStorageInfo.editCanvasConfig.projectName}`)
   content.value = JSONStringify(localStorageInfo)
 }
 setTimeout(getDataBySession)
@@ -80,7 +80,7 @@ function back() {
 // 导入json文本
 function importJSON() {
   goDialog({
-    message: '导入数据将覆盖内容，此操作不可撤回，是否继续？',
+    message: 'Importing data will overwrite the content. This operation cannot be undone. Do you want to continue?',
     isMaskClosable: true,
     transformOrigin: 'center',
     onPositiveCallback: async () => {
@@ -92,9 +92,9 @@ function importJSON() {
         fr.onloadend = () => {
           content.value = (fr.result || '').toString()
         }
-        window['$message'].success('导入成功！')
+        window['$message'].success('Import successful!')
       } catch (error) {
-        window['$message'].error('导入失败，请检查文件是否损坏！')
+        window['$message'].error('Import failed. Please check if the file is corrupted!')
         console.log(error)
       }
     }
@@ -103,7 +103,7 @@ function importJSON() {
 
 // 同步数据编辑页
 window.opener.addEventListener(SavePageEnum.CHART, (e: any) => {
-  window['$message'].success('正在进行更新...')
+  window['$message'].success('Updating...')
   setSessionStorage(StorageEnum.GO_CHART_STORAGE_LIST, [e.detail])
   content.value = JSONStringify(e.detail)
 })
@@ -122,10 +122,10 @@ document.addEventListener('keydown', function (e) {
 // 同步更新
 async function updateSync() {
   if (!window.opener) {
-    return window['$message'].error('源窗口已关闭，视图同步失败！')
+    return window['$message'].error('Source window is closed. View synchronization failed!')
   }
   goDialog({
-    message: '是否覆盖源视图内容? 此操作不可撤！',
+    message: 'Do you want to overwrite the source view content? This operation cannot be undone!',
     isMaskClosable: true,
     transformOrigin: 'center',
     onPositiveCallback: async () => {
@@ -139,9 +139,9 @@ async function updateSync() {
           await dataSyncUpdate(false) // JSON界面保存不上传缩略图
         }
         window.opener.dispatchEvent(new CustomEvent(SavePageEnum.JSON, { detail }))
-        window['$message'].success('正在同步内容...')
+        window['$message'].success('Synchronizing content...')
       } catch (e) {
-        window['$message'].error('内容格式有误')
+        window['$message'].error('Content format error')
         console.log(e)
       }
     }

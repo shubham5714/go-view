@@ -1,7 +1,7 @@
 <template>
   <n-modal :show="showModal" :close-on-esc="false" transform-origin="center">
     <div>
-      <span> 拼命加载中... </span>
+      <span> Loading... </span>
       <n-progress type="line" :color="themeColor" :percentage="percentage" style="width: 300px" />
     </div>
   </n-modal>

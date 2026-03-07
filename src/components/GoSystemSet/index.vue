@@ -3,7 +3,7 @@
     <n-list bordered class="go-system-setting">
       <template #header>
         <n-space justify="space-between">
-          <n-h3 class="go-mb-0">系统设置</n-h3>
+          <n-h3 class="go-mb-0">System Settings</n-h3>
           <n-icon size="20" class="go-cursor-pointer" @click="closeHandle">
             <close-icon></close-icon>
           </n-icon>
@@ -89,23 +89,23 @@ const list = reactive<ListType[]>([
     key: SettingStoreEnums.ASIDE_ALL_COLLAPSED,
     value: settingStore.getAsideAllCollapsed,
     type: 'switch',
-    name: '菜单折叠',
-    desc: '首页菜单折叠时隐藏至界面外'
+    name: 'Menu Collapse',
+    desc: 'Hide menu outside the interface when collapsed on home page'
   },
   {
     key: SettingStoreEnums.HIDE_PACKAGE_ONE_CATEGORY,
     value: settingStore.getHidePackageOneCategory,
     type: 'switch',
-    name: '隐藏分类',
-    desc: '工作空间表单分类只有单项时隐藏'
+    name: 'Hide Category',
+    desc: 'Hide category when workspace form has only one item'
   },
   {
     key: SettingStoreEnums.CHANGE_LANG_RELOAD,
     value: settingStore.getChangeLangReload,
     type: 'switch',
-    name: '切换语言',
-    desc: '切换语言重新加载页面',
-    tip: '若遇到部分区域语言切换失败，则建议开启'
+    name: 'Switch Language',
+    desc: 'Reload page when switching language',
+    tip: 'Enable this if you encounter language switching failures in some areas'
   },
   {
     key: 'divider1',
@@ -118,22 +118,22 @@ const list = reactive<ListType[]>([
     key: SettingStoreEnums.CHART_TOOLS_STATUS_HIDE,
     value: settingStore.getChartToolsStatusHide,
     type: 'switch',
-    name: '隐藏工具栏',
-    desc: '鼠标移入时，会展示切换到展开模式',
+    name: 'Hide Toolbar',
+    desc: 'Show and switch to expanded mode when mouse enters',
   },
   {
     key: SettingStoreEnums.CHART_TOOLS_STATUS,
     value: settingStore.getChartToolsStatus,
     type: 'select',
-    name: '工具栏展示',
-    desc: '工作空间工具栏展示方式',
+    name: 'Toolbar Display',
+    desc: 'Workspace toolbar display mode',
     options: [
       {
-        label: '侧边栏',
+        label: 'Sidebar',
         value: ToolsStatusEnum.ASIDE
       },
       {
-        label: '底部 Dock',
+        label: 'Bottom Dock',
         value: ToolsStatusEnum.DOCK
       }
     ]
@@ -149,21 +149,21 @@ const list = reactive<ListType[]>([
     key: SettingStoreEnums.CHART_MOVE_DISTANCE,
     value: settingStore.getChartMoveDistance,
     type: 'number',
-    name: '移动距离',
+    name: 'Move Distance',
     min: 1,
     step: 1,
     suffix: 'px',
-    desc: '工作空间方向键控制移动距离'
+    desc: 'Arrow key movement distance in workspace'
   },
   {
     key: SettingStoreEnums.CHART_ALIGN_RANGE,
     value: settingStore.getChartAlignRange,
     type: 'number',
-    name: '吸附距离',
+    name: 'Snap Distance',
     min: 10,
     step: 2,
     suffix: 'px',
-    desc: '工作空间移动图表时的吸附距离'
+    desc: 'Snap distance when moving charts in workspace'
   }
 ])
 

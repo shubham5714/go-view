@@ -1,6 +1,6 @@
 export default {
-  create_btn: 'Creat',
-  create_success: 'Creat Success!',
+  create_btn: 'Create',
+  create_success: 'Create Success!',
   create_failure: 'Failed to create, please try again later！',
   create_tip: 'Please select a content for development!',
   project: 'Project',

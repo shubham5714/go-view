@@ -45,7 +45,7 @@
             </n-button>
           </div>
         </template>
-        <span>保存</span>
+        <span>Save</span>
       </n-tooltip>
     </n-space>
   </n-space>
@@ -82,19 +82,19 @@ const btnList = reactive<ItemType<ChartLayoutStoreEnum>[]>([
   {
     key: ChartLayoutStoreEnum.CHARTS,
     select: getCharts,
-    title: '图表组件',
+    title: 'Chart Components',
     icon: renderIcon(BarChartIcon)
   },
   {
     key: ChartLayoutStoreEnum.LAYERS,
     select: getLayers,
-    title: '图层控制',
+    title: 'Layers',
     icon: renderIcon(LayersIcon)
   },
   {
     key: ChartLayoutStoreEnum.DETAILS,
     select: getDetails,
-    title: '详情设置',
+    title: 'Details',
     icon: renderIcon(PrismIcon)
   }
 ])
@@ -108,13 +108,13 @@ const historyList = reactive<ItemType<HistoryStackEnum>[]>([
     key: HistoryStackEnum.BACK_STACK,
     // 一定会有初始化画布
     select: isBackStack,
-    title: '后退',
+    title: 'Undo',
     icon: renderIcon(ArrowBackIcon)
   },
   {
     key: HistoryStackEnum.FORWARD_STACK,
     select: isForwardStack,
-    title: '前进',
+    title: 'Redo',
     icon: renderIcon(ArrowForwardIcon)
   }
 ])
@@ -148,7 +148,7 @@ const clickHistoryHandle = (item: ItemType<HistoryStackEnum>) => {
 // 返回首页
 const goHomeHandle = () => {
   goDialog({
-    message: '确定已保存了数据（Ctrl / ⌘ + S），并返回到首页吗？',
+    message: 'Are you sure you have saved the data (Ctrl / ⌘ + S) and want to return to the home page?',
     isMaskClosable: true,
     onPositiveCallback: () => {
       goHome()

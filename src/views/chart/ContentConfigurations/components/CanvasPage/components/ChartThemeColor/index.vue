@@ -2,7 +2,7 @@
   <div class="go-chart-theme-color">
     <n-card class="card-box" size="small" hoverable embedded @click="createColorHandle">
       <n-text class="go-flex-items-center">
-        <span>自定义颜色</span>
+        <span>Custom Color</span>
         <n-icon size="16">
           <add-icon></add-icon>
         </n-icon>
