@@ -3,7 +3,7 @@ import { RequestHttpIntervalEnum } from '@/enums/httpEnum'
 import designColor from './designColor.json'
 
 // 默认语言
-export const lang = LangEnum.ZH
+export const lang = LangEnum.EN
 
 // 水印文字
 export const watermarkText = "GoView 低代码平台"
