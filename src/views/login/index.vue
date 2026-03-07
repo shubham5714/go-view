@@ -2,7 +2,6 @@
   <!-- 登录 -->
   <div class="go-login-box">
     <div class="go-login-box-bg">
-      <aside class="bg-slot"></aside>
       <aside class="bg-img-box">
         <transition-group name="list-complete">
           <template v-for="item in bgList" :key="item">
@@ -17,21 +16,6 @@
     </div>
     <layout-header></layout-header>
     <div class="go-login">
-      <div class="go-login-carousel">
-        <n-carousel
-          autoplay
-          dot-type="line"
-          :interval="Number(carouselInterval)"
-        >
-          <img
-            v-for="(item, i) in carouselImgList"
-            :key="i"
-            class="go-login-carousel-img"
-            :src="getImageUrl(item, 'login')"
-            alt="image"
-          />
-        </n-carousel>
-      </div>
       <div class="login-account">
         <div class="login-account-container">
           <n-collapse-transition :appear="true" :show="show">
@@ -140,8 +124,8 @@ const systemStore = useSystemStore()
 const t = window['$t']
 
 const formInline = reactive({
-  username: 'admin',
-  password: '123456',
+  username: '',
+  password: '',
 })
 
 const rules = {
@@ -160,9 +144,6 @@ const rules = {
 // 定时器
 const shuffleTimiing = ref()
 
-// 轮播图
-const carouselImgList = ['one', 'two', 'three']
-
 // 背景图
 const bgList = ref([
   'bar_y',
@@ -171,7 +152,6 @@ const bgList = ref([
   'line',
   'funnel',
   'heatmap',
-  'map',
   'pie',
   'radar',
 ])
@@ -242,8 +222,6 @@ $width: 450px;
 $go-login-height: 100vh;
 $account-img-height: 210px;
 $footer-height: 50px;
-$carousel-width: 30%;
-$carousel-image-height: 60vh;
 
 * {
   box-sizing: border-box;
@@ -267,25 +245,15 @@ $carousel-image-height: 60vh;
   @include go(login) {
     z-index: 2;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     margin-top: -$--header-height;
     height: $go-login-height;
     width: 100vw;
-    &-carousel {
-      width: $carousel-width;
-      margin-top: 100px;
-      min-width: 500px;
-      &-img {
-        display: block;
-        margin: 0 auto;
-        height: $carousel-image-height;
-      }
-    }
     .login-account {
       display: flex;
       flex-direction: column;
-      margin: 0 160px;
+      align-items: center;
       &-container {
         width: $width;
       }
@@ -315,38 +283,48 @@ $carousel-image-height: 60vh;
   &-bg {
     z-index: 0;
     position: fixed;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
     width: 100vw;
     height: 100vh;
-    background: url('@/assets/images/login/login-bg.png') no-repeat 0 -120px;
-    .bg-slot {
-      width: $carousel-width;
-    }
+    overflow: hidden;
+    /* subtle dark overlay so chart images stay visible */
+    background: rgba(0, 0, 0, 0.35);
     .bg-img-box {
-      position: relative;
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
       display: flex;
       flex-wrap: wrap;
-      width: 770px;
-      margin-right: -20px;
-      &-li {
+      justify-content: center;
+      align-content: center;
+      gap: 16px;
+      padding: 24px;
+      .bg-img-box-li {
+        flex-shrink: 0;
+        transition: transform 0.6s ease;
         img {
-          margin-right: 20px;
-          margin-top: 20px;
-          width: 230px;
+          display: block;
+          width: 180px;
+          height: 120px;
+          object-fit: cover;
           border-radius: 2 * $--border-radius-base;
           opacity: 0.9;
         }
       }
+      /* animate position when list reorders */
     }
   }
 }
+
+/* move animation when shuffle reorders (transition-group adds .list-complete-move) */
+:deep(.list-complete-move) {
+  transition: transform 0.6s ease;
+}
 @media only screen and (max-width: 1200px) {
-  .bg-img-box,
-  .bg-slot,
-  .go-login-carousel {
-    display: none !important;
+  .go-login-box-bg .bg-img-box .bg-img-box-li img {
+    width: 140px;
+    height: 94px;
   }
   .go-login-box-footer {
     position: relative;
