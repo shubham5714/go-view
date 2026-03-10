@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { SystemStoreType, UserInfoType, FetchInfoType } from './systemStore.d'
+import { SystemStoreType, UserInfoType, FetchInfoType, WorkspaceType } from './systemStore.d'
 import { setLocalStorage, getLocalStorage } from '@/utils'
 import { StorageEnum } from '@/enums/storageEnum'
 
@@ -19,7 +19,9 @@ export const useSystemStore = defineStore({
     },
     fetchInfo: {
       OSSUrl: undefined
-    }
+    },
+    workspaces: [],
+    currentWorkspaceId: undefined
   },
   getters: {
     getUserInfo(): UserInfoType {
@@ -27,6 +29,12 @@ export const useSystemStore = defineStore({
     },
     getFetchInfo(): FetchInfoType {
       return this.fetchInfo
+    },
+    getWorkspaces(): WorkspaceType[] | undefined {
+      return this.workspaces
+    },
+    getCurrentWorkspaceId(): string | undefined {
+      return this.currentWorkspaceId
     },
   },
   actions: {

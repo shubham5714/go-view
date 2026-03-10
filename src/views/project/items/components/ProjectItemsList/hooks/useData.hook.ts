@@ -1,8 +1,9 @@
-import { ref, reactive } from 'vue'
+import { ref, reactive, watch } from 'vue'
 import { goDialog, httpErrorHandle } from '@/utils'
 import { DialogEnum } from '@/enums/pluginEnum'
 import { projectListApi, deleteProjectApi, changeProjectReleaseApi } from '@/api/path'
 import { Chartype, ChartList } from '../../../index.d'
+import { useSystemStore } from '@/store/modules/systemStore/systemStore'
 import { ResultEnum } from '@/enums/httpEnum'
 
 // 数据初始化
@@ -20,12 +21,21 @@ export const useDataListInit = () => {
 
   const list = ref<ChartList>([])
 
+  const systemStore = useSystemStore()
+
   // 数据请求
   const fetchList = async () => {
     loading.value = true
+    const workspaceId = (systemStore as any).currentWorkspaceId
+    if (!workspaceId) {
+      list.value = []
+      loading.value = false
+      return
+    }
     const res = await projectListApi({
       page: paginat.page,
-      limit: paginat.limit
+      limit: paginat.limit,
+      workspaceId
     })
     if (res && res.data) {
       const { count } = res as any // 这里的count与data平级，不在Response结构中
@@ -110,6 +120,14 @@ export const useDataListInit = () => {
 
   // 立即请求
   fetchList()
+
+  // 当切换工作空间时，刷新项目列表
+  watch(
+    () => (systemStore as any).currentWorkspaceId,
+    () => {
+      fetchList()
+    }
+  )
 
   return {
     loading,

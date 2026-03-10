@@ -110,7 +110,7 @@ import { PageEnum } from '@/enums/pageEnum'
 import { StorageEnum } from '@/enums/storageEnum'
 import { icon } from '@/plugins'
 import { routerTurnByName } from '@/utils'
-import { loginApi } from '@/api/path'
+import { loginApi, fetchWorkspacesApi } from '@/api/path'
 
 const { PersonOutlineIcon, LockClosedOutlineIcon } = icon.ionicons5
 
@@ -193,7 +193,17 @@ const handleSubmit = async (e: Event) => {
           [SystemStoreUserInfoEnum.NICK_NAME]: nickname,
           t
         })
-        
+
+        // 拉取并设置工作空间
+        const wsRes = await fetchWorkspacesApi()
+        if (wsRes && wsRes.data) {
+          ;(systemStore as any).setItem('workspaces', wsRes.data)
+          // default select first workspace if none selected
+          if (!(systemStore as any).currentWorkspaceId && wsRes.data.length > 0) {
+            ;(systemStore as any).setItem('currentWorkspaceId', wsRes.data[0].id)
+          }
+        }
+
         window['$message'].success(t('login.login_success'))
         routerTurnByName(PageEnum.BASE_HOME_NAME, true)
       }

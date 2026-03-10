@@ -41,6 +41,7 @@ import { PageEnum, ChartEnum } from '@/enums/pageEnum'
 import { ResultEnum } from '@/enums/httpEnum'
 import { fetchPathByName, routerTurnByPath, renderLang, getUUID } from '@/utils'
 import { createProjectApi } from '@/api/path'
+import { useSystemStore } from '@/store/modules/systemStore/systemStore'
 
 const { FishIcon, CloseIcon } = icon.ionicons5
 const { StoreIcon, ObjectStorageIcon } = icon.carbon
@@ -50,6 +51,8 @@ const emit = defineEmits(['close'])
 const props = defineProps({
   show: Boolean
 })
+
+const systemStore = useSystemStore()
 
 const typeList = shallowRef([
   {
@@ -94,6 +97,8 @@ const btnHandle = async (key: string) => {
           remarks: null,
           // 图片地址
           indexImage: null,
+          // 工作空间
+          workspaceId: (systemStore as any).currentWorkspaceId
         })
         if(res && res.code === ResultEnum.SUCCESS) {
           window['$message'].success(window['$t']('project.create_success'))

@@ -15,6 +15,12 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import cn.com.v2.common.base.BaseController;
 import cn.com.v2.common.domain.AjaxResult;
 import cn.com.v2.model.SysUser;
+import cn.com.v2.model.Workspace;
+import cn.com.v2.model.WorkspaceMembership;
+import cn.com.v2.model.Account;
+import cn.com.v2.service.IAccountService;
+import cn.com.v2.service.IWorkspaceMembershipService;
+import cn.com.v2.service.IWorkspaceService;
 import cn.com.v2.service.ISysUserService;
 import cn.com.v2.util.SaTokenUtil;
 import cn.dev33.satoken.stp.StpUtil;
@@ -27,6 +33,12 @@ import io.swagger.annotations.ApiOperation;
 public class ApiController  extends BaseController {
 	@Autowired
 	private ISysUserService iSysUserService;
+	@Autowired
+	private IAccountService iAccountService;
+	@Autowired
+	private IWorkspaceService iWorkspaceService;
+	@Autowired
+	private IWorkspaceMembershipService iWorkspaceMembershipService;
 
 	@ApiOperation(value = "登陆", notes = "登陆")
 	@PostMapping("/login")
@@ -46,6 +58,28 @@ public class ApiController  extends BaseController {
 				if (sysUser != null) {
 					StpUtil.login(sysUser.getId());
 					SaTokenUtil.setUser(sysUser);
+
+					// ensure account and default workspace exist
+					Account account = iAccountService.getOrCreateAccountForUser(sysUser.getId());
+					Integer workspaceCount = iWorkspaceService.lambdaQuery()
+							.eq(Workspace::getAccountId, account.getId())
+							.count();
+					if (workspaceCount == 0) {
+						Workspace workspace = new Workspace();
+						workspace.setAccountId(account.getId());
+						workspace.setName("Default workspace");
+						workspace.setStatus("ACTIVE");
+						workspace.setCreatedTime(cn.hutool.core.date.DateUtil.now());
+						iWorkspaceService.save(workspace);
+
+						WorkspaceMembership membership = new WorkspaceMembership();
+						membership.setWorkspaceId(workspace.getId());
+						membership.setUserId(sysUser.getId());
+						membership.setRole("OWNER");
+						membership.setCreatedTime(cn.hutool.core.date.DateUtil.now());
+						iWorkspaceMembershipService.save(membership);
+					}
+
 					Map<String, Object> map = new HashMap<String, Object>();
 					map.put("userinfo", sysUser);
 					map.put("token", StpUtil.getTokenInfo());
@@ -85,3 +119,4 @@ public class ApiController  extends BaseController {
 	}
 
 }
+

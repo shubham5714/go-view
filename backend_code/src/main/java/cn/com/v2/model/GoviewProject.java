@@ -34,6 +34,11 @@ public class GoviewProject implements Serializable {
     @TableField(fill = FieldFill.INSERT)
     private String createTime;
 
+    /**
+     * Owning workspace id.
+     */
+    private String workspaceId;
+
     private String createUserId;
 
     private Integer isDelete;

@@ -26,6 +26,8 @@ import cn.com.v2.model.vo.SysFileVo;
 import cn.com.v2.service.IGoviewProjectDataService;
 import cn.com.v2.service.IGoviewProjectService;
 import cn.com.v2.service.ISysFileService;
+import cn.com.v2.service.ISubscriptionService;
+import cn.com.v2.service.IWorkspaceMembershipService;
 import cn.com.v2.util.ConvertUtil;
 import cn.com.v2.util.SaTokenUtil;
 import cn.com.v2.util.SnowflakeIdWorker;
@@ -61,15 +63,21 @@ public class GoviewProjectController  extends BaseController{
 	private IGoviewProjectService iGoviewProjectService;
 	@Autowired
 	private IGoviewProjectDataService iGoviewProjectDataService;
+	@Autowired
+	private IWorkspaceMembershipService iWorkspaceMembershipService;
+	@Autowired
+	private ISubscriptionService iSubscriptionService;
 	
 	
 	@ApiOperation(value = "分页跳转", notes = "分页跳转")
 	@GetMapping("/list")
 	@ResponseBody
-	public ResultTable list(Tablepar tablepar){
+	public ResultTable list(Tablepar tablepar, String workspaceId){
+		String userId = SaTokenUtil.getUserId();
+		iWorkspaceMembershipService.assertMember(workspaceId, userId);
 		Page<GoviewProject> page= new Page<GoviewProject>(tablepar.getPage(), tablepar.getLimit());
 		LambdaQueryWrapper<GoviewProject> queryWrapper = new LambdaQueryWrapper<GoviewProject>()
-				.eq(GoviewProject::getCreateUserId, SaTokenUtil.getUserId());
+				.eq(GoviewProject::getWorkspaceId, workspaceId);
 		IPage<GoviewProject> iPages=iGoviewProjectService.page(page, queryWrapper);
 		ResultTable resultTable=new ResultTable();
 		resultTable.setData(iPages.getRecords());
@@ -90,9 +98,12 @@ public class GoviewProjectController  extends BaseController{
 	@PostMapping("/create")
 	@ResponseBody
 	public AjaxResult add(@RequestBody GoviewProject goviewProject){
+		String userId = SaTokenUtil.getUserId();
+		iWorkspaceMembershipService.assertMember(goviewProject.getWorkspaceId(), userId);
+		iSubscriptionService.assertCanCreateProject(goviewProject.getWorkspaceId());
 		goviewProject.setCreateTime(DateUtil.now());
 		goviewProject.setState(-1);
-		goviewProject.setCreateUserId(SaTokenUtil.getUserId());
+		goviewProject.setCreateUserId(userId);
 		boolean b=iGoviewProjectService.save(goviewProject);
 		if(b){
 			return successData(200, goviewProject).put("msg", "创建成功");
@@ -113,6 +124,13 @@ public class GoviewProjectController  extends BaseController{
 	@ResponseBody
 	public AjaxResult remove(String ids){
 		List<String> lista=ConvertUtil.toListStrArray(ids);
+		String userId = SaTokenUtil.getUserId();
+		for (String id : lista) {
+			GoviewProject project = iGoviewProjectService.getById(id);
+			if (project != null) {
+				iWorkspaceMembershipService.assertRoleAtLeast(project.getWorkspaceId(), userId, "ADMIN");
+			}
+		}
 		Boolean b=iGoviewProjectService.removeByIds(lista);
 		if(b){
 			return success();
@@ -126,6 +144,10 @@ public class GoviewProjectController  extends BaseController{
     @ResponseBody
     public AjaxResult editSave(@RequestBody GoviewProject goviewProject)
     {
+		GoviewProject existing = iGoviewProjectService.getById(goviewProject.getId());
+		if(existing != null){
+			iWorkspaceMembershipService.assertRoleAtLeast(existing.getWorkspaceId(), SaTokenUtil.getUserId(), "EDITOR");
+		}
 		Boolean b= iGoviewProjectService.updateById(goviewProject);
         if(b){
         	return success();
@@ -139,7 +161,10 @@ public class GoviewProjectController  extends BaseController{
     @ResponseBody
     public AjaxResult rename(@RequestBody GoviewProject goviewProject)
     {
-		
+		GoviewProject existing = iGoviewProjectService.getById(goviewProject.getId());
+		if(existing != null){
+			iWorkspaceMembershipService.assertRoleAtLeast(existing.getWorkspaceId(), SaTokenUtil.getUserId(), "EDITOR");
+		}
 		LambdaUpdateWrapper<GoviewProject> updateWrapper=new LambdaUpdateWrapper<GoviewProject>();
 		updateWrapper.eq(GoviewProject::getId, goviewProject.getId());
 		updateWrapper.set(GoviewProject::getProjectName, goviewProject.getProjectName());
@@ -156,7 +181,10 @@ public class GoviewProjectController  extends BaseController{
 	@ResponseBody
     public AjaxResult updateVisible(@RequestBody GoviewProject goviewProject){
     	if(goviewProject.getState()==-1||goviewProject.getState()==1) {
-    	
+    		GoviewProject existing = iGoviewProjectService.getById(goviewProject.getId());
+    		if(existing != null){
+    			iWorkspaceMembershipService.assertRoleAtLeast(existing.getWorkspaceId(), SaTokenUtil.getUserId(), "EDITOR");
+    		}
     		LambdaUpdateWrapper<GoviewProject> updateWrapper=new LambdaUpdateWrapper<GoviewProject>();
     		updateWrapper.eq(GoviewProject::getId, goviewProject.getId());
     		updateWrapper.set(GoviewProject::getState, goviewProject.getState());
@@ -176,6 +204,9 @@ public class GoviewProjectController  extends BaseController{
     public AjaxResult getData(String projectId, ModelMap map)
     {
 		GoviewProject goviewProject= iGoviewProjectService.getById(projectId);
+		if(goviewProject != null){
+			iWorkspaceMembershipService.assertMember(goviewProject.getWorkspaceId(), SaTokenUtil.getUserId());
+		}
 		
 		GoviewProjectData blogText=iGoviewProjectDataService.getProjectid(projectId);
 		if(blogText!=null) {
@@ -199,6 +230,7 @@ public class GoviewProjectController  extends BaseController{
 		if(goviewProject==null) {
 			return error("没有该项目ID");
 		}
+		iWorkspaceMembershipService.assertRoleAtLeast(goviewProject.getWorkspaceId(), SaTokenUtil.getUserId(), "EDITOR");
 		GoviewProjectData goviewProjectData= iGoviewProjectDataService.getOne(new LambdaQueryWrapper<GoviewProjectData>().eq(GoviewProjectData::getProjectId, goviewProject.getId()));
 		if(goviewProjectData!=null) {
 			 data.setId(goviewProjectData.getId());

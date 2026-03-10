@@ -5,7 +5,11 @@
         <project-layout-sider></project-layout-sider>
       </n-space>
       <n-layout>
-        <layout-header-pro></layout-header-pro>
+        <layout-header-pro>
+          <template #left>
+            <WorkspaceHeaderControls />
+          </template>
+        </layout-header-pro>
         <n-layout
           id="go-project-content-top"
           class="content-top"
@@ -27,6 +31,7 @@
 import { ProjectLayoutSider } from './layout/components/ProjectLayoutSider'
 import { LayoutHeaderPro } from '@/layout/components/LayoutHeaderPro'
 import { LayoutTransitionMain } from '@/layout/components/LayoutTransitionMain/index'
+import WorkspaceHeaderControls from './layout/components/WorkspaceHeaderControls/index.vue'
 </script>
 
 <style lang="scss" scoped>

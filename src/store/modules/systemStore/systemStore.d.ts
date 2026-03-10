@@ -18,6 +18,14 @@ export interface FetchInfoType {
   OSSUrl?: string,
 }
 
+export interface WorkspaceType {
+  id: string
+  accountId: string
+  name: string
+  status: string
+  createdTime: string
+}
+
 export enum SystemStoreEnum {
   // 用户
   USER_INFO = 'userInfo',
@@ -28,4 +36,6 @@ export enum SystemStoreEnum {
 export interface SystemStoreType {
   [SystemStoreEnum.USER_INFO]: UserInfoType
   [SystemStoreEnum.FETCH_INFO]: FetchInfoType
+  workspaces?: WorkspaceType[]
+  currentWorkspaceId?: string
 }
