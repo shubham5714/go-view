@@ -6,10 +6,10 @@ import designColor from './designColor.json'
 export const lang = LangEnum.EN
 
 // 水印文字
-export const watermarkText = "GoView 低代码平台"
+export const watermarkText = "GoView Low-Code Platform"
 
 // 分组名称
-export const groupTitle = "分组"
+export const groupTitle = "Group"
 
 // 主题配置
 export const theme = {

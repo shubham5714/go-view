@@ -4,6 +4,6 @@ export enum ChatCategoryEnum {
 }
 
 export enum ChatCategoryEnumName {
-  PRIVATE = '私有图',
-  SHARE = '共享图'
+  PRIVATE = 'Private',
+  SHARE = 'Share'
 }

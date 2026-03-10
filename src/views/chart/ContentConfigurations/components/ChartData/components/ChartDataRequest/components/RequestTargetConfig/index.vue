@@ -8,7 +8,7 @@
     style="padding-right: 25px"
   >
     <template #name>
-      地址
+      URL
       <n-tooltip trigger="hover" v-if="isDev()">
         <template #trigger>
           <n-icon size="21" :depth="3">
@@ -16,17 +16,17 @@
           </n-icon>
         </template>
         <ul class="go-pl-0">
-          开发环境使用 mock 数据，请输入
+          Dev: use mock. Enter
           <li v-for="item in apiList" :key="item.value">
             <n-text type="info"> {{ item.value }} </n-text>
           </li>
         </ul>
       </n-tooltip>
     </template>
-    <setting-item name="请求方式 & URL 地址">
+    <setting-item name="Method & URL">
       <n-input-group>
         <n-select class="select-type-options" v-model:value="requestHttpType" :options="selectTypeOptions" />
-        <n-input v-model:value.trim="requestUrl" :min="1" placeholder="请输入地址（去除前置URL）">
+        <n-input v-model:value.trim="requestUrl" :min="1" placeholder="Path (without base URL)">
           <template #prefix>
             <n-text>{{ requestOriginUrl }}</n-text>
             <n-divider vertical />
@@ -35,14 +35,14 @@
       </n-input-group>
       <!-- 组件url -->
     </setting-item>
-    <setting-item name="更新间隔，为 0 只会初始化">
+    <setting-item name="Interval (0 = init only)">
       <n-input-group>
         <n-input-number
           v-model:value.trim="requestInterval"
           class="select-time-number"
           min="0"
           :show-button="false"
-          placeholder="默认使用全局数据"
+          placeholder="Use global default"
         >
         </n-input-number>
         <!-- 单位 -->

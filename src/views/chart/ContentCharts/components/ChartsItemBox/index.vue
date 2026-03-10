@@ -41,7 +41,7 @@
                 <TrashIcon />
               </n-icon>
             </template>
-            <span>删除</span>
+            <span>Delete</span>
           </n-button>
         </div>
       </div>
@@ -132,7 +132,7 @@ const dblclickHandle = async (item: ConfigType) => {
     loadingFinish()
   } catch (error) {
     loadingError()
-    window['$message'].warning(`图表正在研发中, 敬请期待...`)
+    window['$message'].warning(`Chart is in development, stay tuned...`)
   }
 }
 
@@ -143,7 +143,7 @@ const clickHandle = (item: ConfigType) => {
 
 const deleteHandle = (item: ConfigType, index: number) => {
   goDialog({
-    message: '是否删除此图片？',
+    message: 'Delete this image?',
     transformOrigin: 'center',
     onPositiveCallback: () => {
       const packagesStore = usePackagesStore()

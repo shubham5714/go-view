@@ -1,5 +1,5 @@
 <template>
-  <n-collapse-item title="基础事件配置" name="2">
+  <n-collapse-item title="Basic Events" name="2">
     <template #header-extra>
       <n-button type="primary" tertiary size="small" @click.stop="showModal = true">
         <template #icon>
@@ -31,7 +31,7 @@
     <n-card :bordered="false" role="dialog" size="small" aria-modal="true" style="width: 1200px; height: 700px">
       <template #header>
         <n-space>
-          <n-text>基础事件编辑器</n-text>
+          <n-text>Basic Event Editor</n-text>
         </n-space>
       </template>
 
@@ -41,7 +41,7 @@
           <n-tabs v-model:value="editTab" type="card" tab-style="min-width: 100px;">
             <!-- 提示 -->
             <template #suffix>
-              <n-text class="tab-tip" type="warning">提示: ECharts 组件会拦截鼠标事件</n-text>
+              <n-text class="tab-tip" type="warning">Note: ECharts components may intercept mouse events</n-text>
             </template>
             <n-tab-pane
               v-for="(eventName, index) in BaseEvent"
@@ -92,7 +92,7 @@
               <n-scrollbar trigger="none" style="max-height: 505px">
                 <n-collapse class="go-px-3" arrow-placement="right" :default-expanded-names="[1, 2]">
                   <n-collapse-item title="mouseEvent" :name="1">
-                    <n-text depth="3">鼠标事件对象</n-text>
+                    <n-text depth="3">Mouse event object</n-text>
                   </n-collapse-item>
                 </n-collapse>
               </n-scrollbar>
@@ -183,7 +183,7 @@ const closeEvents = () => {
 // 新增事件
 const saveEvents = () => {
   if (validEvents().errorFn) {
-    window['$message'].error('事件函数错误，无法进行保存')
+    window['$message'].error('Event handler error. Cannot save.')
     return
   }
   if (Object.values(baseEvent.value).join('').trim() === '') {

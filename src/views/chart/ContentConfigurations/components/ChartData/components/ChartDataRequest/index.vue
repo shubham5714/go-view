@@ -28,8 +28,8 @@
             </n-tag>
           </div>
           <div>
-            <n-button class="go-mr-3" @click="closeHandle">取消</n-button>
-            <n-button type="primary" @click="closeAndSendHandle"> {{ saveBtnText || '保存 & 发送请求' }}</n-button>
+            <n-button class="go-mr-3" @click="closeHandle">Cancel</n-button>
+            <n-button type="primary" @click="closeAndSendHandle"> {{ saveBtnText || 'Save & Send' }}</n-button>
           </div>
         </n-space>
       </template>
@@ -61,8 +61,8 @@ const { chartConfig } = toRefs(props.targetData as CreateComponentType)
 const { requestContentType } = toRefs((props.targetData as CreateComponentType).request)
 const modelShowRef = ref(false)
 const requestContentTypeObj = {
-  [RequestContentTypeEnum.DEFAULT]: '普通请求',
-  [RequestContentTypeEnum.SQL]: 'SQL 请求'
+  [RequestContentTypeEnum.DEFAULT]: 'Default',
+  [RequestContentTypeEnum.SQL]: 'SQL'
 }
 
 watch(

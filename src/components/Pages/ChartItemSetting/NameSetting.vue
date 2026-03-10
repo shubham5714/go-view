@@ -1,10 +1,10 @@
 <template>
-  <setting-item-box name="名称" :alone="true">
+  <setting-item-box name="Name" :alone="true">
     <n-input
       type="text"
       maxlength="12"
       minlength="1"
-      placeholder="请输入图表名称"
+      placeholder="Enter chart name"
       size="small"
       clearable
       show-count
@@ -35,7 +35,7 @@ const handleFocus = () => {
 
 const handleBlur = () => {
   if(!props.chartConfig.title.length) {
-    window['$message'].warning('请输入至少一个字符!')
+    window['$message'].warning('Enter at least one character!')
     props.chartConfig.title = valueCatch 
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="go-canvas-setting">
     <n-form inline :label-width="45" size="small" label-placement="left">
-      <n-form-item label="宽度">
+      <n-form-item label="Width">
         <!-- 尺寸选择 -->
         <n-input-number
           size="small"
@@ -11,7 +11,7 @@
           @update:value="changeSizeHandle"
         ></n-input-number>
       </n-form-item>
-      <n-form-item label="高度">
+      <n-form-item label="Height">
         <n-input-number
           size="small"
           v-model:value="canvasConfig.height"
@@ -30,11 +30,11 @@
         :onBeforeUpload="beforeUploadHandle"
       >
         <n-upload-dragger>
-          <img v-if="canvasConfig.backgroundImage" class="upload-show" :src="canvasConfig.backgroundImage" alt="背景" />
+          <img v-if="canvasConfig.backgroundImage" class="upload-show" :src="canvasConfig.backgroundImage" alt="Background" />
           <div class="upload-img" v-show="!canvasConfig.backgroundImage">
             <img src="@/assets/images/canvas/noImage.png" />
             <n-text class="upload-desc" depth="3">
-              背景图需小于 {{ backgroundImageSize }}M ，格式为 png/jpg/gif 的文件
+              Background image must be under {{ backgroundImageSize }}M, format: png/jpg/gif
             </n-text>
           </div>
         </n-upload-dragger>
@@ -236,11 +236,11 @@ const beforeUploadHandle = async ({ file }) => {
   const size = file.file.size
 
   if (size > 1024 * 1024 * backgroundImageSize) {
-    window['$message'].warning(`图片超出 ${backgroundImageSize}M 限制，请重新上传！`)
+    window['$message'].warning(`Image exceeds ${backgroundImageSize}M limit. Please upload again.`)
     return false
   }
   if (type !== FileTypeEnum.PNG && type !== FileTypeEnum.JPEG && type !== FileTypeEnum.GIF) {
-    window['$message'].warning('文件格式不符合，请重新上传！')
+    window['$message'].warning('Invalid file format. Please upload again.')
     return false
   }
   return true
@@ -285,7 +285,7 @@ const customRequest = (options: UploadCustomRequestOptions) => {
       })
       let uploadParams = new FormData()
       uploadParams.append('object', newNameFile)
-      window['$message'].warn('该上传接口与项目预览图为同一个，请自行在后端新增一个上传背景图接口')
+      window['$message'].warn('This upload endpoint is shared with project preview. Add a dedicated background upload API on the backend if needed.')
       const uploadRes = await uploadFile(uploadParams)
 
       if (uploadRes && uploadRes.code === ResultEnum.SUCCESS) {
@@ -303,9 +303,9 @@ const customRequest = (options: UploadCustomRequestOptions) => {
         chartEditStore.setEditCanvasConfig(EditCanvasConfigEnum.SELECT_COLOR, false)
         return
       }
-      window['$message'].error('添加图片失败，请稍后重试！')
+      window['$message'].error('Failed to add image. Please try again later.')
     } else {
-      window['$message'].error('添加图片失败，请稍后重试！')
+      window['$message'].error('Failed to add image. Please try again later.')
     }
   })
 }

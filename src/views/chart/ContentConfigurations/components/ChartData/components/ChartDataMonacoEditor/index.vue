@@ -58,20 +58,20 @@
             <n-space :size="15" vertical>
               <div class="editor-data-show">
                 <n-space>
-                  <n-text depth="3">默认过滤数据(data)：</n-text>
-                  <n-code :code="toString(sourceData?.data) || '暂无'" language="json" :word-wrap="true"></n-code>
+                  <n-text depth="3">Filter input (data):</n-text>
+                  <n-code :code="toString(sourceData?.data) || '—'" language="json" :word-wrap="true"></n-code>
                 </n-space>
               </div>
               <div class="editor-data-show">
                 <n-space>
-                  <n-text depth="3">接口返回数据(res)：</n-text>
-                  <n-code :code="toString(sourceData) || '暂无'" language="json" :word-wrap="true"></n-code>
+                  <n-text depth="3">API response (res):</n-text>
+                  <n-code :code="toString(sourceData) || '—'" language="json" :word-wrap="true"></n-code>
                 </n-space>
               </div>
               <div class="editor-data-show">
                 <n-space>
-                  <n-text depth="3">过滤器结果：</n-text>
-                  <n-code :code="filterRes || '暂无'" language="json" :word-wrap="true"></n-code>
+                  <n-text depth="3">Filter result:</n-text>
+                  <n-code :code="filterRes || '—'" language="json" :word-wrap="true"></n-code>
                 </n-space>
               </div>
             </n-space>
@@ -85,14 +85,14 @@
               <template #icon>
                 <n-icon :component="DocumentTextIcon" />
               </template>
-              规则
+              Rules
             </n-tag>
-            <n-text class="go-ml-2" depth="2">过滤器默认处理接口返回值的「data」字段</n-text>
+            <n-text class="go-ml-2" depth="2">Filter processes the response "data" field by default</n-text>
           </div>
 
           <n-space>
-            <n-button size="medium" @click="closeFilter">取消</n-button>
-            <n-button size="medium" type="primary" @click="saveFilter">保存</n-button>
+            <n-button size="medium" @click="closeFilter">Cancel</n-button>
+            <n-button size="medium" type="primary" @click="saveFilter">Save</n-button>
           </n-space>
         </n-space>
       </template>
@@ -135,7 +135,7 @@ const fetchTargetData = async () => {
     window['$message'].warning('没有拿到返回值，请检查接口！')
   } catch (error) {
     console.error(error);
-    window['$message'].warning('数据异常，请检查参数！')
+    window['$message'].warning('Data error. Check parameters.')
   }
 }
 
@@ -163,7 +163,7 @@ const addFilter = () => {
 // 删除过滤器
 const delFilter = () => {
   goDialog({
-    message: '是否删除过滤器',
+    message: 'Delete this filter?',
     onPositiveCallback: () => {
       targetData.value.filter = undefined
     }

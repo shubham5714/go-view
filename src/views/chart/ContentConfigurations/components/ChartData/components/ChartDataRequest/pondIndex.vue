@@ -81,12 +81,12 @@ const closeHandle = () => {
 
 const closeAndSendHandle = () => {
   if (!props.targetDataRequest?.dataPondName) {
-    window.$message.warning('请在左下角输入名称！')
+    window.$message.warning('Please enter a name in the bottom left!')
     inputInstRef.value?.focus()
     return
   }
   goDialog({
-    message: '保存内容将同步修改所有使用此接口的组件, 是否继续?',
+    message: 'Saving will update all components using this API. Continue?',
     isMaskClosable: true,
     transformOrigin: 'center',
     onPositiveCallback: () => {

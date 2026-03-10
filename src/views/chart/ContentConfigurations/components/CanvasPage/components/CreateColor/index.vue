@@ -12,7 +12,7 @@
           ></create-color-render>
           <!-- 无数据 -->
           <div v-else class="no-data go-flex-center">
-            <img :src="noData" alt="暂无数据" />
+            <img :src="noData" alt="No data" />
             <n-text :depth="3">No custom color selected</n-text>
           </div>
         </div>
@@ -126,7 +126,7 @@ type ColorType = {
 // 默认颜色组
 const defaultColor: ColorType = {
   id: getUUID(),
-  name: '未命名',
+  name: 'Untitled',
   color: ['#6ae5bb', '#69e3de', '#5ac5ee', '#5ac4ee', '#4498ec', '#3c7ddf']
 }
 const chartEditStore = useChartEditStore()
@@ -164,7 +164,7 @@ const selectHandle = (item: ColorType) => {
   if (item.id === selectColorId.value) return
   if (updateColor.value !== undefined) {
     goDialog({
-      message: '当前有变动未保存，是否直接放弃修改？',
+      message: 'Unsaved changes. Discard them?',
       onPositiveCallback: () => {
         updateColor.value = undefined
         selectColor.selectInfo = item
@@ -187,7 +187,7 @@ const createColor = () => {
   }
   if (updateColor.value !== undefined) {
     goDialog({
-      message: '当前有变动未保存，是否直接放弃修改？',
+      message: 'Unsaved changes. Discard them?',
       onPositiveCallback: () => {
         updateColor.value = undefined
         positiveHandle()
@@ -214,7 +214,7 @@ const deleteHandle = (index: number) => {
   }
   if (updateColor.value !== undefined) {
     goDialog({
-      message: '当前有变动未保存，是否直接放弃修改？',
+      message: 'Unsaved changes. Discard them?',
       onPositiveCallback: () => {
         updateColor.value = undefined
         positiveHandle()
@@ -222,7 +222,7 @@ const deleteHandle = (index: number) => {
     })
   } else {
     goDialog({
-      message: `是否删除此颜色？`,
+      message: `Delete this color?`,
       onPositiveCallback: () => {
         positiveHandle()
       }
@@ -240,8 +240,8 @@ const saveHandle = (onMessage = true) => {
   if (!updateColor.value) return
   const index = colorList.findIndex(item => item.id === updateColor.value?.id)
   if (index !== -1) {
-    onMessage && window.$message.success('数据应用成功！')
-    const updateColorPrefix = cloneDeep({ ...updateColor.value, name: updateColor.value.name || '未定义' })
+    onMessage && window.$message.success('Data applied successfully!')
+    const updateColorPrefix = cloneDeep({ ...updateColor.value, name: updateColor.value.name || 'Untitled' })
     colorList.splice(index, 1, updateColorPrefix)
     updateColor.value = undefined
     const selectTheme = chartEditStore.getEditCanvasConfig.chartThemeColor
@@ -253,7 +253,7 @@ const saveHandle = (onMessage = true) => {
       chartEditStore.setEditCanvasConfig(EditCanvasConfigEnum.CHART_THEME_COLOR, selectTheme)
     })
   } else {
-    window.$message.error('数据应用失败！')
+    window.$message.error('Failed to apply data!')
   }
 }
 
@@ -267,7 +267,7 @@ const closeHandle = () => {
 
   if (updateColor.value !== undefined) {
     goDialog({
-      message: '当前有变动未保存，是否直接放弃修改？',
+      message: 'Unsaved changes. Discard them?',
       onPositiveCallback: () => {
         positiveHandle()
       }

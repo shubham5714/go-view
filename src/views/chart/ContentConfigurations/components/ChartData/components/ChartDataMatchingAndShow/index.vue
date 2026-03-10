@@ -116,7 +116,7 @@
                   <help-outline-icon></help-outline-icon>
                 </n-icon>
               </template>
-              <span>点击【下载】查看完整数据</span>
+              <span>Click [Download] to view full data</span>
             </n-tooltip>
           </div>
         </n-space>
@@ -129,7 +129,7 @@
   <!-- 编辑数据 -->
   <n-modal
     class="go-online-edit go-background-filter"
-    :title="'组件数据在线编辑 — ' + targetData.chartConfig.title"
+    :title="'Component Data Editor — ' + targetData.chartConfig.title"
     preset="card"
     size="small"
     style="width: 800px"
@@ -268,7 +268,7 @@ const dimensionsAndSourceHandle = () => {
             result: DataResultEnum.NULL
           }
         : {
-            field: `数据项-${index}`,
+            field: `Data item-${index}`,
             mapping: dimensionsItem,
             result: matchingHandle(dimensionsItem)
           }
@@ -323,7 +323,7 @@ const saveOlineEditHandle = () => {
     targetData.value.option.dataset = newData
   }
   goDialog({
-    message: '是否保存编辑后的数据？',
+    message: 'Save edited data?',
     onPositiveCallback: () => {
       try {
         let jsonData = editorCode.value
@@ -332,7 +332,7 @@ const saveOlineEditHandle = () => {
         }
         if (typeof jsonData !== typeof source.value) {
           goDialog({
-            message: '当前数据类型与原类型不相同, 是否强制应用数据?',
+            message: 'Data type differs from original. Apply anyway?',
             onPositiveCallback: () => {
               try {
                 setDataHandle(jsonData)
@@ -387,7 +387,7 @@ watch(
       fieldList.value = []
     } else {
       noData.value = true
-      source.value = '此组件无数据源'
+      source.value = 'This component has no data source'
     }
     if (isArray(newData)) {
       dimensionsAndSource.value = null

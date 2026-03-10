@@ -7,9 +7,9 @@ export enum ChatCategoryEnum {
 }
 
 export enum ChatCategoryEnumName {
-  BORDER = '边框',
-  DECORATE = '装饰',
-  FlowChart = '流程',
-  THREE = '三维',
-  MORE = '更多'
+  BORDER = 'Border',
+  DECORATE = 'Decorate',
+  FlowChart = 'Flow',
+  THREE = '3D',
+  MORE = 'More'
 }

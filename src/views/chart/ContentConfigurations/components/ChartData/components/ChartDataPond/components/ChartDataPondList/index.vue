@@ -7,7 +7,7 @@
     <div class="pond-item-box">
       <!-- 新增 -->
       <n-button class="create-btn go-py-4" ghost @click="createPond">
-        <span> 创建 </span>
+        <span> Create </span>
         <template #icon>
           <n-icon>
             <DuplicateOutlineIcon></DuplicateOutlineIcon>
@@ -17,8 +17,8 @@
       <n-divider style="margin: 10px 0"></n-divider>
       <n-space v-if="!requestDataPond.length" justify="center">
         <n-text class="not-layer-text" :depth="3">
-          暂无数据内容，
-          <n-a @click="createPond">立即创建</n-a>
+          No data.
+          <n-a @click="createPond">Create now</n-a>
         </n-text>
       </n-space>
       <n-scrollbar style="max-height: 490px">
@@ -33,18 +33,18 @@
             <div class="item-content-body">
               <div>
                 <n-tag class="go-mr-1" :type="item.dataPondId === selectPondId ? 'warning' : ''" :bordered="false">
-                  名称
+                  Name
                 </n-tag>
                 <n-ellipsis style="max-width: 180px">
-                  {{ item.dataPondName || '暂无' }}
+                  {{ item.dataPondName || '—' }}
                 </n-ellipsis>
               </div>
               <div>
                 <n-tag class="go-mr-1" :type="item.dataPondId === selectPondId ? 'warning' : ''" :bordered="false">
-                  地址
+                  URL
                 </n-tag>
                 <n-ellipsis style="max-width: 180px">
-                  {{ item.dataPondRequestConfig.requestUrl || '暂无' }}
+                  {{ item.dataPondRequestConfig.requestUrl || '—' }}
                 </n-ellipsis>
               </div>
             </div>

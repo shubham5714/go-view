@@ -1,6 +1,10 @@
 <template>
   <div>
-    <div class="back-icon" v-if="(enter && levelHistory.length !== 0) || (enter && !isPreview())" @click="backLevel">
+    <div
+      class="back-icon"
+      v-if="chartConfig.option.mapRegion.adcode === 'china' && ((enter && levelHistory.length !== 0) || (enter && !isPreview()))"
+      @click="backLevel"
+    >
       <n-icon :color="backColor" :size="backSize * 1.1">
         <ArrowBackIcon />
       </n-icon>
@@ -11,7 +15,7 @@
           'font-size': `${backSize}px`
         }"
       >
-        返回上级
+        Back
       </span>
     </div>
     <v-chart
@@ -100,6 +104,9 @@ const registerMapInitAsync = async () => {
   const adCode = `${props.chartConfig.option.mapRegion.adcode}`
   if (adCode !== 'china') {
     await getGeojson(adCode)
+    props.chartConfig.option.series.forEach((item: any) => {
+      if (item.type === 'map') item.nameProperty = adCode === 'india' ? 'st_nm' : undefined
+    })
   } else {
     await hainanLandsHandle(props.chartConfig.option.mapRegion.showHainanIsLands)
   }
@@ -115,17 +122,15 @@ const vEchartsSetOption = () => {
 
 // 更新数据处理
 const dataSetHandle = async (dataset: any) => {
+  const isIndia = props.chartConfig.option.mapRegion.adcode === 'india'
   props.chartConfig.option.series.forEach((item: any) => {
-    if (item.type === 'effectScatter' && dataset.point) item.data = dataset.point
-    else if (item.type === 'lines' && dataset.line) {
-      item.data = dataset.line.map((it: any) => {
-        return {
-          ...it,
-          lineStyle: {
-            color: props.chartConfig.option.series[2].lineStyle.normal.color
-          }
-        }
-      })
+    if (item.type === 'effectScatter') {
+      item.data = isIndia ? [] : (dataset.point || [])
+    } else if (item.type === 'lines') {
+      item.data = isIndia ? [] : (dataset.line || []).map((it: any) => ({
+        ...it,
+        lineStyle: { color: props.chartConfig.option.series[2].lineStyle.normal.color }
+      }))
     } else if (item.type === 'map' && dataset.map) item.data = dataset.map
   })
   if (dataset.pieces) props.chartConfig.option.visualMap.pieces = dataset.pieces
@@ -186,8 +191,14 @@ const checkOrMap = async (newData: string) => {
   }
   props.chartConfig.option.geo.map = newData
   props.chartConfig.option.series.forEach((item: any) => {
-    if (item.type === 'map') item.map = newData
+    if (item.type === 'map') {
+      item.map = newData
+      item.nameProperty = newData === 'india' ? 'st_nm' : undefined
+    } else if (newData === 'india' && (item.type === 'effectScatter' || item.type === 'lines')) {
+      item.data = []
+    }
   })
+  if (newData !== 'india') dataSetHandle(props.chartConfig.option.dataset)
   vEchartsSetOption()
 }
 

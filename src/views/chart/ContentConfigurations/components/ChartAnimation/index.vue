@@ -5,7 +5,7 @@
       :disabled="!targetData.styles.animations.length"
       @click="clearAnimation"
     >
-      清除动画
+      Clear animation
     </n-button>
     <collapse-item
       v-for="(item, index) in animations"

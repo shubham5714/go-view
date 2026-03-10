@@ -3,5 +3,5 @@ export enum ChatCategoryEnum {
 }
 
 export enum ChatCategoryEnumName {
-  TABLE = '表格',
+  TABLE = 'Table',
 }

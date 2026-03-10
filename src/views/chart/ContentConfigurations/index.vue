@@ -121,7 +121,7 @@ watch(getDetails, newData => {
 const globalTabList = [
   {
     key: TabsEnum.PAGE_SETTING,
-    title: '页面配置',
+    title: 'Page',
     icon: DesktopOutlineIcon,
     render: CanvasPage
   }
@@ -130,13 +130,13 @@ const globalTabList = [
 const chartsDefaultTabList = [
   {
     key: TabsEnum.CHART_SETTING,
-    title: '定制',
+    title: 'Customize',
     icon: ConstructIcon,
     render: ChartSetting
   },
   {
     key: TabsEnum.CHART_ANIMATION,
-    title: '动画',
+    title: 'Animation',
     icon: LeafIcon,
     render: ChartAnimation
   }
@@ -146,13 +146,13 @@ const chartsTabList = [
   ...chartsDefaultTabList,
   {
     key: TabsEnum.CHART_DATA,
-    title: '数据',
+    title: 'Data',
     icon: FlashIcon,
     render: ChartData
   },
   {
     key: TabsEnum.CHART_EVENT,
-    title: '事件',
+    title: 'Events',
     icon: RocketIcon,
     render: ChartEvent
   }

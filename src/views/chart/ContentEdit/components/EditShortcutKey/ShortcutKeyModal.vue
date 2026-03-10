@@ -3,11 +3,11 @@
     <n-table class="model-content" :bordered="false" :single-line="false">
       <thead>
         <tr>
-          <th>功能</th>
-          <th>Win 快捷键</th>
+          <th>Action</th>
+          <th>Win Shortcut</th>
           <th>
             <n-space justify="space-between">
-              <span> Mac 快捷键 </span>
+              <span> Mac Shortcut </span>
               <n-icon size="20" class="go-cursor-pointer" @click="closeHandle">
                 <close-icon></close-icon>
               </n-icon>
@@ -52,83 +52,83 @@ watch(() => props.modelShow, (newValue) => {
 // 快捷键
 const shortcutKeyOptions = [
   {
-    label: '拖拽画布',
+    label: 'Drag canvas',
     win: `${WinKeyboard.SPACE.toUpperCase()} + 🖱️ `,
     mac: `${MacKeyboard.SPACE.toUpperCase()} + 🖱️ `,
     macSource: true
   },
   {
-    label: '向 上/右/下/左 移动',
+    label: 'Move up/right/down/left',
     win: `${WinKeyboard.CTRL.toUpperCase()} + ↑ 或 → 或 ↓ 或 ←`,
     mac: `${MacKeyboard.CTRL.toUpperCase()} + ↑ `
   },
   {
-    label: '锁定',
+    label: 'Lock',
     win: `${WinKeyboard.CTRL.toUpperCase()} + L `,
     mac: `${MacKeyboard.CTRL.toUpperCase()} + L `
   },
   {
-    label: '解锁',
+    label: 'Unlock',
     win: `${WinKeyboard.CTRL.toUpperCase()} + ${WinKeyboard.SHIFT.toUpperCase()}+ L `,
     mac: `${MacKeyboard.CTRL.toUpperCase()} + ${MacKeyboard.SHIFT.toUpperCase()} + L `
   },
   {
-    label: '展示',
+    label: 'Show',
     win: `${WinKeyboard.CTRL.toUpperCase()} + H `,
     mac: `${MacKeyboard.CTRL.toUpperCase()} + H `
   },
   {
-    label: '隐藏',
+    label: 'Hide',
     win: `${WinKeyboard.CTRL.toUpperCase()} + ${WinKeyboard.SHIFT.toUpperCase()} + H `,
     mac: `${MacKeyboard.CTRL.toUpperCase()} + ${MacKeyboard.SHIFT.toUpperCase()} + H `
   },
   {
-    label: '删除',
+    label: 'Delete',
     win: 'Delete'.toUpperCase(),
     mac: `${MacKeyboard.CTRL.toUpperCase()} + Backspace `
   },
   {
-    label: '复制',
+    label: 'Copy',
     win: `${WinKeyboard.CTRL.toUpperCase()} + C `,
     mac: `${MacKeyboard.CTRL.toUpperCase()} + C `
   },
   {
-    label: '剪切',
+    label: 'Cut',
     win: `${WinKeyboard.CTRL.toUpperCase()} + X `,
     mac: `${MacKeyboard.CTRL.toUpperCase()} + X `
   },
   {
-    label: '粘贴',
+    label: 'Paste',
     win: `${WinKeyboard.CTRL.toUpperCase()} + V `,
     mac: `${MacKeyboard.CTRL.toUpperCase()} + V `
   },
   {
-    label: '后退',
+    label: 'Undo',
     win: `${WinKeyboard.CTRL.toUpperCase()} + Z `,
     mac: `${MacKeyboard.CTRL.toUpperCase()} + Z `
   },
   {
-    label: '前进',
+    label: 'Redo',
     win: `${WinKeyboard.CTRL.toUpperCase()} + ${WinKeyboard.SHIFT.toUpperCase()} + Z `,
     mac: `${MacKeyboard.CTRL.toUpperCase()} + ${MacKeyboard.SHIFT.toUpperCase()} + Z `
   },
   {
-    label: '保存',
+    label: 'Save',
     win: `${WinKeyboard.CTRL.toUpperCase()} + S `,
     mac: `${MacKeyboard.CTRL.toUpperCase()} + S `,
   },
   {
-    label: '多选',
+    label: 'Multi-select',
     win: `${WinKeyboard.CTRL.toUpperCase()} + 🖱️ `,
     mac: `${MacKeyboard.CTRL.toUpperCase()} + 🖱️ `
   },
   {
-    label: '创建分组',
+    label: 'Create group',
     win: `${WinKeyboard.CTRL.toUpperCase()} + G / 🖱️ `,
     mac: `${MacKeyboard.CTRL.toUpperCase()} + G / 🖱️`
   },
   {
-    label: '解除分组',
+    label: 'Ungroup',
     win: `${WinKeyboard.CTRL.toUpperCase()} + ${WinKeyboard.SHIFT.toUpperCase()} + G `,
     mac: `${MacKeyboard.CTRL.toUpperCase()} + ${WinKeyboard.SHIFT.toUpperCase()} + G `
   }

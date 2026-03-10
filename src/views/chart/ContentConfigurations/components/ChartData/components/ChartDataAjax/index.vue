@@ -1,40 +1,40 @@
 <template>
   <div class="go-chart-configurations-data-ajax">
     <n-card class="n-card-shallow">
-      <setting-item-box name="请求配置">
-        <setting-item name="类型">
+      <setting-item-box name="Request config">
+        <setting-item name="Type">
           <n-tag :bordered="false" type="primary" style="border-radius: 5px">
-            {{ targetData.request.requestContentType === RequestContentTypeEnum.DEFAULT ? '普通请求' : 'SQL请求' }}
+            {{ targetData.request.requestContentType === RequestContentTypeEnum.DEFAULT ? 'Default' : 'SQL' }}
           </n-tag>
         </setting-item>
 
-        <setting-item name="方式">
-          <n-input size="small" :placeholder="targetData.request.requestHttpType || '暂无'" :disabled="true"></n-input>
+        <setting-item name="Method">
+          <n-input size="small" :placeholder="targetData.request.requestHttpType || '—'" :disabled="true"></n-input>
         </setting-item>
 
-        <setting-item name="组件间隔">
-          <n-input size="small" :placeholder="`${targetData.request.requestInterval || '暂无'}`" :disabled="true">
+        <setting-item name="Interval">
+          <n-input size="small" :placeholder="`${targetData.request.requestInterval || '—'}`" :disabled="true">
             <template #suffix> {{ SelectHttpTimeNameObj[targetData.request.requestIntervalUnit] }} </template>
           </n-input>
         </setting-item>
 
-        <setting-item name="全局间隔（默认）">
-          <n-input size="small" :placeholder="`${GlobalRequestInterval || '暂无'} `" :disabled="true">
+        <setting-item name="Global interval (default)">
+          <n-input size="small" :placeholder="`${GlobalRequestInterval || '—'} `" :disabled="true">
             <template #suffix> {{ SelectHttpTimeNameObj[GlobalRequestIntervalUnit] }} </template>
           </n-input>
         </setting-item>
       </setting-item-box>
 
-      <setting-item-box name="源地址" :alone="true">
-        <n-input size="small" :placeholder="requestOriginUrl || '暂无'" :disabled="true">
+      <setting-item-box name="Origin URL" :alone="true">
+        <n-input size="small" :placeholder="requestOriginUrl || '—'" :disabled="true">
           <template #prefix>
             <n-icon :component="PulseIcon" />
           </template>
         </n-input>
       </setting-item-box>
 
-      <setting-item-box name="组件地址" :alone="true">
-        <n-input size="small" :placeholder="targetData.request.requestUrl || '暂无'" :disabled="true">
+      <setting-item-box name="Request URL" :alone="true">
+        <n-input size="small" :placeholder="targetData.request.requestUrl || '—'" :disabled="true">
           <template #prefix>
             <n-icon :component="FlashIcon" />
           </template>
@@ -43,21 +43,21 @@
 
       <div class="edit-text" @click="requestModelHandle">
         <div class="go-absolute-center">
-          <n-button type="primary" secondary>编辑配置</n-button>
+          <n-button type="primary" secondary>Edit config</n-button>
         </div>
       </div>
     </n-card>
 
     <setting-item-box :alone="true">
       <template #name>
-        测试
+        Test
         <n-tooltip trigger="hover">
           <template #trigger>
             <n-icon size="21" :depth="3">
               <help-outline-icon></help-outline-icon>
             </n-icon>
           </template>
-          默认赋值给 dataset 字段
+          Assigns to dataset by default
         </n-tooltip>
       </template>
       <n-button type="primary" ghost @click="sendHandle">
@@ -66,7 +66,7 @@
             <flash-icon />
           </n-icon>
         </template>
-        发送请求
+        Send request
       </n-button>
     </setting-item-box>
 
@@ -132,7 +132,7 @@ const sendHandle = async () => {
     if (res) {
       const { data } = res
       if (!data && !targetData.value.filter) {
-        window['$message'].warning('您的数据不符合默认格式，请配置过滤器！')
+        window['$message'].warning('Data format is invalid. Please configure a filter.')
         showMatching.value = true
         return
       }
@@ -140,11 +140,11 @@ const sendHandle = async () => {
       showMatching.value = true
       return
     }
-    window['$message'].warning('没有拿到返回值，请检查接口！')
+    window['$message'].warning('No response. Check the API.')
   } catch (error) {
     console.error(error);
     loading.value = false
-    window['$message'].warning('数据异常，请检查参数！')
+    window['$message'].warning('Data error. Check parameters.')
   }
 }
 

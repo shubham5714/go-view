@@ -8,15 +8,15 @@ export enum DataResultEnum {
 }
 
 export enum TimelineTitleEnum {
-  FILTER = '数据过滤',
-  MAPPING = '数据映射',
-  CONTENT = '数据内容',
+  FILTER = 'Filter',
+  MAPPING = 'Mapping',
+  CONTENT = 'Content',
 }
 
 export enum SelectCreateDataEnum {
-  STATIC = '静态数据',
-  AJAX = '动态请求',
-  Pond = '公共接口',
+  STATIC = 'Static',
+  AJAX = 'Dynamic',
+  Pond = 'Public API',
 }
 
 export interface SelectCreateDataType {

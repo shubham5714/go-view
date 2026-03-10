@@ -2,16 +2,16 @@
   <!-- 选中内容 -->
   <div class="go-chart-data-pond">
     <n-card class="n-card-shallow">
-      <setting-item-box name="请求名称" :alone="true">
-        <n-input size="small" :placeholder="pondData?.dataPondName || '暂无'" :disabled="true">
+      <setting-item-box name="Request name" :alone="true">
+        <n-input size="small" :placeholder="pondData?.dataPondName || '—'" :disabled="true">
           <template #prefix>
             <n-icon :component="FishIcon" />
           </template>
         </n-input>
       </setting-item-box>
 
-      <setting-item-box name="接口地址" :alone="true">
-        <n-input size="small" :placeholder="pondData?.dataPondRequestConfig.requestUrl || '暂无'" :disabled="true">
+      <setting-item-box name="API URL" :alone="true">
+        <n-input size="small" :placeholder="pondData?.dataPondRequestConfig.requestUrl || '—'" :disabled="true">
           <template #prefix>
             <n-icon :component="FlashIcon" />
           </template>
@@ -20,7 +20,7 @@
 
       <div class="edit-text" @click="controlModelHandle">
         <div class="go-absolute-center">
-          <n-button type="primary" secondary>编辑配置</n-button>
+          <n-button type="primary" secondary>Edit config</n-button>
         </div>
       </div>
     </n-card>
@@ -109,7 +109,7 @@ const controlModelHandle = () => {
 // 发送请求
 const sendHandle = async () => {
   if (!targetData.value?.request) {
-    window.$message.warning('请选择一个公共接口！')
+    window.$message.warning('Please select a public API!')
     return
   }
   loading.value = true
@@ -118,7 +118,7 @@ const sendHandle = async () => {
     loading.value = false
     if (res) {
       if (!res?.data && !targetData.value.filter) {
-        window['$message'].warning('您的数据不符合默认格式，请配置过滤器！')
+        window['$message'].warning('Data format is invalid. Please configure a filter.')
         showMatching.value = true
         return
       }
@@ -126,11 +126,11 @@ const sendHandle = async () => {
       showMatching.value = true
       return
     }
-    window['$message'].warning('没有拿到返回值，请检查接口！')
+    window['$message'].warning('No response. Check the API.')
   } catch (error) {
     console.error(error);
     loading.value = false
-    window['$message'].warning('数据异常，请检查参数！')
+    window['$message'].warning('Data error. Check parameters.')
   }
 }
 

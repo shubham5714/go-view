@@ -2,7 +2,7 @@
   <n-space>
     <n-card v-if="barOption" class="go-mt-3" :bordered="false" role="dialog" size="small" aria-modal="true">
       <n-tabs type="segment" size="small" animated>
-        <n-tab-pane name="柱状图" tab="柱状图">
+        <n-tab-pane name="Bar" tab="Bar">
           <v-chart
             ref="vChartRefBar"
             :theme="{ color }"
@@ -12,7 +12,7 @@
             :style="chartStyle"
           ></v-chart>
         </n-tab-pane>
-        <n-tab-pane name="折线图" tab="折线图">
+        <n-tab-pane name="Line" tab="Line">
           <v-chart
             ref="vChartRefLine"
             :theme="{ color }"

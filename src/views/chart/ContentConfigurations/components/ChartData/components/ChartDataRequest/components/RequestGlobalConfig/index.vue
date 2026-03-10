@@ -1,22 +1,22 @@
 <template>
   <!-- 全局配置 -->
   <n-card class="n-card-shallow">
-    <n-tag type="info" :bordered="false" style="border-radius: 5px"> 全局公共配置 </n-tag>
+    <n-tag type="info" :bordered="false" style="border-radius: 5px"> Global config </n-tag>
     <setting-item-box
-      name="服务"
+      name="Service"
       :itemRightStyle="{
         gridTemplateColumns: '5fr 2fr 1fr'
       }"
     >
       <!-- 源地址 -->
-      <setting-item name="前置 URL">
+      <setting-item name="Base URL">
         <n-input
           v-model:value.trim="requestOriginUrl"
           :disabled="editDisabled"
-          placeholder="例：http://127.0.0.1/"
+          placeholder="e.g. http://127.0.0.1/"
         ></n-input>
       </setting-item>
-      <setting-item name="更新间隔，为 0 只会初始化">
+      <setting-item name="Interval (0 = init only)">
         <n-input-group>
           <n-input-number
             class="select-time-number"
@@ -24,7 +24,7 @@
             min="0"
             :show-button="false"
             :disabled="editDisabled"
-            placeholder="请输入数字"
+            placeholder="Number"
           >
           </n-input-number>
           <!-- 单位 -->
@@ -42,7 +42,7 @@
             <pencil-icon />
           </n-icon>
         </template>
-        编辑配置
+        Edit config
       </n-button>
     </setting-item-box>
     <!-- table 内容体 -->
@@ -62,7 +62,7 @@
             <chevron-down-outline-icon />
           </n-icon>
         </template>
-        展开
+        Expand
       </n-tooltip>
     </div>
   </n-card>

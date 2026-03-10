@@ -3,42 +3,42 @@
     <n-scrollbar style="max-height: 570px">
       <div class="go-mr-3">
         <div>
-          <setting-item-box name="主体信息">
-            <setting-item name="接口名称">
-              <n-input size="small" :placeholder="targetData?.dataPondName || '暂无'" :disabled="true"> </n-input>
+          <setting-item-box name="Info">
+            <setting-item name="API name">
+              <n-input size="small" :placeholder="targetData?.dataPondName || '—'" :disabled="true"> </n-input>
             </setting-item>
-            <setting-item name="接口类型">
-              <n-input size="small" :placeholder="requestHttpType || '暂无'" :disabled="true"></n-input>
+            <setting-item name="API type">
+              <n-input size="small" :placeholder="requestHttpType || '—'" :disabled="true"></n-input>
             </setting-item>
           </setting-item-box>
 
           <setting-item-box>
-            <setting-item name="组件间隔">
-              <n-input size="small" :placeholder="`${requestInterval || '暂无'}`" :disabled="true">
+            <setting-item name="Interval">
+              <n-input size="small" :placeholder="`${requestInterval || '—'}`" :disabled="true">
                 <template #suffix>
                   {{ targetData && SelectHttpTimeNameObj[requestIntervalUnit] }}
                 </template>
               </n-input>
             </setting-item>
-            <setting-item name="全局间隔（默认）">
-              <n-input size="small" :placeholder="`${globalData?.requestInterval || '暂无'}`" :disabled="true">
+            <setting-item name="Global interval (default)">
+              <n-input size="small" :placeholder="`${globalData?.requestInterval || '—'}`" :disabled="true">
                 <template #suffix> {{ globalData && SelectHttpTimeNameObj[globalData.requestIntervalUnit] }} </template>
               </n-input>
             </setting-item>
           </setting-item-box>
 
-          <setting-item-box name="源地址" :alone="true">
-            <n-input size="small" :placeholder="globalData?.requestOriginUrl || '暂无'" :disabled="true">
+          <setting-item-box name="Origin URL" :alone="true">
+            <n-input size="small" :placeholder="globalData?.requestOriginUrl || '—'" :disabled="true">
               <template #prefix>
                 <n-icon :component="PulseIcon" />
               </template>
             </n-input>
           </setting-item-box>
 
-          <setting-item-box name="接口地址" :alone="true">
+          <setting-item-box name="API URL" :alone="true">
             <n-input
               size="small"
-              :placeholder="requestUrl || '暂无'"
+              :placeholder="requestUrl || '—'"
               :disabled="true"
             >
               <template #prefix>
@@ -56,7 +56,7 @@
               :disabled="true"
             ></n-input>
           </setting-item>
-          <setting-item name="body 类型" v-if="requestContentType === RequestContentTypeEnum.DEFAULT">
+          <setting-item name="Body type" v-if="requestContentType === RequestContentTypeEnum.DEFAULT">
             <n-input size="small" :placeholder="targetData && requestParamsBodyType" :disabled="true"></n-input>
           </setting-item>
         </setting-item-box>
@@ -74,7 +74,7 @@
             <div v-else>
               <!-- 为 none 时 -->
               <n-card class="go-mt-3 go-pb-3" v-if="requestParamsBodyType === RequestBodyEnum['NONE']">
-                <n-text depth="3">该接口没有 Body 体</n-text>
+                <n-text depth="3">This API has no body</n-text>
               </n-card>
 
               <!-- 具有对象属性时 -->
@@ -94,7 +94,7 @@
               <template v-else-if="requestParamsBodyType === RequestBodyEnum['JSON']">
                 <n-card size="small" style="padding-bottom: 7px">
                   <n-code
-                    :code="requestParams[RequestParamsTypeEnum.BODY][requestParamsBodyType] || '暂无内容'"
+                    :code="requestParams[RequestParamsTypeEnum.BODY][requestParamsBodyType] || '—'"
                     language="json"
                   ></n-code>
                 </n-card>
@@ -112,10 +112,10 @@
         </div>
         <!-- SQL 请求 -->
         <div v-else>
-          <setting-item-box name="键名">
+          <setting-item-box name="Key">
             <n-text>sql</n-text>
           </setting-item-box>
-          <setting-item-box name="键值">
+          <setting-item-box name="Value">
             <n-code :code="requestSQLContent.sql || ''" language="sql"></n-code>
           </setting-item-box>
         </div>

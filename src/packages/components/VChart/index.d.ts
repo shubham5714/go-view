@@ -13,13 +13,13 @@ export enum ChatCategoryEnum {
 }
 
 export enum ChatCategoryEnumName {
-  BAR = '柱状图',
-  PIE = '饼图',
-  LINE = '折线图',
-  AREA = '面积图',
-  FUNNEL = '漏斗图',
-  WORDCLOUD = '词云图',
-  SCATTER = '散点图',
+  BAR = 'Bar',
+  PIE = 'Pie',
+  LINE = 'Line',
+  AREA = 'Area',
+  FUNNEL = 'Funnel',
+  WORDCLOUD = 'Word Cloud',
+  SCATTER = 'Scatter',
 }
 
 export interface IBarOption extends Omit<IBarChartSpec, 'axes'> {

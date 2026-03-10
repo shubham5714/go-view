@@ -18,8 +18,8 @@
         ></chart-data-display>
         <!-- 无数据 -->
         <div v-else class="no-data go-flex-center">
-          <img :src="noData" alt="暂无数据" />
-          <n-text :depth="3">暂未选择公共接口</n-text>
+          <img :src="noData" alt="No data" />
+          <n-text :depth="3">No public API selected</n-text>
         </div>
         <!-- 左侧列表 -->
         <chart-data-pond-list @createPond="createPond" @deletePond="deletePond"></chart-data-pond-list>
@@ -28,7 +28,7 @@
       <template #action>
         <n-space justify="space-between">
           <n-button type="info" secondary :disabled="!pondData" @click="openPond(true)">
-            编辑内容
+            Edit content
             <template #icon>
               <n-icon>
                 <pencil-icon />
@@ -36,8 +36,8 @@
             </template>
           </n-button>
           <div>
-            <n-button class="go-mr-3" @click="closeHandle">取消</n-button>
-            <n-button type="primary" @click="closeAndSendHandle">保存 & 发送请求</n-button>
+            <n-button class="go-mr-3" @click="closeHandle">Cancel</n-button>
+            <n-button type="primary" @click="closeAndSendHandle">Save & Send</n-button>
           </div>
         </n-space>
       </template>
@@ -159,12 +159,12 @@ const editSaveHandle = (newData: RequestDataPondItemType) => {
           }
         }
       })
-      window.$message.success('保存成功！')
+      window.$message.success('Saved successfully!')
     } else {
-      window.$message.error('编辑失败，请稍后重试！')
+      window.$message.error('Edit failed. Please try again later.')
     }
   } catch (error) {
-    window.$message.error('编辑失败，请稍后重试！')
+    window.$message.error('Edit failed. Please try again later.')
   }
 }
 
@@ -175,26 +175,26 @@ const createSaveHandle = (newData: RequestDataPondItemType) => {
       requestDataPond.value.unshift(newData)
       window.$message.success('创建成功!')
     } else {
-      window.$message.error('创建失败，请稍后重试!')
+      window.$message.error('Create failed. Please try again later.')
     }
   } catch (error) {
-    window.$message.error('创建失败，请稍后重试!')
+    window.$message.error('Create failed. Please try again later.')
   }
 }
 
 // 删除数据池
 const deletePond = (targetData: RequestDataPondItemType) => {
   goDialog({
-    message: '删除数据后，需手动处理使用改接口的组件，是否继续？',
+    message: 'After deleting, you must manually update components using this API. Continue?',
     isMaskClosable: true,
     transformOrigin: 'center',
     onPositiveCallback: () => {
       const targetIndex = requestDataPond.value.findIndex(item => item.dataPondId === targetData.dataPondId)
       if (targetIndex !== -1) {
         requestDataPond.value.splice(targetIndex, 1)
-        window.$message.success('删除成功!')
+        window.$message.success('Deleted successfully!')
       } else {
-        window.$message.error('删除失败，请稍后重试！')
+        window.$message.error('Delete failed. Please try again later.')
       }
     }
   })

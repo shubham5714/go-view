@@ -1,9 +1,9 @@
 <template>
-  <setting-item-box v-if="targetData" name="位置">
-    <setting-item :name="`偏移 X：${targetData.left || 0}px`">
+  <setting-item-box v-if="targetData" name="Position">
+    <setting-item :name="`Offset X: ${targetData.left || 0}px`">
       <n-input-number v-model:value="targetData.left" size="small" step="10"></n-input-number>
     </setting-item>
-    <setting-item :name="`偏移 Y：${targetData.top || 0}px`">
+    <setting-item :name="`Offset Y: ${targetData.top || 0}px`">
       <n-input-number v-model:value="targetData.top" size="small" step="10"></n-input-number>
     </setting-item>
   </setting-item-box>

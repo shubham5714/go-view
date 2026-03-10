@@ -6,9 +6,8 @@ export enum ChatCategoryEnum {
 }
 
 export enum ChatCategoryEnumName {
-  TEXT = '文本',
-  TITLE = '标题',
-  // 控件 => 数据录入
-  INPUTS = '控件',
-  MORE = '更多'
+  TEXT = 'Text',
+  TITLE = 'Title',
+  INPUTS = 'Input',
+  MORE = 'More'
 }

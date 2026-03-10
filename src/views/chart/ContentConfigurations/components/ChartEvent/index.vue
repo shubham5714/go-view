@@ -2,7 +2,7 @@
   <!-- 事件配置 -->
   <n-collapse class="go-mt-3" arrow-placement="right" :default-expanded-names="['1', '2']">
     <n-text depth="3">
-      组件 id：
+      Component id:
       <n-text>{{ targetData.id }}</n-text>
     </n-text>
     <chart-event-interaction></chart-event-interaction>

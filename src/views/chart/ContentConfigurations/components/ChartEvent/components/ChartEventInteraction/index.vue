@@ -1,5 +1,5 @@
 <template>
-  <n-collapse-item title="组件交互" name="1" v-if="interactActions.length">
+  <n-collapse-item title="Component interaction" name="1" v-if="interactActions.length">
     <template #header-extra>
       <n-button type="primary" tertiary size="small" @click.stop="evAddEventsFn">
         <template #icon>
@@ -7,14 +7,14 @@
             <add-icon />
           </n-icon>
         </template>
-        新增
+        Add
       </n-button>
     </template>
 
     <!-- 无数据 -->
     <div v-if="!targetData.events.interactEvents.length" class="no-data go-flex-center">
-      <img :src="noData" alt="暂无数据" />
-      <n-text :depth="3">暂无内容</n-text>
+      <img :src="noData" alt="No data" />
+      <n-text :depth="3">No content</n-text>
     </div>
 
     <n-card
@@ -24,7 +24,7 @@
       size="small"
     >
       <n-space justify="space-between">
-        <n-text>关联组件 - {{ cardIndex + 1 }}</n-text>
+        <n-text>Related component - {{ cardIndex + 1 }}</n-text>
         <n-button type="error" text size="small" @click="evDeleteEventsFn(cardIndex)">
           <template #icon>
             <n-icon>
@@ -36,9 +36,9 @@
 
       <n-divider style="margin: 10px 0" />
 
-      <n-tag :bordered="false" type="primary"> 选择目标组件 </n-tag>
+      <n-tag :bordered="false" type="primary"> Select target component </n-tag>
 
-      <setting-item-box name="触发事件" :alone="true">
+      <setting-item-box name="Trigger event" :alone="true">
         <n-input-group v-if="interactActions">
           <n-select
             class="select-type-options"
@@ -51,14 +51,14 @@
 
       <setting-item-box :alone="true">
         <template #name>
-          <n-text>绑定</n-text>
+          <n-text>Bind</n-text>
           <n-tooltip trigger="hover">
             <template #trigger>
               <n-icon size="21" :depth="3">
                 <help-outline-icon></help-outline-icon>
               </n-icon>
             </template>
-            <n-text>不支持「静态组件」支持「组件」「公共APi」</n-text>
+            <n-text>Static components not supported. Supports components and public API.</n-text>
           </n-tooltip>
         </template>
         <n-select
@@ -67,17 +67,17 @@
           label-field="title"
           size="tiny"
           filterable
-          placeholder="仅展示符合条件的组件"
+          placeholder="Show matching components only"
           v-model:value="item.interactComponentId"
           :options="fnEventsOptions()"
         />
       </setting-item-box>
 
-      <setting-item-box v-if="fnDimensionsAndSource(item.interactOn).length" name="查询结果" :alone="true">
+      <setting-item-box v-if="fnDimensionsAndSource(item.interactOn).length" name="Query result" :alone="true">
         <n-table size="small" striped>
           <thead>
             <tr>
-              <th v-for="item in ['参数', '说明']" :key="item">{{ item }}</th>
+              <th v-for="item in ['Param', 'Description']" :key="item">{{ item }}</th>
             </tr>
           </thead>
           <tbody>
@@ -113,7 +113,7 @@
           class="go-pt-1"
           depth="3"
         >
-          暂无数据
+          No data
         </n-text>
       </setting-item-box>
     </n-card>
@@ -240,7 +240,7 @@ const evAddEventsFn = () => {
 // 删除模块
 const evDeleteEventsFn = (index: number) => {
   goDialog({
-    message: '是否删除此关联交互模块?',
+    message: 'Delete this interaction module?',
     onPositiveCallback: () => {
       targetData.value.events.interactEvents.splice(index, 1)
     }

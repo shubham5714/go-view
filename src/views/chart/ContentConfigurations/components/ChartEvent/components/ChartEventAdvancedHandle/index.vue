@@ -1,5 +1,5 @@
 <template>
-  <n-collapse-item title="高级事件配置" name="3">
+  <n-collapse-item title="Advanced Events" name="3">
     <template #header-extra>
       <n-button type="primary" tertiary size="small" @click.stop="showModal = true">
         <template #icon>
@@ -31,7 +31,7 @@
     <n-card :bordered="false" role="dialog" size="small" aria-modal="true" style="width: 1200px; height: 700px">
       <template #header>
         <n-space>
-          <n-text>高级事件编辑器（配合源码使用）</n-text>
+          <n-text>Advanced event editor (use with source)</n-text>
         </n-space>
       </template>
 
@@ -75,13 +75,13 @@
               <n-scrollbar trigger="none" style="max-height: 505px">
                 <n-collapse class="go-px-3" arrow-placement="right" :default-expanded-names="[1, 2, 3]">
                   <template v-for="error in [validEvents()]" :key="error">
-                    <n-collapse-item title="错误函数" :name="1">
+                    <n-collapse-item title="Error handler" :name="1">
                       <n-text depth="3">{{ error.errorFn || '暂无' }}</n-text>
                     </n-collapse-item>
-                    <n-collapse-item title="错误信息" :name="2">
+                    <n-collapse-item title="Error message" :name="2">
                       <n-text depth="3">{{ error.name || '暂无' }}</n-text>
                     </n-collapse-item>
-                    <n-collapse-item title="堆栈信息" :name="3">
+                    <n-collapse-item title="Stack trace" :name="3">
                       <n-text depth="3">{{ error.message || '暂无' }}</n-text>
                     </n-collapse-item>
                   </template>
@@ -89,7 +89,7 @@
               </n-scrollbar>
             </n-tab-pane>
             <!-- 辅助说明 -->
-            <n-tab-pane tab="变量说明" name="2">
+            <n-tab-pane tab="Variables" name="2">
               <n-scrollbar trigger="none" style="max-height: 505px">
                 <n-collapse class="go-px-3" arrow-placement="right" :default-expanded-names="[1, 2, 3, 4]">
                   <n-collapse-item title="e" :name="1">
@@ -117,13 +117,13 @@
               </n-scrollbar>
             </n-tab-pane>
             <!-- 介绍案例 -->
-            <n-tab-pane tab="介绍案例" name="3">
+            <n-tab-pane tab="Examples" name="3">
               <n-scrollbar trigger="none" style="max-height: 505px">
                 <n-collapse arrow-placement="right">
                   <n-collapse-item
                     v-for="(item, index) in templateList"
                     :key="index"
-                    :title="`案例${index + 1}：${item.description}`"
+                    :title="`Example ${index + 1}: ${item.description}`"
                     :name="index"
                   >
                     <n-code :code="item.code" language="typescript"></n-code>
@@ -144,7 +144,7 @@
               </template>
               说明
             </n-tag>
-            <n-text class="go-ml-2" depth="2">通过提供的参数可为图表增加定制化的tooltip、交互事件等等</n-text>
+            <n-text class="go-ml-2" depth="2">Use the provided params to add custom tooltips, interactions, etc.</n-text>
           </div>
 
           <n-space>
@@ -223,7 +223,7 @@ const closeEvents = () => {
 // 新增事件
 const saveEvents = () => {
   if (validEvents().errorFn) {
-    window['$message'].error('事件函数错误，无法进行保存')
+    window['$message'].error('Event handler error. Cannot save.')
     return
   }
   if (Object.values(advancedEvents.value).join('').trim() === '') {

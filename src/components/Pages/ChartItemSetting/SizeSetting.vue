@@ -1,5 +1,5 @@
 <template>
-  <setting-item-box name="尺寸">
+  <setting-item-box name="Size">
     <n-input-number
       v-model:value="chartAttr.w"
       :min="50"
@@ -8,7 +8,7 @@
       placeholder="px"
     >
       <template #prefix>
-        <n-text depth="3">宽度</n-text>
+        <n-text depth="3">Width</n-text>
       </template>
     </n-input-number>
     <n-input-number
@@ -19,7 +19,7 @@
       placeholder="px"
     >
       <template #prefix>
-        <n-text depth="3">高度</n-text>
+        <n-text depth="3">Height</n-text>
       </template>
     </n-input-number>
   </setting-item-box>

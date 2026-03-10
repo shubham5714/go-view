@@ -6,8 +6,8 @@ export enum ChatCategoryEnum {
 }
 
 export enum ChatCategoryEnumName {
-  ML = '动画',
-  COMMON = '通用',
-  WEATHER = '天气',
-  DEFAULT = '默认'
+  ML = 'Animation',
+  COMMON = 'Common',
+  WEATHER = 'Weather',
+  DEFAULT = 'Default'
 }

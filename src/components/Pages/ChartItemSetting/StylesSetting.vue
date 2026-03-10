@@ -1,15 +1,15 @@
 <template>
   <div v-show="isGroup">
     <n-divider n-divider style="margin: 10px 0"></n-divider>
-    <n-tag type="warning"> 解散分组「 {{ isCanvas ? '滤镜' : '滤镜 / 变换' }} 」也将消失!</n-tag>
+    <n-tag type="warning"> Ungrouping will also remove « {{ isCanvas ? 'Filter' : 'Filter / Transform' }} »!</n-tag>
   </div>
 
   <collapse-item :name="isCanvas ? '滤镜' : '滤镜 / 变换'">
     <template #header>
       <n-switch v-model:value="chartStyles.filterShow" size="small"></n-switch>
     </template>
-    <setting-item-box name="色相" :alone="true">
-      <setting-item :name="`值：${chartStyles.hueRotate}deg`">
+    <setting-item-box name="Hue" :alone="true">
+      <setting-item :name="`Value: ${chartStyles.hueRotate}deg`">
         <!-- 透明度 -->
         <n-slider
           v-model:value="chartStyles.hueRotate"
@@ -20,8 +20,8 @@
         ></n-slider>
       </setting-item>
     </setting-item-box>
-    <setting-item-box name="饱和度" :alone="true">
-      <setting-item :name="`值：${(parseFloat(String(chartStyles.saturate)) * 100).toFixed(0)}%`">
+    <setting-item-box name="Saturation" :alone="true">
+      <setting-item :name="`Value: ${(parseFloat(String(chartStyles.saturate)) * 100).toFixed(0)}%`">
         <!-- 透明度 -->
         <n-slider
           v-model:value="chartStyles.saturate"
@@ -32,8 +32,8 @@
         ></n-slider>
       </setting-item>
     </setting-item-box>
-    <setting-item-box name="对比度" :alone="true">
-      <setting-item :name="`值：${(parseFloat(String(chartStyles.contrast)) * 100).toFixed(0)}%`">
+    <setting-item-box name="Contrast" :alone="true">
+      <setting-item :name="`Value: ${(parseFloat(String(chartStyles.contrast)) * 100).toFixed(0)}%`">
         <!-- 透明度 -->
         <n-slider
           v-model:value="chartStyles.contrast"
@@ -44,8 +44,8 @@
         ></n-slider>
       </setting-item>
     </setting-item-box>
-    <setting-item-box name="亮度" :alone="true">
-      <setting-item :name="`值：${(parseFloat(String(chartStyles.brightness)) * 100).toFixed(0)}%`">
+    <setting-item-box name="Brightness" :alone="true">
+      <setting-item :name="`Value: ${(parseFloat(String(chartStyles.brightness)) * 100).toFixed(0)}%`">
         <!-- 透明度 -->
         <n-slider
           v-model:value="chartStyles.brightness"
@@ -56,8 +56,8 @@
         ></n-slider>
       </setting-item>
     </setting-item-box>
-    <setting-item-box name="透明度" :alone="true">
-      <setting-item :name="`值：${(parseFloat(String(chartStyles.opacity)) * 100).toFixed(0)}%`">
+    <setting-item-box name="Opacity" :alone="true">
+      <setting-item :name="`Value: ${(parseFloat(String(chartStyles.opacity)) * 100).toFixed(0)}%`">
         <!-- 透明度 -->
         <n-slider
           v-model:value="chartStyles.opacity"
@@ -88,14 +88,14 @@
     <!-- 混合模式 -->
     <setting-item-box v-if="!isCanvas" :alone="true">
       <template #name>
-        <n-text>混合</n-text>
+        <n-text>Blend</n-text>
         <n-tooltip trigger="hover">
           <template #trigger>
             <n-icon size="21" :depth="3">
               <help-outline-icon></help-outline-icon>
             </n-icon>
           </template>
-          <n-text>视频组件需要底色透明一般选中滤色</n-text>
+          <n-text>For transparent video, usually select Screen</n-text>
         </n-tooltip>
       </template>
       <setting-item>
@@ -104,63 +104,63 @@
     </setting-item-box>
 
     <!-- 变换 -->
-    <setting-item-box v-if="!isCanvas" name="旋转°">
-      <setting-item name="Z轴(平面) - 旋转">
+    <setting-item-box v-if="!isCanvas" name="Rotate °">
+      <setting-item name="Z (plane) - Rotate">
         <!-- 透明度 -->
         <n-input-number
           v-model:value="chartStyles.rotateZ"
           :min="0"
           :max="360"
           size="small"
-          placeholder="角度"
+          placeholder="Angle"
         ></n-input-number>
       </setting-item>
-      <setting-item name="X轴 - 旋转">
+      <setting-item name="X - Rotate">
         <!-- 透明度 -->
         <n-input-number
           v-model:value="chartStyles.rotateX"
           :min="0"
           :max="360"
           size="small"
-          placeholder="角度"
+          placeholder="Angle"
         ></n-input-number>
       </setting-item>
-      <setting-item name="Y轴 - 旋转">
+      <setting-item name="Y - Rotate">
         <!-- 透明度 -->
         <n-input-number
           v-model:value="chartStyles.rotateY"
           :min="0"
           :max="360"
           size="small"
-          placeholder="角度"
+          placeholder="Angle"
         ></n-input-number>
       </setting-item>
     </setting-item-box>
 
     <!-- 倾斜 -->
-    <setting-item-box v-if="!isCanvas" name="倾斜°">
-      <setting-item name="X轴 - 倾斜">
+    <setting-item-box v-if="!isCanvas" name="Skew °">
+      <setting-item name="X - Skew">
         <n-input-number
           v-model:value="chartStyles.skewX"
           :min="0"
           :max="360"
           size="small"
-          placeholder="角度"
+          placeholder="Angle"
         ></n-input-number>
       </setting-item>
-      <setting-item name="Y轴 - 倾斜">
+      <setting-item name="Y - Skew">
         <n-input-number
           v-model:value="chartStyles.skewY"
           :min="0"
           :max="360"
           size="small"
-          placeholder="角度"
+          placeholder="Angle"
         ></n-input-number>
       </setting-item>
     </setting-item-box>
 
     <!-- 提示 -->
-    <n-tag type="warning"> 若预览时大屏模糊，可以尝试关闭滤镜进行修复 </n-tag>
+    <n-tag type="warning"> If the preview looks blurry, try turning off the filter. </n-tag>
   </collapse-item>
 </template>
 
