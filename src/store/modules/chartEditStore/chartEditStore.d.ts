@@ -231,10 +231,12 @@ export interface RequestConfigType extends RequestPublicConfigType {
   requestContentType: RequestContentTypeEnum
   // 请求体类型
   requestParamsBodyType: RequestBodyEnum
-  // SQL 请求对象
+  // SQL request payload
   requestSQLContent: {
     sql: string
   }
+  // Whether to proxy this request through the Private Worker
+  useProxy?: boolean
 }
 
 // Store 类型

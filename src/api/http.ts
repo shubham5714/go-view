@@ -9,6 +9,8 @@ import {
 } from '@/enums/httpEnum'
 import type { RequestGlobalConfigType, RequestConfigType } from '@/store/modules/chartEditStore/chartEditStore.d'
 
+const PRIVATE_WORKER_ENDPOINT = 'https://astran8n.dpdns.org/webhook/1209ead2-ccc0-4b54-88da-2892515e2058'
+
 export const get = <T = any>(url: string, params?: object) => {
   return axiosInstance<T>({
     url: url,
@@ -58,7 +60,7 @@ export const del = <T = any>(url: string, params?: object) => {
   })
 }
 
-// 获取请求函数，默认get
+// Get request function, default is GET
 export const http = (type?: RequestHttpEnum) => {
   switch (type) {
     case RequestHttpEnum.GET:
@@ -81,7 +83,7 @@ export const http = (type?: RequestHttpEnum) => {
   }
 }
 const prefix = 'javascript:'
-// 对输入字符进行转义处理
+// Escape / evaluate dynamic input strings
 export const translateStr = (target: string | Record<any, any>) => {
   if (typeof target === 'string') {
     if (target.startsWith(prefix)) {
@@ -108,62 +110,64 @@ export const translateStr = (target: string | Record<any, any>) => {
 }
 
 /**
- * * 自定义请求
- * @param targetParams 当前组件参数
- * @param globalParams 全局参数
+ * Custom data request helper used by chart components.
+ * @param targetParams Request config defined on the component
+ * @param globalParams Global request config
  */
 export const customizeHttp = (targetParams: RequestConfigType, globalParams: RequestGlobalConfigType) => {
   if (!targetParams || !globalParams) {
     return
   }
-  // 全局
+  // Global config
   const {
-    // 全局请求源地址
+    // Global base URL
     requestOriginUrl,
-    // 全局请求内容
+    // Global request params
     requestParams: globalRequestParams
   } = globalParams
 
-  // 目标组件（优先级 > 全局组件）
+  // Target component config (takes precedence over global)
   const {
-    // 请求地址
+    // Request path
     requestUrl,
-    // 普通 / sql
+    // Default / SQL
     requestContentType,
-    // 获取数据的方式
+    // Data source type
     requestDataType,
-    // 请求方式 get/post/del/put/patch
+    // HTTP method: get/post/delete/put/patch
     requestHttpType,
-    // 请求体类型 none / form-data / x-www-form-urlencoded / json /xml
+    // Body type: none / form-data / x-www-form-urlencoded / json / xml
     requestParamsBodyType,
-    // SQL 请求对象
+    // SQL request payload
     requestSQLContent,
-    // 请求内容 params / cookie / header / body: 同 requestParamsBodyType
-    requestParams: targetRequestParams
+    // Request params: params / cookie / header / body (keyed by body type)
+    requestParams: targetRequestParams,
+    // Whether to proxy this request through the Private Worker
+    useProxy
   } = targetParams
 
-  // 静态排除
+  // Skip static data requests
   if (requestDataType === RequestDataTypeEnum.STATIC) return
 
   if (!requestUrl) {
     return
   }
 
-  // 处理头部
+  // Build headers
   let headers: RequestParamsObjType = {
     ...globalRequestParams.Header,
     ...targetRequestParams.Header
   }
   headers = translateStr(headers)
 
-  // data 参数
+  // Body data
   let data: RequestParamsObjType | FormData | string = {}
-  // params 参数
+  // Query params
   let params: RequestParamsObjType = { ...targetRequestParams.Params }
   params = translateStr(params)
-  // form 类型处理
+  // For form-based body types
   let formData: FormData = new FormData()
-  // 类型处理
+  // Body type handling
 
   switch (requestParamsBodyType) {
     case RequestBodyEnum.NONE:
@@ -171,15 +175,15 @@ export const customizeHttp = (targetParams: RequestConfigType, globalParams: Req
 
     case RequestBodyEnum.JSON:
       headers['Content-Type'] = ContentTypeEnum.JSON
-      //json对象也能使用'javasctipt:'来动态拼接参数
+      // JSON body can also use 'javascript:' for dynamic values
       data = translateStr(targetRequestParams.Body['json'])
-      if(typeof data === 'string')  data = JSON.parse(data)
-      // json 赋值给 data
+      if (typeof data === 'string') data = JSON.parse(data)
+      // JSON assign to data
       break
 
     case RequestBodyEnum.XML:
       headers['Content-Type'] = ContentTypeEnum.XML
-      // xml 字符串赋值给 data
+      // XML string assign to data
       data = translateStr(targetRequestParams.Body['xml'])
       break
 
@@ -187,7 +191,7 @@ export const customizeHttp = (targetParams: RequestConfigType, globalParams: Req
       headers['Content-Type'] = ContentTypeEnum.FORM_URLENCODED
       const bodyFormData = targetRequestParams.Body['x-www-form-urlencoded']
       for (const i in bodyFormData) formData.set(i, translateStr(bodyFormData[i]))
-      // FormData 赋值给 data
+      // FormData assign to data
       data = formData
       break
     }
@@ -198,26 +202,54 @@ export const customizeHttp = (targetParams: RequestConfigType, globalParams: Req
       for (const i in bodyFormUrlencoded) {
         formData.set(i, translateStr(bodyFormUrlencoded[i]))
       }
-      // FormData 赋值给 data
+      // FormData assign to data
       data = formData
       break
     }
   }
 
-  // sql 处理
+  // SQL handling
   if (requestContentType === RequestContentTypeEnum.SQL) {
     headers['Content-Type'] = ContentTypeEnum.JSON
     data = requestSQLContent
   }
 
   try {
-    const url =  (new Function("return `" + `${requestOriginUrl}${requestUrl}`.trim() + "`"))();
+    const url = new Function('return `' + `${requestOriginUrl}${requestUrl}`.trim() + '`')() as string
+
+    // Private Worker mode: send a request description to the worker so it can call the target URL
+    if (useProxy) {
+      // Normalize body to a plain object to avoid sending raw FormData to the worker
+      let body: any = null
+      if (data instanceof FormData) {
+        body = {}
+        data.forEach((v, k) => {
+          body[k] = v as any
+        })
+      } else {
+        body = data
+      }
+      return axiosInstance({
+        url: PRIVATE_WORKER_ENDPOINT,
+        method: RequestHttpEnum.POST,
+        data: {
+          request: {
+            url,
+            method: requestHttpType,
+            headers,
+            params,
+            body
+          }
+        }
+      })
+    }
+
     return axiosInstance({
-        url,
-        method: requestHttpType,
-        data,
-        params,
-        headers
+      url,
+      method: requestHttpType,
+      data,
+      params,
+      headers
     })
   } catch (error) {
     console.log(error)

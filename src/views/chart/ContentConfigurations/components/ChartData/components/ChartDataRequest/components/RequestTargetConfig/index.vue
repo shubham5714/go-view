@@ -49,6 +49,12 @@
         <n-select class="select-time-options" v-model:value="requestIntervalUnit" :options="selectTimeOptions" />
       </n-input-group>
     </setting-item>
+    <setting-item>
+      <div class="proxy-label">
+        <n-switch v-model:value="useProxy" size="small" />
+        <span class="proxy-text">Use Private Worker</span>
+      </div>
+    </setting-item>
   </setting-item-box>
   <setting-item-box name="选择方式" class="go-mt-0">
     <request-header :targetDataRequest="targetDataRequest"></request-header>
@@ -93,7 +99,7 @@ const props = defineProps({
 const { HelpOutlineIcon } = icon.ionicons5
 const { chartEditStore } = useTargetData()
 const { requestOriginUrl } = toRefs(chartEditStore.getRequestGlobalConfig)
-const { requestInterval, requestIntervalUnit, requestHttpType, requestUrl } = toRefs(
+const { requestInterval, requestIntervalUnit, requestHttpType, requestUrl, useProxy } = toRefs(
   props.targetDataRequest as RequestConfigType
 )
 
@@ -167,5 +173,13 @@ const apiList = [
 }
 .select-type-options {
   width: 120px;
+}
+.proxy-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.proxy-text {
+  font-size: 12px;
 }
 </style>

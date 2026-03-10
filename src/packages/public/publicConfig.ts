@@ -18,11 +18,13 @@ import {
 import { chartInitConfig } from '@/settings/designSetting'
 import cloneDeep from 'lodash/cloneDeep'
 
-// 请求基础属性
+// Base request config for all components
 export const requestConfig: RequestConfigType = {
   requestDataType: RequestDataTypeEnum.STATIC,
   requestHttpType: RequestHttpEnum.GET,
   requestUrl: '',
+  // Default: do not use Private Worker unless explicitly enabled
+  useProxy: false,
   requestInterval: undefined,
   requestIntervalUnit: RequestHttpIntervalEnum.SECOND,
   requestContentType: RequestContentTypeEnum.DEFAULT,
