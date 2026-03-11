@@ -3,6 +3,7 @@ package cn.com.v2.controller;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,25 +11,31 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
 import cn.com.v2.common.base.BaseController;
 import cn.com.v2.common.domain.AjaxResult;
+import cn.com.v2.mapper.PlanMapper;
+import cn.com.v2.model.Account;
+import cn.com.v2.model.Plan;
+import cn.com.v2.model.Subscription;
 import cn.com.v2.model.SysUser;
 import cn.com.v2.model.Workspace;
 import cn.com.v2.model.WorkspaceMembership;
-import cn.com.v2.model.Account;
+import cn.com.v2.model.dto.MfaVerifyRequest;
 import cn.com.v2.service.IAccountService;
+import cn.com.v2.service.ISubscriptionService;
+import cn.com.v2.service.ISysUserService;
 import cn.com.v2.service.IWorkspaceMembershipService;
 import cn.com.v2.service.IWorkspaceService;
-import cn.com.v2.service.ISysUserService;
 import cn.com.v2.util.SaTokenUtil;
 import cn.com.v2.util.TotpUtil;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
 import io.swagger.annotations.ApiOperation;
-import cn.com.v2.model.dto.MfaVerifyRequest;
 
 @RestController
 @RequestMapping("/api/goview/sys")
@@ -38,9 +45,13 @@ public class ApiController  extends BaseController {
 	@Autowired
 	private IAccountService iAccountService;
 	@Autowired
+	private ISubscriptionService iSubscriptionService;
+	@Autowired
 	private IWorkspaceService iWorkspaceService;
 	@Autowired
 	private IWorkspaceMembershipService iWorkspaceMembershipService;
+	@Autowired
+	private PlanMapper planMapper;
 
 	@ApiOperation(value = "登陆", notes = "登陆")
 	@PostMapping("/login")
@@ -174,8 +185,88 @@ public class ApiController  extends BaseController {
 
 		return success().put("data", map);
 	}
-	
-	
+
+
+	@ApiOperation(value = "注册", notes = "注册新用户并为其账号分配 FREE 套餐")
+	@PostMapping("/signup")
+	@ResponseBody
+	public AjaxResult signup(@RequestBody SysUser body) {
+		if (body == null || StrUtil.isBlank(body.getUsername()) || StrUtil.isBlank(body.getPassword())) {
+			return error(400, "用户名和密码不能为空");
+		}
+
+		String username = body.getUsername().trim();
+
+		// Look up existing user by username
+		SysUser existing = iSysUserService.getOne(new LambdaQueryWrapper<SysUser>()
+				.eq(SysUser::getUsername, username)
+				.last("LIMIT 1"));
+
+		SysUser user;
+		if (existing == null) {
+			// Brand new user: create record
+			SysUser newUser = new SysUser();
+			newUser.setUsername(username);
+			newUser.setPassword(SecureUtil.md5(body.getPassword().trim()));
+			newUser.setNickname(body.getNickname());
+			newUser.setDepId(0);
+			iSysUserService.save(newUser);
+			user = newUser;
+		} else {
+			// Pre-created user (e.g. invited to workspace) completes registration:
+			// only allow this path if no password has been set yet
+			if (StrUtil.isNotBlank(existing.getPassword())) {
+				return error(400, "User already exists");
+			}
+			existing.setPassword(SecureUtil.md5(body.getPassword().trim()));
+			existing.setNickname(body.getNickname());
+			if (existing.getDepId() == null) {
+				existing.setDepId(0);
+			}
+			iSysUserService.updateById(existing);
+			user = existing;
+		}
+
+		// Initialize MFA secret for the user so we can start enrollment immediately
+		if (StrUtil.isBlank(user.getMfaSecret())) {
+			String secret = TotpUtil.generateSecret();
+			user.setMfaSecret(secret);
+			user.setMfaEnabled(0);
+			iSysUserService.updateById(user);
+		}
+
+		// Create or get account for this user
+		Account account = iAccountService.getOrCreateAccountForUser(user.getId());
+
+		// If account has no active subscription yet, auto-assign FREE plan
+		Subscription active = iSubscriptionService.getActiveSubscription(account.getId());
+		if (active == null) {
+			Subscription subscription = new Subscription();
+			subscription.setAccountId(account.getId());
+			// Hard-code FREE plan id so it always exists even if plan table is misconfigured
+			subscription.setPlanId("plan_free");
+			subscription.setStatus("ACTIVE");
+			String now = DateUtil.now();
+			subscription.setCurrentPeriodStart(now);
+			subscription.setCurrentPeriodEnd(null);
+			iSubscriptionService.save(subscription);
+		}
+
+		// Build MFA enrollment payload (same shape as /login enrollment response)
+		String issuer = "GoView";
+		String otpauthUrl = String.format("otpauth://totp/%s:%s?secret=%s&issuer=%s",
+				issuer, user.getUsername(), user.getMfaSecret(), issuer);
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("enrollmentRequired", true);
+		map.put("username", user.getUsername());
+		map.put("secret", user.getMfaSecret());
+		map.put("otpauthUrl", otpauthUrl);
+
+		return success().put("data", map);
+	}
+
+
 	@ApiOperation(value = "登陆", notes = "登陆")
 	@GetMapping("/logout")
 	@ResponseBody

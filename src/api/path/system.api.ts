@@ -13,6 +13,16 @@ export const loginApi = async (data: object) => {
   }
 }
 
+// * 注册
+export const signupApi = async (data: object) => {
+  try {
+    const res = await http(RequestHttpEnum.POST)(`${ModuleTypeEnum.SYSTEM}/signup`, data)
+    return res
+  } catch (err) {
+    httpErrorHandle()
+  }
+}
+
 // * 登出
 export const logoutApi = async () => {
   try {

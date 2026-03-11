@@ -26,7 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/goview/account")
@@ -107,6 +109,43 @@ public class WorkspaceController extends BaseController {
         return success();
     }
 
+    @ApiOperation(value = "List workspace members", notes = "Get members for the specified workspace")
+    @GetMapping("/workspaces/{workspaceId}/members")
+    @ResponseBody
+    public AjaxResult listMembers(@PathVariable("workspaceId") String workspaceId) {
+        String currentUserId = SaTokenUtil.getUserId();
+        // Ensure current user is at least a member of this workspace
+        WorkspaceMembership me = workspaceMembershipService.lambdaQuery()
+                .eq(WorkspaceMembership::getWorkspaceId, workspaceId)
+                .eq(WorkspaceMembership::getUserId, currentUserId)
+                .last("LIMIT 1")
+                .one();
+        if (me == null) {
+            return error(403, "You are not a member of this workspace");
+        }
+
+        List<WorkspaceMembership> memberships = workspaceMembershipService.lambdaQuery()
+                .eq(WorkspaceMembership::getWorkspaceId, workspaceId)
+                .list();
+
+        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+        for (WorkspaceMembership m : memberships) {
+            SysUser user = sysUserService.getById(m.getUserId());
+            if (user == null) {
+                continue;
+            }
+            Map<String, Object> item = new HashMap<String, Object>();
+            item.put("userId", user.getId());
+            item.put("username", user.getUsername());
+            item.put("nickname", user.getNickname());
+            item.put("role", m.getRole());
+            item.put("createdTime", m.getCreatedTime());
+            result.add(item);
+        }
+
+        return successData(200, result);
+    }
+
     @ApiOperation(value = "Create user and add to workspace", notes = "Create a new user and add to workspace")
     @PostMapping("/workspaces/{workspaceId}/create-user")
     @ResponseBody
@@ -118,9 +157,6 @@ public class WorkspaceController extends BaseController {
 
         if (body.getUsername() == null || body.getUsername().trim().isEmpty()) {
             return error(400, "Username is required");
-        }
-        if (body.getPassword() == null || body.getPassword().trim().isEmpty()) {
-            return error(400, "Password is required");
         }
 
         // Check if user already exists
@@ -135,7 +171,6 @@ public class WorkspaceController extends BaseController {
         } else {
             SysUser newUser = new SysUser();
             newUser.setUsername(body.getUsername().trim());
-            newUser.setPassword(SecureUtil.md5(body.getPassword().trim()));
             newUser.setNickname(body.getNickname());
             newUser.setDepId(0);
             sysUserService.save(newUser);

@@ -24,7 +24,7 @@ export const createWorkspaceApi = async (data: { name: string }) => {
 }
 
 // Create user and add to workspace
-export const createWorkspaceUserApi = async (workspaceId: string, data: { username: string; password: string; nickname?: string }) => {
+export const createWorkspaceUserApi = async (workspaceId: string, data: { username: string; nickname?: string }) => {
   try {
     const res = await http(RequestHttpEnum.POST)(`/account/workspaces/${workspaceId}/create-user`, data)
     return res

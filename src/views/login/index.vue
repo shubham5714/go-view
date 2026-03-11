@@ -19,7 +19,10 @@
       <div class="login-account">
         <div class="login-account-container">
           <n-collapse-transition :appear="true" :show="show">
-            <n-card class="login-account-card" :title="$t('login.desc')">
+            <n-card
+              class="login-account-card"
+              :title="showSignup ? 'Create a new account' : $t('login.desc')"
+            >
               <div class="login-account-top">
                 <img
                   class="login-account-top-logo"
@@ -27,7 +30,9 @@
                   alt="展示图片"
                 />
               </div>
+              <!-- Login form -->
               <n-form
+                v-if="!showSignup"
                 ref="formRef"
                 label-placement="left"
                 size="large"
@@ -75,14 +80,119 @@
                   </div>
                 </n-form-item>
                 <n-form-item>
-                  <n-button
-                    type="primary"
-                    @click="handleSubmit"
-                    size="large"
-                    :loading="loading"
-                    block
-                    >{{ $t('login.form_button') }}</n-button
+                  <div style="display: flex; flex-direction: column; gap: 8px; width: 100%">
+                    <n-button
+                      type="primary"
+                      @click="handleSubmit"
+                      size="large"
+                      :loading="loading"
+                      block
+                    >
+                      {{ $t('login.form_button') }}
+                    </n-button>
+                    <n-button
+                      type="default"
+                      size="large"
+                      ghost
+                      block
+                      @click="handleSignupWithGoogle"
+                    >
+                      Sign in with Google (coming soon)
+                    </n-button>
+                    <n-button
+                      type="tertiary"
+                      size="large"
+                      block
+                      @click="() => (showSignup = true)"
+                    >
+                      Create a new account
+                    </n-button>
+                  </div>
+                </n-form-item>
+              </n-form>
+
+              <!-- Signup form -->
+              <n-form
+                v-else
+                ref="signupFormRef"
+                label-placement="left"
+                size="large"
+                :model="signupForm"
+                :rules="signupRules"
+              >
+                <n-form-item path="username">
+                  <n-input
+                    v-model:value="signupForm.username"
+                    type="email"
+                    maxlength="64"
+                    placeholder="Email address"
                   >
+                    <template #prefix>
+                      <n-icon size="18">
+                        <PersonOutlineIcon></PersonOutlineIcon>
+                      </n-icon>
+                    </template>
+                  </n-input>
+                </n-form-item>
+                <n-form-item path="password">
+                  <n-input
+                    v-model:value="signupForm.password"
+                    type="password"
+                    maxlength="16"
+                    show-password-on="click"
+                    placeholder="Password"
+                  >
+                    <template #prefix>
+                      <n-icon size="18">
+                        <LockClosedOutlineIcon></LockClosedOutlineIcon>
+                      </n-icon>
+                    </template>
+                  </n-input>
+                </n-form-item>
+                <n-form-item path="confirmPassword">
+                  <n-input
+                    v-model:value="signupForm.confirmPassword"
+                    type="password"
+                    maxlength="16"
+                    show-password-on="click"
+                    placeholder="Confirm password"
+                  >
+                    <template #prefix>
+                      <n-icon size="18">
+                        <LockClosedOutlineIcon></LockClosedOutlineIcon>
+                      </n-icon>
+                    </template>
+                  </n-input>
+                </n-form-item>
+                <n-form-item>
+                  <div style="display: flex; flex-direction: column; gap: 8px; width: 100%">
+                    <n-button
+                      type="primary"
+                      @click="handleSignup"
+                      size="large"
+                      :loading="loading"
+                      block
+                    >
+                      Sign up
+                    </n-button>
+                    <n-button
+                      type="default"
+                      size="large"
+                      ghost
+                      block
+                      @click="handleSignupWithGoogle"
+                    >
+                      Sign up with Google (coming soon)
+                    </n-button>
+                    <n-button
+                      type="tertiary"
+                      size="large"
+                      block
+                      @click="() => (showSignup = false)"
+                    >
+                      Back to login
+                    </n-button>
+                  </div>
                 </n-form-item>
               </n-form>
             </n-card>
@@ -155,11 +265,12 @@ import { PageEnum } from '@/enums/pageEnum'
 import { StorageEnum } from '@/enums/storageEnum'
 import { icon } from '@/plugins'
 import { routerTurnByName } from '@/utils'
-import { loginApi, fetchWorkspacesApi, verifyMfaApi } from '@/api/path'
+import { loginApi, fetchWorkspacesApi, verifyMfaApi, signupApi } from '@/api/path'
 
 const { PersonOutlineIcon, LockClosedOutlineIcon } = icon.ionicons5
 
 const formRef = ref()
+const signupFormRef = ref()
 const loading = ref(false)
 const autoLogin = ref(true)
 const show = ref(false)
@@ -172,6 +283,14 @@ const formInline = reactive({
   username: '',
   password: '',
 })
+
+const signupForm = reactive({
+  username: '',
+  password: '',
+  confirmPassword: '',
+})
+
+const showSignup = ref(false)
 
 const showMfaModal = ref(false)
 const mfaCode = ref('')
@@ -212,6 +331,40 @@ const rules = {
     message: t('global.form_password'),
     trigger: 'blur',
   },
+}
+
+const signupRules = {
+  username: {
+    required: true,
+    trigger: 'blur',
+    validator: (_rule: any, value: string) => {
+      if (!value) {
+        return new Error('Please enter an email address')
+      }
+      if (!emailPattern.test(value)) {
+        return new Error('Please enter a valid email address')
+      }
+      return true
+    }
+  },
+  password: {
+    required: true,
+    message: 'Please enter a password',
+    trigger: 'blur',
+  },
+  confirmPassword: {
+    required: true,
+    trigger: 'blur',
+    validator: (_rule: any, value: string) => {
+      if (!value) {
+        return new Error('Please confirm your password')
+      }
+      if (value !== signupForm.password) {
+        return new Error('Passwords do not match')
+      }
+      return true
+    }
+  }
 }
 
 // 定时器
@@ -355,6 +508,44 @@ const handleVerifyMfa = async () => {
     routerTurnByName(PageEnum.BASE_HOME_NAME, true)
   }
   loading.value = false
+}
+
+const handleSignup = async (e: Event) => {
+  e.preventDefault()
+  signupFormRef.value.validate(async (errors: any) => {
+    if (!errors) {
+      const { username, password } = signupForm
+      loading.value = true
+      const res: any = await signupApi({
+        username,
+        password
+      })
+      loading.value = false
+      if (!res) return
+      // Non-200 codes are already surfaced globally by axios interceptors
+      if (res.code !== 200) return
+
+      const data = res.data as any
+      // New user signup returns MFA enrollment payload so we can open the modal immediately
+      if (data && data.enrollmentRequired) {
+        pendingUsername.value = data.username || username
+        mfaMode.value = 'enroll'
+        mfaSecret.value = data.secret || ''
+        mfaOtpauthUrl.value = data.otpauthUrl || ''
+        showMfaModal.value = true
+        window['$message'].success('Account created successfully, please complete MFA setup')
+        return
+      }
+
+      window['$message'].success('Account created successfully, please log in')
+    } else {
+      window['$message'].error('Please fix the errors in the signup form')
+    }
+  })
+}
+
+const handleSignupWithGoogle = () => {
+  window['$message'].info('Google sign up is not yet available')
 }
 
 onMounted(() => {

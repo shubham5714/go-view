@@ -38,11 +38,8 @@
 
     <n-modal v-model:show="showAddUserModal" preset="dialog" title="Add user to workspace">
       <n-form :model="addUserForm">
-        <n-form-item label="Username">
-          <n-input v-model:value="addUserForm.username" placeholder="Enter username" />
-        </n-form-item>
-        <n-form-item label="Password">
-          <n-input v-model:value="addUserForm.password" type="password" placeholder="Enter password" />
+        <n-form-item label="Email">
+          <n-input v-model:value="addUserForm.username" type="email" placeholder="Enter user email" />
         </n-form-item>
         <n-form-item label="Nickname">
           <n-input v-model:value="addUserForm.nickname" placeholder="Enter nickname (optional)" />
@@ -63,6 +60,8 @@ import { fetchWorkspacesApi, createWorkspaceApi, createWorkspaceUserApi } from '
 import { ProjectLayoutCreate } from '../ProjectLayoutCreate/index'
 
 const systemStore = useSystemStore()
+
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 const workspaceOptions = computed(() =>
   (systemStore.getWorkspaces || []).map(ws => ({
@@ -93,7 +92,6 @@ const newWorkspaceName = ref('')
 const showAddUserModal = ref(false)
 const addUserForm = ref({
   username: '',
-  password: '',
   nickname: ''
 })
 
@@ -130,19 +128,22 @@ const onAddUser = async () => {
     window['$message'].error('Please select a workspace first')
     return
   }
-  if (!addUserForm.value.username.trim() || !addUserForm.value.password.trim()) {
-    window['$message'].error('Username and password are required')
+  const email = addUserForm.value.username.trim()
+  if (!email) {
+    window['$message'].error('Email is required')
+    return
+  }
+  if (!emailPattern.test(email)) {
+    window['$message'].error('Please enter a valid email address')
     return
   }
   const res = await createWorkspaceUserApi(workspaceId, {
-    username: addUserForm.value.username.trim(),
-    password: addUserForm.value.password.trim(),
+    username: email,
     nickname: addUserForm.value.nickname.trim() || undefined
-  })
+  } as any)
   if (res && res.code === 200) {
     window['$message'].success('User added to workspace')
     addUserForm.value.username = ''
-    addUserForm.value.password = ''
     addUserForm.value.nickname = ''
     showAddUserModal.value = false
   }
