@@ -37,8 +37,8 @@
                 <n-form-item path="username">
                   <n-input
                     v-model:value="formInline.username"
-                    type="text"
-                    maxlength="16"
+                    type="email"
+                    maxlength="64"
                     :placeholder="$t('global.form_account')"
                     @keydown.enter="handleSubmit"
                   >
@@ -128,11 +128,22 @@ const formInline = reactive({
   password: '',
 })
 
+const emailPattern =
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 const rules = {
   username: {
     required: true,
-    message: t('global.form_account'),
     trigger: 'blur',
+    validator: (_rule: any, value: string) => {
+      if (!value) {
+        return new Error(t('global.form_account'))
+      }
+      if (!emailPattern.test(value)) {
+        return new Error('Please enter a valid email address')
+      }
+      return true
+    }
   },
   password: {
     required: true,
@@ -194,12 +205,15 @@ const handleSubmit = async (e: Event) => {
           t
         })
 
+        // 无论之前是谁登录，重置当前工作空间，避免跨账号残留
+        ;(systemStore as any).setItem('currentWorkspaceId', undefined)
+
         // 拉取并设置工作空间
         const wsRes = await fetchWorkspacesApi()
         if (wsRes && wsRes.data) {
           ;(systemStore as any).setItem('workspaces', wsRes.data)
-          // default select first workspace if none selected
-          if (!(systemStore as any).currentWorkspaceId && wsRes.data.length > 0) {
+          // 默认始终选择新账号的第一个工作空间
+          if (wsRes.data.length > 0) {
             ;(systemStore as any).setItem('currentWorkspaceId', wsRes.data[0].id)
           }
         }

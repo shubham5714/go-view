@@ -18,7 +18,13 @@
 
     <!-- Workspace actions -->
     <n-button size="small" secondary @click="showWorkspaceModal = true">New workspace</n-button>
-    <n-button size="small" secondary :disabled="!selectedWorkspaceId" @click="showAddUserModal = true">
+    <n-button
+      v-if="!isDefaultWorkspace"
+      size="small"
+      secondary
+      :disabled="!selectedWorkspaceId"
+      @click="showAddUserModal = true"
+    >
       Add user
     </n-button>
 
@@ -64,6 +70,13 @@ const workspaceOptions = computed(() =>
     value: ws.id
   }))
 )
+
+const isDefaultWorkspace = computed(() => {
+  const workspaces = systemStore.getWorkspaces || []
+  const currentId = systemStore.getCurrentWorkspaceId
+  const current = workspaces.find(ws => ws.id === currentId)
+  return current?.name === 'Default workspace'
+})
 
 const selectedWorkspaceId = computed({
   get: () => systemStore.getCurrentWorkspaceId,
