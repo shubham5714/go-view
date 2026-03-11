@@ -91,6 +91,51 @@
       </div>
     </div>
 
+    <!-- MFA enrollment / verification modal -->
+    <n-modal
+      v-model:show="showMfaModal"
+      preset="dialog"
+      :title="mfaMode === 'enroll' ? 'Set up multi-factor authentication' : 'Multi-factor authentication'"
+    >
+      <div v-if="mfaMode === 'enroll'">
+        <p style="margin-bottom: 8px">
+          Multi-factor authentication is required. Scan the QR code below with your authenticator app
+          (Google Authenticator, Authy, etc.), then enter the 6-digit code.
+        </p>
+        <p style="margin-bottom: 8px">
+          <strong>Account:</strong>
+          {{ pendingUsername }}
+        </p>
+        <div style="display: flex; justify-content: center; margin: 12px 0">
+          <img
+            v-if="mfaOtpauthUrl"
+            :src="qrImageUrl"
+            alt="MFA QR code"
+            style="width: 160px; height: 160px"
+          />
+        </div>
+        <p style="margin-bottom: 16px; word-break: break-all">
+          <strong>Secret (fallback):</strong>
+          {{ mfaSecret }}
+        </p>
+      </div>
+      <div v-else>
+        <p style="margin-bottom: 12px">
+          Enter the 6-digit code from your authenticator app.
+        </p>
+      </div>
+      <n-input
+        v-model:value="mfaCode"
+        placeholder="123456"
+        maxlength="6"
+        style="margin-bottom: 16px"
+      />
+      <template #action>
+        <n-button @click="showMfaModal = false">Cancel</n-button>
+        <n-button type="primary" :loading="loading" @click="handleVerifyMfa">Verify</n-button>
+      </template>
+    </n-modal>
+
     <div class="go-login-box-footer">
       <layout-footer></layout-footer>
     </div>
@@ -98,7 +143,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref, onMounted } from 'vue'
+import { reactive, ref, onMounted, computed } from 'vue'
 import shuffle from 'lodash/shuffle'
 import { carouselInterval } from '@/settings/designSetting'
 import { useSystemStore } from '@/store/modules/systemStore/systemStore'
@@ -110,7 +155,7 @@ import { PageEnum } from '@/enums/pageEnum'
 import { StorageEnum } from '@/enums/storageEnum'
 import { icon } from '@/plugins'
 import { routerTurnByName } from '@/utils'
-import { loginApi, fetchWorkspacesApi } from '@/api/path'
+import { loginApi, fetchWorkspacesApi, verifyMfaApi } from '@/api/path'
 
 const { PersonOutlineIcon, LockClosedOutlineIcon } = icon.ionicons5
 
@@ -126,6 +171,23 @@ const t = window['$t']
 const formInline = reactive({
   username: '',
   password: '',
+})
+
+const showMfaModal = ref(false)
+const mfaCode = ref('')
+const pendingUsername = ref('')
+const mfaMode = ref<'enroll' | 'verify'>('verify')
+const mfaSecret = ref('')
+const mfaOtpauthUrl = ref('')
+
+const qrImageUrl = computed(() => {
+  if (!mfaOtpauthUrl.value) return ''
+  const base = 'https://api.qrserver.com/v1/create-qr-code/'
+  const params = new URLSearchParams({
+    size: '160x160',
+    data: mfaOtpauthUrl.value,
+  })
+  return `${base}?${params.toString()}`
 })
 
 const emailPattern =
@@ -191,9 +253,30 @@ const handleSubmit = async (e: Event) => {
         username,
         password
       })
-      if(res && res.data) {
-        const { tokenValue, tokenName } = res.data.token
-        const { nickname, username, id } = res.data.userinfo
+      if (res && res.data) {
+        const data: any = res.data
+        // Enrollment required: user has no MFA yet; start setup flow
+        if (data.enrollmentRequired) {
+          pendingUsername.value = data.username || username
+          mfaMode.value = 'enroll'
+          mfaSecret.value = data.secret || ''
+          mfaOtpauthUrl.value = data.otpauthUrl || ''
+          showMfaModal.value = true
+          loading.value = false
+          return
+        }
+        // MFA already enabled: require verification only
+        if (data.mfaRequired) {
+          pendingUsername.value = data.username || username
+          mfaMode.value = 'verify'
+          mfaSecret.value = ''
+          showMfaModal.value = true
+          loading.value = false
+          return
+        }
+
+        const { tokenValue, tokenName } = data.token
+        const { nickname, username, id } = data.userinfo
 
         // 存储到 pinia 
         systemStore.setItem(SystemStoreEnum.USER_INFO, {
@@ -226,6 +309,52 @@ const handleSubmit = async (e: Event) => {
       window['$message'].error(t('login.login_message'))
     }
   })
+}
+
+const handleVerifyMfa = async () => {
+  if (!pendingUsername.value) {
+    window['$message'].error('No pending MFA login')
+    return
+  }
+  if (!mfaCode.value.trim()) {
+    window['$message'].error('Please enter the verification code')
+    return
+  }
+  loading.value = true
+  const res = await verifyMfaApi({
+    username: pendingUsername.value,
+    code: mfaCode.value.trim()
+  })
+  if (res && res.data) {
+    const { tokenValue, tokenName } = res.data.token
+    const { nickname, username, id } = res.data.userinfo
+
+    systemStore.setItem(SystemStoreEnum.USER_INFO, {
+      [SystemStoreUserInfoEnum.USER_TOKEN]: tokenValue,
+      [SystemStoreUserInfoEnum.TOKEN_NAME]: tokenName,
+      [SystemStoreUserInfoEnum.USER_ID]: id,
+      [SystemStoreUserInfoEnum.USER_NAME]: username,
+      [SystemStoreUserInfoEnum.NICK_NAME]: nickname,
+      t
+    })
+
+    ;(systemStore as any).setItem('currentWorkspaceId', undefined)
+
+    const wsRes = await fetchWorkspacesApi()
+    if (wsRes && wsRes.data) {
+      ;(systemStore as any).setItem('workspaces', wsRes.data)
+      if (wsRes.data.length > 0) {
+        ;(systemStore as any).setItem('currentWorkspaceId', wsRes.data[0].id)
+      }
+    }
+
+    window['$message'].success(t('login.login_success'))
+    showMfaModal.value = false
+    mfaCode.value = ''
+    pendingUsername.value = ''
+    routerTurnByName(PageEnum.BASE_HOME_NAME, true)
+  }
+  loading.value = false
 }
 
 onMounted(() => {

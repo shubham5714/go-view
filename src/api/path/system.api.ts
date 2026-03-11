@@ -37,3 +37,13 @@ export const ossUrlApi = async (data: object) => {
     httpErrorHandle()
   }
 }
+
+// * MFA 验证（Google Authenticator TOTP）
+export const verifyMfaApi = async (data: { username: string; code: string }) => {
+  try {
+    const res = await http(RequestHttpEnum.POST)<LoginResult>(`${ModuleTypeEnum.SYSTEM}/login/mfa-verify`, data)
+    return res
+  } catch (err) {
+    httpErrorHandle()
+  }
+}
