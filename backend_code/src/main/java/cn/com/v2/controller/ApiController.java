@@ -16,19 +16,19 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 
 import cn.com.v2.common.base.BaseController;
 import cn.com.v2.common.domain.AjaxResult;
-import cn.com.v2.mapper.PlanMapper;
 import cn.com.v2.model.Account;
-import cn.com.v2.model.Plan;
 import cn.com.v2.model.Subscription;
 import cn.com.v2.model.SysUser;
 import cn.com.v2.model.Workspace;
 import cn.com.v2.model.WorkspaceMembership;
 import cn.com.v2.model.dto.MfaVerifyRequest;
+import cn.com.v2.model.dto.SignupRequest;
 import cn.com.v2.service.IAccountService;
 import cn.com.v2.service.ISubscriptionService;
 import cn.com.v2.service.ISysUserService;
 import cn.com.v2.service.IWorkspaceMembershipService;
 import cn.com.v2.service.IWorkspaceService;
+import cn.com.v2.service.IEmailVerificationService;
 import cn.com.v2.util.SaTokenUtil;
 import cn.com.v2.util.TotpUtil;
 import cn.dev33.satoken.stp.StpUtil;
@@ -51,7 +51,7 @@ public class ApiController  extends BaseController {
 	@Autowired
 	private IWorkspaceMembershipService iWorkspaceMembershipService;
 	@Autowired
-	private PlanMapper planMapper;
+	private IEmailVerificationService emailVerificationService;
 
 	@ApiOperation(value = "登陆", notes = "登陆")
 	@PostMapping("/login")
@@ -187,15 +187,40 @@ public class ApiController  extends BaseController {
 	}
 
 
+	@ApiOperation(value = "发送注册邮箱验证码", notes = "为注册发送邮箱验证码")
+	@PostMapping("/signup/request-email-code")
+	@ResponseBody
+	public AjaxResult requestSignupEmailCode(@RequestBody Map<String, String> body) {
+		if (body == null || StrUtil.isBlank(body.get("email"))) {
+			return error(400, "Email is required");
+		}
+		String email = body.get("email").trim();
+		try {
+			emailVerificationService.sendSignupCode(email);
+			return success();
+		} catch (Exception e) {
+			return error(500, "Failed to send verification email");
+		}
+	}
+
 	@ApiOperation(value = "注册", notes = "注册新用户并为其账号分配 FREE 套餐")
 	@PostMapping("/signup")
 	@ResponseBody
-	public AjaxResult signup(@RequestBody SysUser body) {
+	public AjaxResult signup(@RequestBody SignupRequest body) {
 		if (body == null || StrUtil.isBlank(body.getUsername()) || StrUtil.isBlank(body.getPassword())) {
-			return error(400, "用户名和密码不能为空");
+			return error(400, "Username and password are required");
+		}
+		if (StrUtil.isBlank(body.getCode())) {
+			return error(400, "Verification code is required");
 		}
 
 		String username = body.getUsername().trim();
+
+		// Verify email code before creating account
+		boolean ok = emailVerificationService.verifySignupCode(username, body.getCode().trim());
+		if (!ok) {
+			return error(400, "Invalid or expired verification code");
+		}
 
 		// Look up existing user by username
 		SysUser existing = iSysUserService.getOne(new LambdaQueryWrapper<SysUser>()

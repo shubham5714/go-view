@@ -64,7 +64,18 @@ public class WorkspaceController extends BaseController {
                 workspaces.add(ws);
             }
         }
-        return successData(200, workspaces);
+        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+        for (Workspace ws : workspaces) {
+            Map<String, Object> item = new HashMap<String, Object>();
+            item.put("id", ws.getId());
+            item.put("name", ws.getName());
+            item.put("status", ws.getStatus());
+            item.put("accountId", ws.getAccountId());
+            item.put("createdTime", ws.getCreatedTime());
+            item.put("locked", subscriptionService.isWorkspaceLocked(ws.getId()));
+            result.add(item);
+        }
+        return successData(200, result);
     }
 
     @ApiOperation(value = "创建工作空间", notes = "创建工作空间")

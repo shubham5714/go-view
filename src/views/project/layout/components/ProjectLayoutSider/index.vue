@@ -86,9 +86,10 @@ const systemStore = useSystemStore()
 const router = useRouter()
 
 const workspaceMenuOptions = computed(() =>
-  (systemStore.getWorkspaces || []).map(ws => ({
+  (systemStore.getWorkspaces || []).map((ws: any) => ({
     key: ws.id,
-    label: ws.name
+    label: ws.locked ? `${ws.name} (locked)` : ws.name,
+    disabled: ws.locked,
   }))
 )
 

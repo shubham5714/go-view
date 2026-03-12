@@ -41,14 +41,15 @@ export const useDataListInit = () => {
       const { count } = res as any // 这里的count与data平级，不在Response结构中
       paginat.count = count
       list.value = res.data.map(e => {
-        const { id, projectName, state, createTime, indexImage, createUserId } = e
+        const { id, projectName, state, createTime, indexImage, createUserId, locked } = e as any
         return {
           id: id,
           title: projectName,
           createId: createUserId,
           time: createTime,
           image: indexImage,
-          release: state !== -1
+          release: state !== -1,
+          locked: locked === true
         }
       })
       setTimeout(() => {

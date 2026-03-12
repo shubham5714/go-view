@@ -101,5 +101,78 @@ public class SubscriptionServiceImpl extends ServiceImpl<SubscriptionMapper, Sub
             throw new RuntimeException("项目数量已达到当前套餐上限");
         }
     }
+
+    @Override
+    public boolean isWorkspaceLocked(String workspaceId) {
+        Workspace workspace = workspaceMapper.selectById(workspaceId);
+        if (workspace == null) {
+            return false;
+        }
+        Subscription subscription = getActiveSubscription(workspace.getAccountId());
+        if (subscription == null) {
+            // No subscription -> no enforced limits / no locking
+            return false;
+        }
+        Plan plan = planMapper.selectById(subscription.getPlanId());
+        if (plan == null || plan.getMaxWorkspaces() == null) {
+            return false;
+        }
+        Integer max = plan.getMaxWorkspaces();
+        if (max == null || max <= 0) {
+            return false;
+        }
+        // Order all workspaces for this account by creation time (oldest first)
+        java.util.List<Workspace> all = workspaceMapper.selectList(
+                new LambdaQueryWrapper<Workspace>()
+                        .eq(Workspace::getAccountId, workspace.getAccountId())
+                        .orderByAsc(Workspace::getCreatedTime)
+        );
+        for (int i = 0; i < all.size(); i++) {
+            Workspace w = all.get(i);
+            if (w.getId().equals(workspaceId)) {
+                // Oldest "max" workspaces are unlocked, newer ones are locked
+                return i >= max;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isProjectLocked(String projectId) {
+        GoviewProject project = goviewProjectMapper.selectById(projectId);
+        if (project == null) {
+            return false;
+        }
+        Workspace workspace = workspaceMapper.selectById(project.getWorkspaceId());
+        if (workspace == null) {
+            return false;
+        }
+        Subscription subscription = getActiveSubscription(workspace.getAccountId());
+        if (subscription == null) {
+            return false;
+        }
+        Plan plan = planMapper.selectById(subscription.getPlanId());
+        if (plan == null || plan.getMaxProjectsPerWorkspace() == null) {
+            return false;
+        }
+        Integer max = plan.getMaxProjectsPerWorkspace();
+        if (max == null || max <= 0) {
+            return false;
+        }
+        // Order all projects in this workspace by creation time (oldest first)
+        java.util.List<GoviewProject> all = goviewProjectMapper.selectList(
+                new LambdaQueryWrapper<GoviewProject>()
+                        .eq(GoviewProject::getWorkspaceId, project.getWorkspaceId())
+                        .orderByAsc(GoviewProject::getCreateTime)
+        );
+        for (int i = 0; i < all.size(); i++) {
+            GoviewProject p = all.get(i);
+            if (p.getId().equals(projectId)) {
+                // Oldest "max" projects stay unlocked; newer ones are locked
+                return i >= max;
+            }
+        }
+        return false;
+    }
 }
 

@@ -78,11 +78,14 @@
         </div>
       </template>
     </n-card>
+    <div v-if="isLocked" class="locked-badge">
+      <n-tag size="small" type="warning">Locked</n-tag>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, PropType } from 'vue'
+import { reactive, ref, PropType, computed } from 'vue'
 import { renderIcon, renderLang,  requireErrorImg } from '@/utils'
 import { icon } from '@/plugins'
 import { MacOsControlBtn } from '@/components/Tips/MacOsControlBtn'
@@ -104,6 +107,8 @@ const emit = defineEmits(['preview', 'delete', 'resize', 'edit', 'release'])
 const props = defineProps({
   cardData: Object as PropType<Chartype>
 })
+
+const isLocked = computed(() => props.cardData?.locked === true)
 
 const fnBtnList = reactive([
   {
@@ -139,6 +144,10 @@ const selectOptions = ref([
 ])
 
 const handleSelect = (key: string) => {
+  if (isLocked.value && key === 'preview') {
+    window['$message'].error('This project is locked and cannot be previewed')
+    return
+  }
   switch (key) {
     case 'preview':
       previewHandle()
@@ -167,16 +176,28 @@ const deleteHandle = () => {
 
 // 编辑处理
 const editHandle = () => {
+  if (isLocked.value) {
+    window['$message'].error('This project is locked and cannot be edited')
+    return
+  }
   emit('edit', props.cardData)
 }
 
 // 编辑处理
 const releaseHandle = () => {
+  if (isLocked.value) {
+    window['$message'].error('This project is locked and cannot be published')
+    return
+  }
   emit('release', props.cardData)
 }
 
 // 放大处理
 const resizeHandle = () => {
+  if (isLocked.value) {
+    window['$message'].error('This project is locked and cannot be edited')
+    return
+  }
   emit('resize', props.cardData)
 }
 </script>
@@ -223,6 +244,12 @@ $contentHeight: 180px;
       justify-content: flex-end;
       min-width: 180px;
     }
+  }
+  .locked-badge {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    z-index: 2;
   }
 }
 </style>

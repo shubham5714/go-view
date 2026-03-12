@@ -115,3 +115,8 @@ sa-token:
     token-style: uuid
     # 是否输出操作日志 
     is-log: false
+
+sendgrid:
+  api-key: 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
+  from-email: khuspeshubham@gmail.com
+  from-name: DRX-EYE

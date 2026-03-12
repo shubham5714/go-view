@@ -12,5 +12,17 @@ public interface ISubscriptionService extends IService<Subscription> {
     void assertCanAddMember(String workspaceId);
 
     void assertCanCreateProject(String workspaceId);
+
+    /**
+     * Whether the given workspace should be treated as locked based on
+     * its account plan limits and creation order.
+     */
+    boolean isWorkspaceLocked(String workspaceId);
+
+    /**
+     * Whether the given project should be treated as locked based on
+     * its workspace plan limits and creation order.
+     */
+    boolean isProjectLocked(String projectId);
 }
 

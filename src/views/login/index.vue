@@ -164,6 +164,18 @@
                     </template>
                   </n-input>
                 </n-form-item>
+                <n-form-item path="code">
+                  <div style="display: flex; width: 100%; gap: 8px">
+                    <n-input
+                      v-model:value="signupForm.code"
+                      maxlength="6"
+                      placeholder="Verification code"
+                    />
+                    <n-button type="primary" tertiary @click="handleSendSignupCode">
+                      Send code
+                    </n-button>
+                  </div>
+                </n-form-item>
                 <n-form-item>
                   <div style="display: flex; flex-direction: column; gap: 8px; width: 100%">
                     <n-button
@@ -265,7 +277,7 @@ import { PageEnum } from '@/enums/pageEnum'
 import { StorageEnum } from '@/enums/storageEnum'
 import { icon } from '@/plugins'
 import { routerTurnByName } from '@/utils'
-import { loginApi, fetchWorkspacesApi, verifyMfaApi, signupApi } from '@/api/path'
+import { loginApi, fetchWorkspacesApi, verifyMfaApi, signupApi, requestSignupEmailCodeApi } from '@/api/path'
 
 const { PersonOutlineIcon, LockClosedOutlineIcon } = icon.ionicons5
 
@@ -288,6 +300,7 @@ const signupForm = reactive({
   username: '',
   password: '',
   confirmPassword: '',
+  code: '',
 })
 
 const showSignup = ref(false)
@@ -364,7 +377,20 @@ const signupRules = {
       }
       return true
     }
-  }
+  },
+  code: {
+    required: true,
+    trigger: 'blur',
+    validator: (_rule: any, value: string) => {
+      if (!value) {
+        return new Error('Please enter the verification code')
+      }
+      if (!/^\d{6}$/.test(value)) {
+        return new Error('Verification code must be 6 digits')
+      }
+      return true
+    }
+  },
 }
 
 // 定时器
@@ -514,11 +540,12 @@ const handleSignup = async (e: Event) => {
   e.preventDefault()
   signupFormRef.value.validate(async (errors: any) => {
     if (!errors) {
-      const { username, password } = signupForm
+      const { username, password, code } = signupForm
       loading.value = true
       const res: any = await signupApi({
         username,
-        password
+        password,
+        code
       })
       loading.value = false
       if (!res) return
@@ -546,6 +573,24 @@ const handleSignup = async (e: Event) => {
 
 const handleSignupWithGoogle = () => {
   window['$message'].info('Google sign up is not yet available')
+}
+
+const handleSendSignupCode = async () => {
+  const email = signupForm.username.trim()
+  if (!email) {
+    window['$message'].error('Please enter your email address first')
+    return
+  }
+  if (!emailPattern.test(email)) {
+    window['$message'].error('Please enter a valid email address')
+    return
+  }
+  loading.value = true
+  const res: any = await requestSignupEmailCodeApi({ email })
+  loading.value = false
+  if (res && res.code === 200) {
+    window['$message'].success('Verification code sent to your email')
+  }
 }
 
 onMounted(() => {

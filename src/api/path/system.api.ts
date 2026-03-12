@@ -23,6 +23,16 @@ export const signupApi = async (data: object) => {
   }
 }
 
+// * 注册邮箱验证码
+export const requestSignupEmailCodeApi = async (data: { email: string }) => {
+  try {
+    const res = await http(RequestHttpEnum.POST)(`${ModuleTypeEnum.SYSTEM}/signup/request-email-code`, data)
+    return res
+  } catch (err) {
+    httpErrorHandle()
+  }
+}
+
 // * 登出
 export const logoutApi = async () => {
   try {

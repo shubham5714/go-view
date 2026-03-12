@@ -88,7 +88,23 @@ public class GoviewProjectController  extends BaseController{
 				.eq(GoviewProject::getWorkspaceId, workspaceId);
 		IPage<GoviewProject> iPages=iGoviewProjectService.page(page, queryWrapper);
 		ResultTable resultTable=new ResultTable();
-		resultTable.setData(iPages.getRecords());
+		java.util.List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+		for (GoviewProject p : iPages.getRecords()) {
+			Map<String, Object> item = new HashMap<String, Object>();
+			item.put("id", p.getId());
+			item.put("projectName", p.getProjectName());
+			item.put("state", p.getState());
+			item.put("createTime", p.getCreateTime());
+			item.put("workspaceId", p.getWorkspaceId());
+			item.put("createUserId", p.getCreateUserId());
+			item.put("isDelete", p.getIsDelete());
+			item.put("indexImage", p.getIndexImage());
+			item.put("remarks", p.getRemarks());
+			item.put("isTemplate", p.getIsTemplate());
+			item.put("locked", iSubscriptionService.isProjectLocked(p.getId()));
+			data.add(item);
+		}
+		resultTable.setData(data);
 		resultTable.setCode(200);
 		resultTable.setCount(iPages.getTotal());
 		resultTable.setMsg("获取成功");
