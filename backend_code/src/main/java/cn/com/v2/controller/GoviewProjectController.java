@@ -2,6 +2,7 @@ package cn.com.v2.controller;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -9,10 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
 import cn.com.v2.common.base.BaseController;
 import cn.com.v2.common.config.V2Config;
 import cn.com.v2.common.domain.AjaxResult;
@@ -35,11 +38,16 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateUtil;
 import io.swagger.annotations.ApiOperation;
+
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
@@ -86,6 +94,30 @@ public class GoviewProjectController  extends BaseController{
 		resultTable.setMsg("获取成功");
 		return resultTable;
 	}
+
+	@ApiOperation(value = "List template projects", notes = "List all projects marked as templates")
+	@GetMapping("/templates")
+	@ResponseBody
+	public AjaxResult listTemplates() {
+		LambdaQueryWrapper<GoviewProject> queryWrapper = new LambdaQueryWrapper<GoviewProject>()
+				.eq(GoviewProject::getIsTemplate, 1)
+				.and(q -> q.isNull(GoviewProject::getIsDelete)
+						.or()
+						.eq(GoviewProject::getIsDelete, 0));
+		List<GoviewProject> templates = iGoviewProjectService.list(queryWrapper);
+
+		List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+		for (GoviewProject p : templates) {
+			Map<String, Object> item = new HashMap<String, Object>();
+			item.put("id", p.getId());
+			item.put("name", p.getProjectName());
+			item.put("indexImage", p.getIndexImage());
+			item.put("remarks", p.getRemarks());
+			result.add(item);
+		}
+
+		return successData(200, result);
+	}
 	
 	
 	/**
@@ -104,6 +136,12 @@ public class GoviewProjectController  extends BaseController{
 		goviewProject.setCreateTime(DateUtil.now());
 		goviewProject.setState(-1);
 		goviewProject.setCreateUserId(userId);
+		if (goviewProject.getIsDelete() == null) {
+			goviewProject.setIsDelete(0);
+		}
+		if (goviewProject.getIsTemplate() == null) {
+			goviewProject.setIsTemplate(0);
+		}
 		boolean b=iGoviewProjectService.save(goviewProject);
 		if(b){
 			return successData(200, goviewProject).put("msg", "创建成功");
@@ -154,6 +192,55 @@ public class GoviewProjectController  extends BaseController{
         }
         return error();
     }
+
+	@ApiOperation(value = "Create project from template", notes = "Create a new project in a workspace from a template project")
+	@PostMapping("/templates/{templateId}/create")
+	@ResponseBody
+	public AjaxResult createFromTemplate(@PathVariable("templateId") String templateId, @RequestBody Map<String, String> body) {
+		String workspaceId = body.get("workspaceId");
+		String projectName = body.get("projectName");
+		if (workspaceId == null || workspaceId.trim().isEmpty()) {
+			return error(400, "workspaceId is required");
+		}
+
+		String userId = SaTokenUtil.getUserId();
+		iWorkspaceMembershipService.assertMember(workspaceId, userId);
+		iSubscriptionService.assertCanCreateProject(workspaceId);
+
+		GoviewProject template = iGoviewProjectService.getById(templateId);
+		if (template == null || template.getIsTemplate() == null || template.getIsTemplate() != 1) {
+			return error(404, "Template project not found");
+		}
+
+		GoviewProjectData templateData = iGoviewProjectDataService.getProjectid(templateId);
+
+		GoviewProject newProject = new GoviewProject();
+		newProject.setProjectName((projectName != null && !projectName.trim().isEmpty()) ? projectName.trim() : template.getProjectName());
+		newProject.setWorkspaceId(workspaceId);
+		newProject.setCreateUserId(userId);
+		newProject.setCreateTime(DateUtil.now());
+		newProject.setState(-1);
+		newProject.setIsDelete(0);
+		newProject.setIndexImage(template.getIndexImage());
+		newProject.setRemarks(template.getRemarks());
+		newProject.setIsTemplate(0);
+
+		boolean saved = iGoviewProjectService.save(newProject);
+		if (!saved) {
+			return error(500, "Failed to create project from template");
+		}
+
+		if (templateData != null) {
+			GoviewProjectData newData = new GoviewProjectData();
+			newData.setProjectId(newProject.getId());
+			newData.setCreateTime(DateUtil.now());
+			newData.setCreateUserId(userId);
+			newData.setContent(templateData.getContent());
+			iGoviewProjectDataService.save(newData);
+		}
+
+		return successData(200, newProject);
+	}
 	
 	
 	@ApiOperation(value = "项目重命名", notes = "项目重命名")

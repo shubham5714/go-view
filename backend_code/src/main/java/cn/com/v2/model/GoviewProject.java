@@ -47,4 +47,9 @@ public class GoviewProject implements Serializable {
 
     private String remarks;
 
+    /**
+     * Whether this project is a reusable template (1) or a normal project (0/null).
+     */
+    private Integer isTemplate;
+
 }

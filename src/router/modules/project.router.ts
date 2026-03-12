@@ -13,7 +13,7 @@ const projectRoutes: RouteRecordRaw = {
   path: PageEnum.BASE_HOME,
   name: PageEnum.BASE_HOME_NAME,
   component: importPath['PageEnum.BASE_HOME_NAME'],
-  redirect: PageEnum.BASE_HOME_ITEMS,
+  redirect: PageEnum.BASE_HOME_TEMPLATE_MARKET,
   meta: {
     title: 'Project',
     isRoot: true

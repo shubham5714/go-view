@@ -8,7 +8,7 @@ export default {
   new_project: 'New Project',
   all_project: 'All Project',
   my_template: 'My Template',
-  template_market: 'Template Market',
+  template_market: 'Choose from Library',
 
   // items 
   release: 'Release',

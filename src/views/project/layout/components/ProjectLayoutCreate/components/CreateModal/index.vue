@@ -28,7 +28,6 @@
             </template>
           </n-button>
         </n-space>
-        <template #action></template>
       </n-card>
     </n-space>
   </n-modal>
@@ -39,7 +38,7 @@ import { ref, watch, shallowRef } from 'vue'
 import { icon } from '@/plugins'
 import { PageEnum, ChartEnum } from '@/enums/pageEnum'
 import { ResultEnum } from '@/enums/httpEnum'
-import { fetchPathByName, routerTurnByPath, renderLang, getUUID } from '@/utils'
+import { fetchPathByName, routerTurnByPath, routerTurnByName, renderLang, getUUID } from '@/utils'
 import { createProjectApi } from '@/api/path'
 import { useSystemStore } from '@/store/modules/systemStore/systemStore'
 
@@ -62,16 +61,10 @@ const typeList = shallowRef([
     disabled: false
   },
   {
-    title: renderLang('project.my_template'),
-    key: PageEnum.BASE_HOME_TEMPLATE_NAME,
-    icon: ObjectStorageIcon,
-    disabled: true
-  },
-  {
     title: renderLang('project.template_market'),
     key: PageEnum.BASE_HOME_TEMPLATE_MARKET_NAME,
     icon: StoreIcon,
-    disabled: true
+    disabled: false
   }
 ])
 
@@ -100,7 +93,7 @@ const btnHandle = async (key: string) => {
           // 工作空间
           workspaceId: (systemStore as any).currentWorkspaceId
         })
-        if(res && res.code === ResultEnum.SUCCESS) {
+        if (res && res.code === ResultEnum.SUCCESS) {
           window['$message'].success(window['$t']('project.create_success'))
 
           const { id } = res.data
@@ -111,7 +104,12 @@ const btnHandle = async (key: string) => {
       } catch (error) {
         window['$message'].error(window['$t']('project.create_failure'))
       }
-      break;
+      break
+    case PageEnum.BASE_HOME_TEMPLATE_MARKET_NAME:
+      // Close modal and route to Library page (same SPA tab)
+      closeHandle()
+      routerTurnByName(PageEnum.BASE_HOME_TEMPLATE_MARKET_NAME)
+      break
   }
 }
 </script>

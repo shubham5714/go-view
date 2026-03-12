@@ -28,6 +28,31 @@ export const createProjectApi = async (data: object) => {
   }
 }
 
+// * List template projects
+export const fetchTemplateProjectsApi = async () => {
+  try {
+    const res = await http(RequestHttpEnum.GET)<{
+      id: string
+      name: string
+      indexImage?: string
+      remarks?: string
+    }[]>(`${ModuleTypeEnum.PROJECT}/templates`)
+    return res
+  } catch {
+    httpErrorHandle()
+  }
+}
+
+// * Create project from template
+export const createProjectFromTemplateApi = async (templateId: string, data: { workspaceId: string; projectName?: string }) => {
+  try {
+    const res = await http(RequestHttpEnum.POST)(`${ModuleTypeEnum.PROJECT}/templates/${templateId}/create`, data)
+    return res
+  } catch {
+    httpErrorHandle()
+  }
+}
+
 // * 获取项目
 export const fetchProjectApi = async (data: object) => {
   try {

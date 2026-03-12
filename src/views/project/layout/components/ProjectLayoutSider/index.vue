@@ -16,6 +16,17 @@
         <div class="go-project-brand">
           DRX EYE
         </div>
+        <div class="go-project-workspace-wrapper go-project-library-wrapper">
+          <div class="go-project-workspace-title">
+            <n-icon size="16" class="go-project-workspace-icon">
+              <DuplicateOutlineIcon />
+            </n-icon>
+            <span>Library</span>
+          </div>
+          <n-button size="small" block @click="goToLibrary">
+            Browse templates
+          </n-button>
+        </div>
         <div class="go-project-workspace-wrapper">
           <div class="go-project-workspace-title">
             <n-icon size="16" class="go-project-workspace-icon">
@@ -58,9 +69,11 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, toRefs } from 'vue'
+import { useRouter } from 'vue-router'
 import { asideWidth } from '@/settings/designSetting'
 import { useSettingStore } from '@/store/modules/settingStore/settingStore'
 import { useSystemStore } from '@/store/modules/systemStore/systemStore'
+import { PageEnum } from '@/enums/pageEnum'
 import { fetchWorkspacesApi, fetchWorkspaceMembersApi } from '@/api/path'
 import { icon } from '@/plugins'
 
@@ -70,6 +83,7 @@ const collapsed = ref<boolean>(false)
 const { getAsideCollapsedWidth } = toRefs(useSettingStore())
 
 const systemStore = useSystemStore()
+const router = useRouter()
 
 const workspaceMenuOptions = computed(() =>
   (systemStore.getWorkspaces || []).map(ws => ({
@@ -86,6 +100,10 @@ const selectedWorkspaceId = computed({
     }
   }
 })
+
+const goToLibrary = () => {
+  router.push({ name: PageEnum.BASE_HOME_TEMPLATE_MARKET_NAME })
+}
 
 const members = ref<any[]>([])
 
@@ -112,6 +130,11 @@ const loadMembers = async (workspaceId: string | undefined) => {
 const onWorkspaceChange = (key: string) => {
   selectedWorkspaceId.value = key
   loadMembers(key)
+  // If user is currently on the Library view, switch back to the normal project list for the selected workspace
+  const current = router.currentRoute.value
+  if (current.name === PageEnum.BASE_HOME_TEMPLATE_MARKET_NAME) {
+    router.push({ name: PageEnum.BASE_HOME_ITEMS_NAME })
+  }
 }
 
 const watchWidth = () => {
