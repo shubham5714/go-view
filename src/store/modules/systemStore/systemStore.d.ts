@@ -37,5 +37,7 @@ export interface SystemStoreType {
   [SystemStoreEnum.USER_INFO]: UserInfoType
   [SystemStoreEnum.FETCH_INFO]: FetchInfoType
   workspaces?: WorkspaceType[]
+  /** @deprecated use currentTenantId — kept for compatibility */
   currentWorkspaceId?: string
+  currentTenantId?: string
 }

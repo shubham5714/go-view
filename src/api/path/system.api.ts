@@ -67,3 +67,28 @@ export const verifyMfaApi = async (data: { username: string; code: string }) => 
     httpErrorHandle()
   }
 }
+
+// * AI-SOC SSO handoff exchange
+export const exchangeSsoCodeApi = async (data: { code: string }) => {
+  try {
+    const res = await http(RequestHttpEnum.POST)<{
+      token: string
+      tokenName: string
+      tenantId: string
+      userinfo: {
+        id?: string
+        username?: string
+        nickname?: string
+      }
+    }>(`${ModuleTypeEnum.SYSTEM}/sso/exchange`, data)
+    return res
+  } catch (err: any) {
+    const msg =
+      err?.response?.data?.msg ||
+      err?.response?.data?.message ||
+      err?.message ||
+      'SSO exchange request failed'
+    window['$message']?.error?.(msg)
+    throw new Error(msg)
+  }
+}

@@ -7,7 +7,10 @@
       <n-layout>
         <layout-header-pro>
           <template #left>
-            <WorkspaceHeaderControls />
+            <n-space align="center" :wrap="false" class="go-project-header-left">
+              <project-layout-create :collapsed="false" />
+              <span class="go-project-tenant-label">Tenant dashboards</span>
+            </n-space>
           </template>
         </layout-header-pro>
         <n-layout
@@ -29,9 +32,9 @@
 
 <script setup lang="ts">
 import { ProjectLayoutSider } from './layout/components/ProjectLayoutSider'
+import { ProjectLayoutCreate } from './layout/components/ProjectLayoutCreate'
 import { LayoutHeaderPro } from '@/layout/components/LayoutHeaderPro'
 import { LayoutTransitionMain } from '@/layout/components/LayoutTransitionMain/index'
-import WorkspaceHeaderControls from './layout/components/WorkspaceHeaderControls/index.vue'
 </script>
 
 <style lang="scss" scoped>
@@ -39,6 +42,13 @@ import WorkspaceHeaderControls from './layout/components/WorkspaceHeaderControls
   .content-top {
     top: $--header-height;
     margin-top: 1px;
+  }
+  &-header-left {
+    padding-left: 8px;
+  }
+  &-tenant-label {
+    font-size: 14px;
+    opacity: 0.85;
   }
 }
 </style>

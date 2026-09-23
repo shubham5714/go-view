@@ -2,7 +2,7 @@
   <div class="go-project-template-market">
     <div class="go-project-template-market-header">
       <h3>Library</h3>
-      <p>Browse common projects and quickly create copies in your workspaces.</p>
+      <p>Browse common projects and quickly create copies for your tenant.</p>
     </div>
 
     <div class="go-project-template-market-content">
@@ -27,7 +27,7 @@
               />
               <div v-if="hoveredId === item.id" class="template-card-overlay">
                 <n-button size="small" type="primary" @click.stop="openCreateModal(item)">
-                  Create
+                  Use
                 </n-button>
               </div>
             </div>
@@ -44,11 +44,6 @@
         <div v-if="selectedTemplate">
           <div class="modal-template-title">{{ selectedTemplate.title }}</div>
         </div>
-        <n-select
-          v-model:value="selectedWorkspaceId"
-          :options="workspaceOptions"
-          placeholder="Select workspace"
-        />
         <n-input
           v-model:value="projectName"
           placeholder="Project name (optional, defaults to template name)"
@@ -66,10 +61,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { ProjectItemsCard } from '@/views/project/items/components/ProjectItemsCard'
 import { fetchTemplateProjectsApi, createProjectFromTemplateApi } from '@/api/path'
-import { useSystemStore } from '@/store/modules/systemStore/systemStore'
 import { fetchPathByName, routerTurnByPath } from '@/utils'
 import { ChartEnum } from '@/enums/pageEnum'
 import { ResultEnum } from '@/enums/httpEnum'
@@ -81,23 +75,13 @@ type TemplateCard = {
   release: boolean
 }
 
-const systemStore = useSystemStore()
-
 const loading = ref(true)
 const list = ref<TemplateCard[]>([])
 const hoveredId = ref<string | null>(null)
 
 const showCreateModal = ref(false)
 const selectedTemplate = ref<TemplateCard | null>(null)
-const selectedWorkspaceId = ref<string | undefined>(undefined)
 const projectName = ref('')
-
-const workspaceOptions = computed(() =>
-  (systemStore.getWorkspaces || []).map((ws: any) => ({
-    label: ws.name,
-    value: ws.id,
-  }))
-)
 
 const loadTemplates = async () => {
   loading.value = true
@@ -117,7 +101,6 @@ const loadTemplates = async () => {
 
 const openCreateModal = (item: TemplateCard) => {
   selectedTemplate.value = item
-  selectedWorkspaceId.value = (systemStore as any).currentWorkspaceId
   projectName.value = ''
   showCreateModal.value = true
 }
@@ -127,14 +110,8 @@ const confirmCreateFromTemplate = async () => {
     window['$message'].error('No template selected')
     return
   }
-  const workspaceId = selectedWorkspaceId.value
-  if (!workspaceId) {
-    window['$message'].error('Please select a workspace first')
-    return
-  }
   try {
     const res = await createProjectFromTemplateApi(selectedTemplate.value.id, {
-      workspaceId,
       projectName: projectName.value.trim() || undefined,
     })
     if (res && res.code === ResultEnum.SUCCESS) {

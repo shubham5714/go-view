@@ -273,7 +273,7 @@ export const useSync = () => {
   }
 
   // * 数据保存
-  const dataSyncUpdate = throttle(async (updateImg = true) => {
+  const dataSyncUpdate = throttle(async (updateImg = true, showMessage = false) => {
     if(!fetchRouteParamsLocation()) return
 
     let projectId = chartEditStore.getProjectInfo[ProjectInfoEnum.PROJECT_ID];
@@ -330,10 +330,16 @@ export const useSync = () => {
       setTimeout(() => {
         chartEditStore.setEditCanvas(EditCanvasTypeEnum.SAVE_STATUS, SyncEnum.SUCCESS)
       }, 1000)
+      if (showMessage) {
+        window['$message'].success('Saved successfully')
+      }
       return
     }
     // 失败状态
     chartEditStore.setEditCanvas(EditCanvasTypeEnum.SAVE_STATUS, SyncEnum.FAILURE)
+    if (showMessage) {
+      window['$message'].error('Save failed, please try again')
+    }
   }, 3000)
 
   // * 定时处理

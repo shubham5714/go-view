@@ -29,10 +29,10 @@ axiosInstance.interceptors.request.use(
     if (includes(fetchAllowList, config.url)) return config
     // 获取 token
     const info = getLocalStorage(StorageEnum.GO_SYSTEM_STORE)
-    // 重新登录
+    // 未登录：跳转登录页并中止请求
     if (!info) {
       routerTurnByName(PageEnum.BASE_LOGIN_NAME)
-      return config
+      return Promise.reject(new Error('Not logged in'))
     }
     const userInfo = info[SystemStoreEnum.USER_INFO]
     config.headers[userInfo[SystemStoreUserInfoEnum.TOKEN_NAME] || 'token'] =  userInfo[SystemStoreUserInfoEnum.USER_TOKEN] || ''
@@ -78,16 +78,10 @@ axiosInstance.interceptors.response.use(
   },
   (err: AxiosError) => {
     const status = err.response?.status
-    switch (status) {
-      case 401:
-        routerTurnByName(PageEnum.BASE_LOGIN_NAME)
-        Promise.reject(err)
-        break
-
-      default:
-        Promise.reject(err)
-        break
+    if (status === 401) {
+      routerTurnByName(PageEnum.BASE_LOGIN_NAME)
     }
+    return Promise.reject(err)
   }
 )
 

@@ -44,7 +44,7 @@ export default ({ mode }) => defineConfig({
   server: {
     host: true,
     open: true,
-    port: 3000,
+    port: Number(loadEnv(mode, process.cwd()).VITE_DEV_PORT || 3001),
     proxy: {
       [axiosPre]: {
         // @ts-ignore

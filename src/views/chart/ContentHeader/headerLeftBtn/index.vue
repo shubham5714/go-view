@@ -35,8 +35,14 @@
       <!-- 保存 -->
       <n-tooltip placement="bottom" trigger="hover">
         <template #trigger>
-          <div class="save-btn" >
-            <n-button size="small" type="primary" ghost @click="dataSyncUpdate()">
+          <div class="save-btn">
+            <n-button
+              size="small"
+              type="primary"
+              ghost
+              :loading="saveLoading"
+              @click="handleSave"
+            >
               <template #icon>
                 <n-icon>
                   <SaveIcon></SaveIcon>
@@ -118,6 +124,19 @@ const historyList = reactive<ItemType<HistoryStackEnum>[]>([
     icon: renderIcon(ArrowForwardIcon)
   }
 ])
+const saveLoading = ref(false)
+
+const handleSave = () => {
+  if (saveLoading.value) return
+  saveLoading.value = true
+  // 手动保存时显示提示信息
+  dataSyncUpdate(true, true)
+  // dataSyncUpdate 由 throttle 包裹，不返回 Promise，这里只负责短暂的加载反馈
+  setTimeout(() => {
+    saveLoading.value = false
+  }, 1200)
+}
+
 
 
 // store 描述的是展示的值，所以和 ContentConfigurations 的 collapsed 是相反的

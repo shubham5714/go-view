@@ -23,22 +23,15 @@ export const useDataListInit = () => {
 
   const systemStore = useSystemStore()
 
-  // 数据请求
+  // 数据请求 — tenant is taken from SSO session on the server
   const fetchList = async () => {
     loading.value = true
-    const workspaceId = (systemStore as any).currentWorkspaceId
-    if (!workspaceId) {
-      list.value = []
-      loading.value = false
-      return
-    }
     const res = await projectListApi({
       page: paginat.page,
-      limit: paginat.limit,
-      workspaceId
+      limit: paginat.limit
     })
     if (res && res.data) {
-      const { count } = res as any // 这里的count与data平级，不在Response结构中
+      const { count } = res as any
       paginat.count = count
       list.value = res.data.map(e => {
         const { id, projectName, state, createTime, indexImage, createUserId, locked } = e as any
@@ -122,9 +115,8 @@ export const useDataListInit = () => {
   // 立即请求
   fetchList()
 
-  // 当切换工作空间时，刷新项目列表
   watch(
-    () => (systemStore as any).currentWorkspaceId,
+    () => (systemStore as any).currentTenantId || (systemStore as any).currentWorkspaceId,
     () => {
       fetchList()
     }

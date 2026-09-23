@@ -89,9 +89,7 @@ const btnHandle = async (key: string) => {
           // remarks
           remarks: null,
           // 图片地址
-          indexImage: null,
-          // 工作空间
-          workspaceId: (systemStore as any).currentWorkspaceId
+          indexImage: null
         })
         if (res && res.code === ResultEnum.SUCCESS) {
           window['$message'].success(window['$t']('project.create_success'))

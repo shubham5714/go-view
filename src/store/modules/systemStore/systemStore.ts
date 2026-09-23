@@ -21,7 +21,8 @@ export const useSystemStore = defineStore({
       OSSUrl: undefined
     },
     workspaces: [],
-    currentWorkspaceId: undefined
+    currentWorkspaceId: undefined,
+    currentTenantId: undefined
   },
   getters: {
     getUserInfo(): UserInfoType {
@@ -34,7 +35,10 @@ export const useSystemStore = defineStore({
       return this.workspaces
     },
     getCurrentWorkspaceId(): string | undefined {
-      return this.currentWorkspaceId
+      return this.currentWorkspaceId || this.currentTenantId
+    },
+    getCurrentTenantId(): string | undefined {
+      return this.currentTenantId || this.currentWorkspaceId
     },
   },
   actions: {

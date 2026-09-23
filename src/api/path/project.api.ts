@@ -44,7 +44,7 @@ export const fetchTemplateProjectsApi = async () => {
 }
 
 // * Create project from template
-export const createProjectFromTemplateApi = async (templateId: string, data: { workspaceId: string; projectName?: string }) => {
+export const createProjectFromTemplateApi = async (templateId: string, data: { projectName?: string } = {}) => {
   try {
     const res = await http(RequestHttpEnum.POST)(`${ModuleTypeEnum.PROJECT}/templates/${templateId}/create`, data)
     return res

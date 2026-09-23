@@ -6,6 +6,8 @@ import { loginCheck } from '@/utils'
 const routerAllowList = [
   // 登录
   PageEnum.BASE_LOGIN_NAME,
+  // AI-SOC SSO
+  PageEnum.BASE_SSO_NAME,
   // 预览
   PreviewEnum.CHART_PREVIEW_NAME
 ]
@@ -25,11 +27,18 @@ export function createRouterGuards(router: Router) {
     const isErrorPage = router.getRoutes().findIndex((item) => item.name === to.name);
     if (isErrorPage === -1) {
       next({ name: PageEnum.ERROR_PAGE_NAME_404 })
+      return
     }
 
     // @ts-ignore
     if (!routerAllowList.includes(to.name) && !loginCheck()) {
+      const aiSocUrl = (import.meta.env.VITE_AI_SOC_URL as string | undefined)?.replace(/\/$/, '')
+      if (import.meta.env.VITE_AUTH_MODE === 'sso' && aiSocUrl) {
+        window.location.href = `${aiSocUrl}/dashboards/goview`
+        return
+      }
       next({ name: PageEnum.BASE_LOGIN_NAME })
+      return
     }
     next()
   })
