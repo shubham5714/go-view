@@ -10,6 +10,7 @@ import { addCollection } from 'iconify-icon'
 import uimIcons from '@iconify/json/json/uim.json'
 import lineMdIcons from '@iconify/json/json/line-md.json'
 import wiIcons from '@iconify/json/json/wi.json'
+import mdiIcons from '@iconify/json/json/mdi.json'
 
 // 引入全局样式
 import '@/styles/pages/index.scss'
@@ -21,6 +22,7 @@ import 'vue3-sketch-ruler/lib/style.css'
 addCollection(uimIcons)
 addCollection(lineMdIcons)
 addCollection(wiIcons)
+addCollection(mdiIcons)
 
 async function appInit() {
   const goAppProvider = createApp(GoAppProvider)

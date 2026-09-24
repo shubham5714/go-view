@@ -7,26 +7,26 @@ import cloneDeep from 'lodash/cloneDeep'
 
 export const types = [
   {
-    label: '线形',
+    label: 'Line',
     value: 'line'
   },
   {
-    label: '圆形',
+    label: 'Circle',
     value: 'circle'
   },
   {
-    label: '仪表盘',
+    label: 'Gauge',
     value: 'dashboard'
   },
 ]
 
 export const indicatorPlacements = [
   {
-    label: '内部',
+    label: 'Inside',
     value: 'inside'
   },
   {
-    label: '外部',
+    label: 'Outside',
     value: 'outside'
   }
 ]

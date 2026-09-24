@@ -4,8 +4,8 @@ import { TextCommonConfig } from './index'
 import cloneDeep from 'lodash/cloneDeep'
 
 export enum WritingModeEnum {
-  HORIZONTAL = '水平',
-  VERTICAL = '垂直'
+  HORIZONTAL = 'Horizontal',
+  VERTICAL = 'Vertical'
 }
 
 export const WritingModeObject = {
@@ -14,8 +14,8 @@ export const WritingModeObject = {
 }
 
 export enum FontWeightEnum {
-  NORMAL = '常规',
-  BOLD = '加粗',
+  NORMAL = 'Normal',
+  BOLD = 'Bold',
 }
 
 export const FontWeightObject = {
@@ -26,7 +26,7 @@ export const FontWeightObject = {
 export const option = {
   link: '',
   linkHead: 'http://',
-  dataset: '我是文本',
+  dataset: 'Sample text',
   fontSize: 20,
   fontColor: '#ffffff',
   paddingX: 10,

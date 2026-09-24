@@ -34,7 +34,7 @@
     :on-clickoutside="onClickOutSide"
     @select="handleMenuSelect"
   ></n-dropdown>
-  <!-- 加载蒙层 -->
+  <!-- 单一编辑器启动加载层 -->
   <content-load></content-load>
 </template>
 
@@ -44,20 +44,28 @@ import { LayoutHeaderPro } from '@/layout/components/LayoutHeaderPro'
 import { useContextMenu } from './hooks/useContextMenu.hook'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { useChartHistoryStore } from '@/store/modules/chartHistoryStore/chartHistoryStore'
+import { useChartLayoutStore } from '@/store/modules/chartLayoutStore/chartLayoutStore'
+import { ChartLayoutStoreEnum } from '@/store/modules/chartLayoutStore/chartLayoutStore.d'
+import { ContentLoad } from './ContentLoad'
+
+const quiet = { loading: false } as const
 
 const chartHistoryStoreStore = useChartHistoryStore()
 const chartEditStore = useChartEditStore()
+const chartLayoutStore = useChartLayoutStore()
+
+// Show one boot overlay immediately; cleared when project data finishes loading
+chartLayoutStore.setItemUnHandle(ChartLayoutStoreEnum.PERCENTAGE, 1)
 
 // 记录初始化
 chartHistoryStoreStore.canvasInit(chartEditStore.getEditCanvas)
 
-const HeaderLeftBtn = loadAsyncComponent(() => import('./ContentHeader/headerLeftBtn/index.vue'))
-const HeaderRightBtn = loadAsyncComponent(() => import('./ContentHeader/headerRightBtn/index.vue'))
-const HeaderTitle = loadAsyncComponent(() => import('./ContentHeader/headerTitle/index.vue'))
-const ContentLayers = loadAsyncComponent(() => import('./ContentLayers/index.vue'))
-const ContentCharts = loadAsyncComponent(() => import('./ContentCharts/index.vue'))
-const ContentConfigurations = loadAsyncComponent(() => import('./ContentConfigurations/index.vue'))
-const ContentLoad = loadAsyncComponent(() => import('./ContentLoad/index.vue'))
+const HeaderLeftBtn = loadAsyncComponent(() => import('./ContentHeader/headerLeftBtn/index.vue'), quiet)
+const HeaderRightBtn = loadAsyncComponent(() => import('./ContentHeader/headerRightBtn/index.vue'), quiet)
+const HeaderTitle = loadAsyncComponent(() => import('./ContentHeader/headerTitle/index.vue'), quiet)
+const ContentLayers = loadAsyncComponent(() => import('./ContentLayers/index.vue'), quiet)
+const ContentCharts = loadAsyncComponent(() => import('./ContentCharts/index.vue'), quiet)
+const ContentConfigurations = loadAsyncComponent(() => import('./ContentConfigurations/index.vue'), quiet)
 
 // 右键
 const {

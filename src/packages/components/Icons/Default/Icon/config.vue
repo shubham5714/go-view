@@ -1,15 +1,15 @@
 <template>
-  <collapse-item name="属性" :expanded="true">
-    <setting-item-box name="样式">
-      <setting-item name="颜色">
+  <collapse-item name="Properties" :expanded="true">
+    <setting-item-box name="Style">
+      <setting-item name="Color">
         <n-color-picker size="small" :modes="['hex']" v-model:value="optionData.color"></n-color-picker>
       </setting-item>
-      <setting-item name="尺寸">
-        <n-input-number v-model:value="optionData.size" size="small" :min="0" placeholder="尺寸"></n-input-number>
+      <setting-item name="Size">
+        <n-input-number v-model:value="optionData.size" size="small" :min="0" placeholder="Size"></n-input-number>
       </setting-item>
     </setting-item-box>
-    <setting-item-box name="快捷旋转">
-      <setting-item name="也可使用通用的【变换】来旋转">
+    <setting-item-box name="Quick rotate">
+      <setting-item name="You can also use the common [Transform] to rotate">
         <n-select v-model:value="optionData.rotate" size="small" :options="rotateMode"></n-select>
       </setting-item>
     </setting-item-box>

@@ -27,7 +27,7 @@
                 <img
                   class="login-account-top-logo"
                   src="~@/assets/images/login/input.png"
-                  alt="展示图片"
+                  alt="Login illustration"
                 />
               </div>
               <!-- Login form -->
@@ -481,7 +481,7 @@ const handleSubmit = async (e: Event) => {
         }
 
         window['$message'].success(t('login.login_success'))
-        routerTurnByName(PageEnum.BASE_HOME_NAME, true)
+        routerTurnByName(PageEnum.BASE_HOME_ITEMS_NAME, true)
       }
       loading.value = false
     } else {
@@ -531,7 +531,7 @@ const handleVerifyMfa = async () => {
     showMfaModal.value = false
     mfaCode.value = ''
     pendingUsername.value = ''
-    routerTurnByName(PageEnum.BASE_HOME_NAME, true)
+    routerTurnByName(PageEnum.BASE_HOME_ITEMS_NAME, true)
   }
   loading.value = false
 }

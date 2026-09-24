@@ -44,7 +44,7 @@ import { useInitVChartsTheme } from '@/hooks'
 await getSessionStorageInfo()
 const chartEditStore = useChartEditStore() as unknown as ChartEditStorageType
 
-setTitle(`预览-${chartEditStore.editCanvasConfig.projectName}`)
+setTitle(`Preview - ${chartEditStore.editCanvasConfig.projectName}`)
 
 const previewRefStyle = computed(() => {
   return {

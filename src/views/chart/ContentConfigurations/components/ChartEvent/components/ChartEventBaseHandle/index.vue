@@ -7,7 +7,7 @@
             <pencil-icon />
           </n-icon>
         </template>
-        编辑
+        Edit
       </n-button>
     </template>
     <n-card class="collapse-show-box">
@@ -70,25 +70,25 @@
         >
           <n-tabs default-value="1" justify-content="space-evenly" type="segment">
             <!-- 验证结果 -->
-            <n-tab-pane tab="验证结果" name="1" size="small">
+            <n-tab-pane tab="Validation" name="1" size="small">
               <n-scrollbar trigger="none" style="max-height: 505px">
                 <n-collapse class="go-px-3" arrow-placement="right" :default-expanded-names="[1, 2, 3]">
                   <template v-for="error in [validEvents()]" :key="error">
-                    <n-collapse-item title="错误函数" :name="1">
-                      <n-text depth="3">{{ error.errorFn || '暂无' }}</n-text>
+                    <n-collapse-item title="Error function" :name="1">
+                      <n-text depth="3">{{ error.errorFn || 'None' }}</n-text>
                     </n-collapse-item>
-                    <n-collapse-item title="错误信息" :name="2">
-                      <n-text depth="3">{{ error.name || '暂无' }}</n-text>
+                    <n-collapse-item title="Error message" :name="2">
+                      <n-text depth="3">{{ error.name || 'None' }}</n-text>
                     </n-collapse-item>
-                    <n-collapse-item title="堆栈信息" :name="3">
-                      <n-text depth="3">{{ error.message || '暂无' }}</n-text>
+                    <n-collapse-item title="Stack trace" :name="3">
+                      <n-text depth="3">{{ error.message || 'None' }}</n-text>
                     </n-collapse-item>
                   </template>
                 </n-collapse>
               </n-scrollbar>
             </n-tab-pane>
             <!-- 辅助说明 -->
-            <n-tab-pane tab="变量说明" name="2">
+            <n-tab-pane tab="Variables" name="2">
               <n-scrollbar trigger="none" style="max-height: 505px">
                 <n-collapse class="go-px-3" arrow-placement="right" :default-expanded-names="[1, 2]">
                   <n-collapse-item title="mouseEvent" :name="1">
@@ -108,14 +108,14 @@
               <template #icon>
                 <n-icon :component="DocumentTextIcon" />
               </template>
-              说明
+              Notes
             </n-tag>
-            <n-text class="go-ml-2" depth="2">编写方式同正常 JavaScript 写法</n-text>
+            <n-text class="go-ml-2" depth="2">Write it like normal JavaScript</n-text>
           </div>
 
           <n-space>
-            <n-button size="medium" @click="closeEvents">取消</n-button>
-            <n-button size="medium" type="primary" @click="saveEvents">保存</n-button>
+            <n-button size="medium" @click="closeEvents">Cancel</n-button>
+            <n-button size="medium" type="primary" @click="saveEvents">Save</n-button>
           </n-space>
         </n-space>
       </template>
@@ -134,10 +134,10 @@ const { targetData, chartEditStore } = useTargetData()
 const { DocumentTextIcon, ChevronDownIcon, PencilIcon } = icon.ionicons5
 
 const EventTypeName = {
-  [BaseEvent.ON_CLICK]: '单击',
-  [BaseEvent.ON_DBL_CLICK]: '双击',
-  [BaseEvent.ON_MOUSE_ENTER]: '鼠标进入',
-  [BaseEvent.ON_MOUSE_LEAVE]: '鼠标移出'
+  [BaseEvent.ON_CLICK]: 'Click',
+  [BaseEvent.ON_DBL_CLICK]: 'Double-click',
+  [BaseEvent.ON_MOUSE_ENTER]: 'Mouse enter',
+  [BaseEvent.ON_MOUSE_LEAVE]: 'Mouse leave'
 }
 
 // 受控弹窗

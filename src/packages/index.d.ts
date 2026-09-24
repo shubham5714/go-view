@@ -189,7 +189,7 @@ export enum PackagesCategoryName {
   CHARTS = 'Chart',
   VCHART = 'VChart',
   TABLES = 'List',
-  INFORMATIONS = 'Information',
+  INFORMATIONS = 'Info',
   PHOTOS = 'Image',
   ICONS = 'Icon',
   DECORATES = 'Widget'

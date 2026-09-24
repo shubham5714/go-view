@@ -5,7 +5,7 @@ export const DialConfig: ConfigType = {
   key: 'Dial',
   chartKey: 'VDial',
   conKey: 'VCDial',
-  title: '表盘',
+  title: 'Dial',
   category: ChatCategoryEnum.MORE,
   categoryName: ChatCategoryEnumName.MORE,
   package: PackagesCategoryEnum.CHARTS,

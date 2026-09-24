@@ -5,7 +5,7 @@ export const ThreeEarth01Config: ConfigType = {
   key: 'ThreeEarth01',
   chartKey: 'VThreeEarth01',
   conKey: 'VCThreeEarth01',
-  title: '三维地球',
+  title: '3D Earth',
   category: ChatCategoryEnum.THREE,
   categoryName: ChatCategoryEnumName.THREE,
   package: PackagesCategoryEnum.DECORATES,

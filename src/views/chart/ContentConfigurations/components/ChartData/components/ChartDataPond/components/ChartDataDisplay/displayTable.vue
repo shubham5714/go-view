@@ -14,10 +14,10 @@
     <tbody>
       <tr v-for="(item, index) in tableArray.content" :key="index">
         <td>
-          {{ item.key || '暂无'}}
+          {{ item.key || 'None'}}
         </td>
         <td>
-          {{ item.value  || '暂无'}}
+          {{ item.value  || 'None'}}
         </td>
       </tr>
     </tbody>

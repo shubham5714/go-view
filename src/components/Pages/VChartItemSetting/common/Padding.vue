@@ -1,5 +1,5 @@
 <template>
-  <setting-item name="间距">
+  <setting-item name="Padding">
     <n-input v-model:value="paddingArray" size="small" @update:value="updateHandle"/>
   </setting-item>
 </template>

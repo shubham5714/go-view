@@ -1,12 +1,12 @@
 <template>
   <div class="go-edit-data-sync go-flex-items-center">
-    <n-tooltip trigger="hover">
+    <n-tooltip v-if="statusDesc" trigger="hover">
       <template #trigger>
         <n-text class="status-desc go-ml-2" :type="descType" depth="3">
           {{ statusDesc }}
         </n-text>
       </template>
-      <span>{{saveInterval}}s 更新一次</span>
+      <span>Auto-saves every {{ saveInterval }}s</span>
     </n-tooltip>
     <n-spin
       v-show="statusDesc === statusDescObj[1]['text']"
@@ -44,19 +44,19 @@ let setTimeoutIns: NodeJS.Timeout = setTimeout(() => {})
 
 const statusDescObj = {
   [SyncEnum.PENDING]: {
-    text: '等待自动同步',
+    text: '',
     type: '',
   },
   [SyncEnum.START]: {
-    text: '正在同步中',
-    type: 'success',
+    text: 'Saving…',
+    type: '',
   },
   [SyncEnum.SUCCESS]: {
-    text: '同步成功！',
+    text: 'Saved',
     type: 'success',
   },
   [SyncEnum.FAILURE]: {
-    text: '同步失败!',
+    text: 'Save failed',
     type: 'error',
   },
 }
@@ -67,11 +67,15 @@ watch(
     clearTimeout(setTimeoutIns)
     statusDesc.value = statusDescObj[newData]['text']
     descType.value = statusDescObj[newData]['type']
-    // 3秒重置展示
-    setTimeoutIns = setTimeout(() => {
-      statusDesc.value = statusDescObj[SyncEnum.PENDING]['text']
-      descType.value = statusDescObj[SyncEnum.PENDING]['type']
-    }, 3000)
+    if (newData === SyncEnum.PENDING) return
+    // Brief status only — avoid lingering chrome
+    const holdMs = newData === SyncEnum.SUCCESS ? 1400 : newData === SyncEnum.START ? 0 : 2200
+    if (holdMs > 0) {
+      setTimeoutIns = setTimeout(() => {
+        statusDesc.value = statusDescObj[SyncEnum.PENDING]['text']
+        descType.value = statusDescObj[SyncEnum.PENDING]['type']
+      }, holdMs)
+    }
   },
   {
     immediate: true,

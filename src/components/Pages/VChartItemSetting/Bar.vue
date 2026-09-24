@@ -1,17 +1,17 @@
 <template>
   <template v-if="optionData.bar">
-    <collapse-item name="柱体">
-      <SettingItemBox name="样式">
-        <setting-item v-if="'width' in optionData.bar.style" name="宽度">
+    <collapse-item name="Bar">
+      <SettingItemBox name="Style">
+        <setting-item v-if="'width' in optionData.bar.style" name="Width">
           <n-input-number v-model:value="optionData.bar.style.width" size="small" :min="1"></n-input-number>
         </setting-item>
-        <setting-item v-if="'height' in (optionData.bar.style as any)" name="高度">
+        <setting-item v-if="'height' in (optionData.bar.style as any)" name="Height">
           <n-input-number v-model:value="(optionData.bar.style as any).height" size="small" :min="1"></n-input-number>
         </setting-item>
-        <setting-item name="圆角大小">
+        <setting-item name="Corner Radius">
           <n-input-number v-model:value="optionData.bar.style.cornerRadius" size="small" :min="0"></n-input-number>
         </setting-item>
-        <setting-item name="填充透明度">
+        <setting-item name="Fill Opacity">
           <n-input-number
             v-model:value="optionData.bar.style.fillOpacity"
             :step="0.1"
@@ -20,7 +20,7 @@
             :max="1"
           ></n-input-number>
         </setting-item>
-        <setting-item name="整体透明度">
+        <setting-item name="Opacity">
           <n-input-number
             v-model:value="optionData.bar.style.opacity"
             :step="0.1"
@@ -29,7 +29,7 @@
             :max="1"
           ></n-input-number>
         </setting-item>
-        <setting-item name="纹理类型">
+        <setting-item name="Texture">
           <n-select v-model:value="optionData.bar.style.texture" :options="styleConfig.texture" size="small"></n-select>
         </setting-item>
       </SettingItemBox>

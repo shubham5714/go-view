@@ -1,27 +1,27 @@
 <template>
-  <collapse-item name="展示方式" :expanded="true">
-    <setting-item-box name="选择方式">
+  <collapse-item name="Display mode" :expanded="true">
+    <setting-item-box name="Select mode">
       <n-select v-model:value="optionData.isPanel" size="small" :options="panelOptions" />
     </setting-item-box>
   </collapse-item>
 
-  <collapse-item name="时间配置" :expanded="true">
-    <setting-item-box name="基础">
-      <setting-item name="类型">
+  <collapse-item name="Time config" :expanded="true">
+    <setting-item-box name="Basic">
+      <setting-item name="Type">
         <n-select v-model:value="optionData.componentInteractEventKey" size="small" :options="datePickerTypeOptions"
                   @update:value="datePickerTypeUpdate"/>
       </setting-item>
     </setting-item-box>
 
-    <setting-item-box name="默认值">
-      <setting-item name="类型">
+    <setting-item-box name="Default value">
+      <setting-item name="Type">
         <n-select v-model:value="optionData.defaultType" size="small" :options="defaultTypeOptions"
                   @update:value="defaultTypeUpdate" />
       </setting-item>
 
     </setting-item-box>
     <setting-item-box v-if="optionData.defaultType === DefaultTypeEnum.STATIC" :alone="true">
-      <setting-item name="静态默认值">
+      <setting-item name="Static default">
         <n-date-picker size="small" clearable v-model:value="optionData.dataset" :type="optionData.componentInteractEventKey" />
       </setting-item>
     </setting-item-box>
@@ -34,7 +34,7 @@
               <help-outline-icon></help-outline-icon>
             </n-icon>
           </template>
-          <span>打开页面时浏览器操作系统的系统时间+偏移量(单位)</span>
+          <span>System time when page opens + offset (unit)</span>
         </n-tooltip>
       </template>
       <setting-item :name="differValueName">
@@ -47,14 +47,14 @@
       <setting-item :name="differUnitName">
         <n-select v-model:value="optionData.differUnit[0]" size="small" :options="differUnitOptions" />
       </setting-item>
-      <setting-item v-if="isRange" name="结束值动态偏移量">
+      <setting-item v-if="isRange" name="End value dynamic offset">
         <n-input-number v-model:value="optionData.differValue[1]" class="input-num-width" size="small">
           <template #suffix>
             {{DifferUnitObject[optionData.differUnit[1]]}}
           </template>
         </n-input-number>
       </setting-item>
-      <setting-item v-if="isRange" name="结束值偏移单位">
+      <setting-item v-if="isRange" name="End value offset unit">
         <n-select v-model:value="optionData.differUnit[1]" size="small" :options="differUnitOptions" />
       </setting-item>
     </setting-item-box>
@@ -81,65 +81,65 @@ const props = defineProps({
 
 const panelOptions = [
   {
-    label: '下拉展示',
+    label: 'Dropdown display',
     value: 0
   },
   {
-    label: '面板展示',
+    label: 'Panel display',
     value: 1
   }
 ]
 
 const datePickerTypeOptions = [
   {
-    label: '日期',
+    label: 'Date',
     value: ComponentInteractEventEnum.DATE
   },
   {
-    label: '日期时间',
+    label: 'Date time',
     value: ComponentInteractEventEnum.DATE_TIME
   },
   {
-    label: '日期范围',
+    label: 'Date range',
     value: ComponentInteractEventEnum.DATE_RANGE
   },
   {
-    label: '月份',
+    label: 'Month',
     value: ComponentInteractEventEnum.MONTH
   },
   {
-    label: '月份范围',
+    label: 'Month range',
     value: ComponentInteractEventEnum.MONTH_RANGE
   },
   {
-    label: '年份',
+    label: 'Year',
     value: ComponentInteractEventEnum.YEAR
   },
   {
-    label: '年份范围',
+    label: 'Year range',
     value: ComponentInteractEventEnum.YEAR_RANGE
   },
   {
-    label: '季度',
+    label: 'Quarter',
     value: ComponentInteractEventEnum.QUARTER
   },
   {
-    label: '季度范围',
+    label: 'Quarter range',
     value: ComponentInteractEventEnum.QUARTER_RANGE
   }
 ]
 
 const defaultTypeOptions = [
   {
-    label: '静态',
+    label: 'Static',
     value: DefaultTypeEnum.STATIC
   },
   {
-    label: '动态',
+    label: 'Dynamic',
     value: DefaultTypeEnum.DYNAMIC
   },
   {
-    label: '无',
+    label: 'None',
     value: DefaultTypeEnum.NONE
   }
 ]
@@ -191,11 +191,11 @@ const isRange = computed(() => {
 })
 
 const differValueName = computed(() => {
-  return isRange.value ? '开始值动态偏移量' : '动态偏移量'
+  return isRange.value ? 'Start value dynamic offset' : 'Dynamic offset'
 })
 
 const differUnitName = computed(() => {
-  return isRange.value ? '开始值偏移单位' : '偏移单位'
+  return isRange.value ? 'Start value offset unit' : 'Offset unit'
 })
 
 const datePickerTypeUpdate = () => {

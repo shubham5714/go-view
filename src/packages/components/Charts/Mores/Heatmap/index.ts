@@ -5,7 +5,7 @@ export const HeatmapConfig: ConfigType = {
   key: 'Heatmap',
   chartKey: 'VHeatmap',
   conKey: 'VCHeatmap',
-  title: '热力图',
+  title: 'Heatmap',
   category: ChatCategoryEnum.MORE,
   categoryName: ChatCategoryEnumName.MORE,
   package: PackagesCategoryEnum.CHARTS,

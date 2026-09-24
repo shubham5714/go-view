@@ -28,7 +28,7 @@ export const option: IBarOption & { dataset?: any } = {
   category: VChartBarCrossrangeConfig.category as ChatCategoryEnum.BAR,
   direction: 'horizontal',
   xAxis: {
-    name: 'x轴',
+    name: 'X Axis',
     ...(merge(cloneDeep(axisThemeJson), {
       unit: {
         style: {
@@ -43,7 +43,7 @@ export const option: IBarOption & { dataset?: any } = {
     }
   },
   yAxis: {
-    name: 'y轴',
+    name: 'Y Axis',
     ...(merge(cloneDeep(axisThemeJson), {
       unit: {
         style: {

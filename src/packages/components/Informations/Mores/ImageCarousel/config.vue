@@ -1,71 +1,71 @@
 <template>
-  <collapse-item name="路径" :expanded="true">
+  <collapse-item name="Path" :expanded="true">
       <setting-item v-for="(item, index) in optionData.dataset" :key="index">
         <n-input-group>
-          <n-input v-model:value="optionData.dataset[index]" size="small" placeholder="请输入图片地址"></n-input>
+          <n-input v-model:value="optionData.dataset[index]" size="small" placeholder="Please enter image URL"></n-input>
           <n-button ghost @click="optionData.dataset.splice(index, 1)"> - </n-button>
         </n-input-group>
       </setting-item>
       <setting-item>
-        <n-button size="small" @click="optionData.dataset.push('')"> + 新增</n-button>
+        <n-button size="small" @click="optionData.dataset.push('')"> + Add</n-button>
       </setting-item>
   </collapse-item>
-  <collapse-item name="轮播属性" :expanded="true">
-    <setting-item-box name="播放器">
+  <collapse-item name="Carousel props" :expanded="true">
+    <setting-item-box name="Player">
       <setting-item>
         <n-space>
           <n-switch v-model:value="optionData.autoplay" size="small" />
-          <n-text>自动播放</n-text>
+          <n-text>Autoplay</n-text>
         </n-space>
       </setting-item>
       <!-- 开启自动播放时，设置间隔时间 -->
-      <setting-item name="间隔时间">
+      <setting-item name="Interval">
         <n-input-number v-model:value="optionData.interval" size="small" placeholder="">
-          <template #suffix> 毫秒 </template>
+          <template #suffix> Millisecond </template>
         </n-input-number>
       </setting-item>
-      <setting-item name="轮播方向">
-        <n-select v-model:value="optionData.direction" :options="directions" placeholder="选择方向" />
+      <setting-item name="Carousel direction">
+        <n-select v-model:value="optionData.direction" :options="directions" placeholder="Select direction" />
       </setting-item>
-      <setting-item name="过渡效果">
-        <n-select v-model:value="optionData.effect" :options="effects" placeholder="效果" />
+      <setting-item name="Transition">
+        <n-select v-model:value="optionData.effect" :options="effects" placeholder="Effect" />
       </setting-item>
-      <setting-item name="每页数量">
+      <setting-item name="Page size">
         <n-input-number v-model:value="optionData.slidesPerview" size="small" placeholder=""></n-input-number>
       </setting-item>
       <setting-item>
         <n-space>
           <n-switch v-model:value="optionData.centeredSlides" size="small" />
-          <n-text>居中显示</n-text>
+          <n-text>Center display</n-text>
         </n-space>
       </setting-item>
-      <setting-item name="图片样式">
-        <n-select v-model:value="optionData.fit" :options="fitList" placeholder="样式" />
+      <setting-item name="Image style">
+        <n-select v-model:value="optionData.fit" :options="fitList" placeholder="Style" />
       </setting-item>
     </setting-item-box>
-    <setting-item-box name="指示器">
-      <setting-item name="样式">
-        <n-select v-model:value="optionData.dotType" :options="dotTypes" placeholder="选择样式" />
+    <setting-item-box name="Indicator">
+      <setting-item name="Style">
+        <n-select v-model:value="optionData.dotType" :options="dotTypes" placeholder="Select style" />
       </setting-item>
-      <setting-item name="位置">
-        <n-select v-model:value="optionData.dotPlacement" :options="dotPlacements" placeholder="选择位置" />
+      <setting-item name="Position">
+        <n-select v-model:value="optionData.dotPlacement" :options="dotPlacements" placeholder="Select position" />
       </setting-item>
       <setting-item>
         <n-space>
           <n-switch v-model:value="optionData.showDots" size="small" />
-          <n-text>显示</n-text>
+          <n-text>Show</n-text>
         </n-space>
       </setting-item>
       <setting-item>
         <n-space>
           <n-switch v-model:value="optionData.showArrow" size="small" />
-          <n-text>箭头</n-text>
+          <n-text>Arrow</n-text>
         </n-space>
       </setting-item>
       <setting-item>
         <n-space>
           <n-switch v-model:value="optionData.draggable" size="small" />
-          <n-text>拖曳切换</n-text>
+          <n-text>Drag to switch</n-text>
         </n-space>
       </setting-item>
     </setting-item-box>
@@ -87,21 +87,21 @@ const props = defineProps({
 // 字典
 const dotTypes = [
   {
-    label: '点',
+    label: 'Dot',
     value: 'dot'
   },
   {
-    label: '线',
+    label: 'Line',
     value: 'line'
   }
 ]
 const directions = [
   {
-    label: '水平方向',
+    label: 'Horizontal',
     value: 'horizontal'
   },
   {
-    label: '垂直方向',
+    label: 'Vertical',
     value: 'vertical'
   }
 ]
@@ -125,19 +125,19 @@ const effects = [
 ]
 const dotPlacements = [
   {
-    label: '上边',
+    label: 'Top',
     value: 'top'
   },
   {
-    label: '下边',
+    label: 'Bottom',
     value: 'bottom'
   },
   {
-    label: '左边',
+    label: 'Left',
     value: 'left'
   },
   {
-    label: '右边',
+    label: 'Right',
     value: 'right'
   }
 ]

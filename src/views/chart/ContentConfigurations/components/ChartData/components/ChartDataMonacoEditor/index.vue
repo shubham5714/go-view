@@ -15,9 +15,9 @@
                 <filter-edit-icon />
               </n-icon>
             </template>
-            编辑
+            Edit
           </n-button>
-          <n-button tertiary size="small" @click="delFilter"> 删除 </n-button>
+          <n-button tertiary size="small" @click="delFilter"> Delete </n-button>
         </n-space>
       </template>
     </n-card>
@@ -29,7 +29,7 @@
           <filter-icon />
         </n-icon>
       </template>
-      新增过滤器
+      Add filter
     </n-button>
   </template>
 
@@ -38,7 +38,7 @@
     <n-card :bordered="false" role="dialog" size="small" aria-modal="true" style="width: 1000px; height: 600px">
       <template #header>
         <n-space>
-          <n-text>过滤器函数编辑器</n-text>
+          <n-text>Filter function editor</n-text>
         </n-space>
       </template>
       <template #header-extra> </template>
@@ -132,7 +132,7 @@ const fetchTargetData = async () => {
       sourceData.value = res
       return
     }
-    window['$message'].warning('没有拿到返回值，请检查接口！')
+    window['$message'].warning('No response. Check the API.')
   } catch (error) {
     console.error(error);
     window['$message'].warning('Data error. Check parameters.')
@@ -151,7 +151,7 @@ const filterRes = computed(() => {
   } catch (error) {
     // eslint-disable-next-line vue/no-side-effects-in-computed-properties
     errorFlag.value = true
-    return `过滤函数错误，日志：${error}`
+    return `Filter function error. Log: ${error}`
   }
 })
 
@@ -178,7 +178,7 @@ const closeFilter = () => {
 // 新增过滤器
 const saveFilter = () => {
   if (errorFlag.value) {
-    window['$message'].error('过滤函数错误，无法进行保存')
+    window['$message'].error('Filter function error. Cannot save.')
     return
   }
   targetData.value.filter = filter.value

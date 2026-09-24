@@ -56,7 +56,7 @@
       </div>
     </setting-item>
   </setting-item-box>
-  <setting-item-box name="选择方式" class="go-mt-0">
+  <setting-item-box name="Select method" class="go-mt-0">
     <request-header :targetDataRequest="targetDataRequest"></request-header>
   </setting-item-box>
 </template>
@@ -105,61 +105,61 @@ const { requestInterval, requestIntervalUnit, requestHttpType, requestUrl, usePr
 
 const apiList = [
   {
-    value: `【图表】${chartDataUrl}`
+    value: `[Chart] ${chartDataUrl}`
   },
   {
-    value: `【单数据图表】${chartSingleDataUrl}`
+    value: `[Single-value chart] ${chartSingleDataUrl}`
   },
   {
-    value: `【文本】${textUrl}`
+    value: `[Text] ${textUrl}`
   },
   {
-    value: `【0~100 整数】${numberIntUrl}`
+    value: `[Integer 0–100] ${numberIntUrl}`
   },
   {
-    value: `【0~1小数】${numberFloatUrl}`
+    value: `[Decimal 0–1] ${numberFloatUrl}`
   },
   {
-    value: `【图片地址】${imageUrl}`
+    value: `[Image URL] ${imageUrl}`
   },
   {
-    value: `【排名列表】${rankListUrl}`
+    value: `[Rank list] ${rankListUrl}`
   },
   {
-    value: `【滚动表格】${scrollBoardUrl}`
+    value: `[Scrolling table] ${scrollBoardUrl}`
   },
   {
-    value: `【雷达】${radarUrl}`
+    value: `[Radar] ${radarUrl}`
   },
   {
-    value: `【热力图】${heatMapUrl}`
+    value: `[Heatmap] ${heatMapUrl}`
   },
   {
-    value: `【基础散点图】${scatterBasicUrl}`
+    value: `[Basic scatter] ${scatterBasicUrl}`
   },
   {
-    value: `【地图数据】${mapUrl}`
+    value: `[Map data] ${mapUrl}`
   },
   {
-    value: `【胶囊柱图】${capsuleUrl}`
+    value: `[Capsule bar] ${capsuleUrl}`
   },
   {
-    value: `【词云】${wordCloudUrl}`
+    value: `[Word cloud] ${wordCloudUrl}`
   },
   {
-    value: `【树图】${treemapUrl}`
+    value: `[Treemap] ${treemapUrl}`
   },
   {
-    value: `【三维地球】${threeEarth01Url}`
+    value: `[3D globe] ${threeEarth01Url}`
   },
   {
-    value: `【桑基图】${sankeyUrl}`
+    value: `[Sankey] ${sankeyUrl}`
   },
   {
-    value: `【关系图】${graphUrl}`
+    value: `[Graph] ${graphUrl}`
   },
   {
-    value: `【vchart 柱状图】${vchartBarDataUrl}`
+    value: `[vchart bar] ${vchartBarDataUrl}`
   },
 ]
 </script>

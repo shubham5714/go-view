@@ -19,14 +19,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed, reactive } from 'vue'
+import { ref, watch, computed, reactive, h } from 'vue'
+import { NTooltip } from 'naive-ui'
 import { ConfigType } from '@/packages/index.d'
 import { useSettingStore } from '@/store/modules/settingStore/settingStore'
 import { loadAsyncComponent } from '@/utils'
 import { usePackagesStore } from '@/store/modules/packagesStore/packagesStore'
 import { PackagesCategoryEnum } from '@/packages/index.d'
 
-const ChartsItemBox = loadAsyncComponent(() => import('../ChartsItemBox/index.vue'))
+const ChartsItemBox = loadAsyncComponent(() => import('../ChartsItemBox/index.vue'), { loading: false })
 const packagesStore = usePackagesStore()
 
 const props = defineProps({
@@ -66,6 +67,18 @@ let packages = reactive<{
 
 const selectValue = ref<string>('all')
 
+const renderCategoryLabel = (name: string) => {
+  return () =>
+    h(
+      NTooltip,
+      { placement: 'right', delay: 200 },
+      {
+        trigger: () => h('span', { class: 'category-menu-label' }, name),
+        default: () => name
+      }
+    )
+}
+
 // 设置初始列表
 const setSelectOptions = (categorys: any) => {
   for (const val in categorys) {
@@ -90,7 +103,7 @@ watch(
       packages.categorysNum += 1
       packages.menuOptions.push({
         key: val,
-        label: packages.categoryNames[val]
+        label: renderCategoryLabel(packages.categoryNames[val])
       })
     }
     setSelectOptions(packages.categorys)
@@ -155,6 +168,14 @@ $menuWidth: 65px;
         text-align: center;
         padding: 0px 14px !important;
         font-size: 12px !important;
+      }
+      .category-menu-label {
+        display: inline-block;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        vertical-align: bottom;
       }
     }
   }

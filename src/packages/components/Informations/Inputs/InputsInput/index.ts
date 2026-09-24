@@ -5,7 +5,7 @@ export const InputsInputConfig: ConfigType = {
     key: 'InputsInput',
     chartKey: 'VInputsInput',
     conKey: 'VCInputsInput',
-    title: '输入框',
+    title: 'Input',
     category: ChatCategoryEnum.INPUTS,
     categoryName: ChatCategoryEnumName.INPUTS,
     package: PackagesCategoryEnum.INFORMATIONS,

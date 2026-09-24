@@ -15,11 +15,11 @@
             <td>
               <n-space v-if="item.result === 0">
                 <n-badge dot type="success"></n-badge>
-                <n-text>无</n-text>
+                <n-text>None</n-text>
               </n-space>
               <n-space v-else>
                 <n-badge dot :type="item.result === 1 ? 'success' : 'error'"></n-badge>
-                <n-text>匹配{{ item.result === 1 ? '成功' : '失败' }}</n-text>
+                <n-text>Match {{ item.result === 1 ? 'success' : 'failed' }}</n-text>
               </n-space>
             </td>
           </tr>
@@ -49,18 +49,18 @@
                   v-model:value="item.mapping[index]"
                   type="tiny"
                   size="small"
-                  placeholder="输入字段"
+                  placeholder="Enter field"
                   @change="() => (item.result = matchingHandle(item.mapping[index]))"
                 />
               </n-space>
             </td>
             <td v-else>
-              <n-input v-model:value="item.mapping" type="text" size="small" placeholder="小" />
+              <n-input v-model:value="item.mapping" type="text" size="small" placeholder="Field" />
             </td>
             <!-- <td>
               <n-space style="width: 70px" :size="4">
                 <n-badge dot :type="item.result === 1 ? 'success' : 'error'"></n-badge>
-                <n-text>匹配{{ item.result === 1 ? '成功' : '失败' }}</n-text>
+                <n-text>Match {{ item.result === 1 ? 'success' : 'failed' }}</n-text>
               </n-space>
             </td> -->
           </tr>
@@ -69,7 +69,7 @@
     </n-timeline-item>
     <n-timeline-item v-show="filterShow" color="#97846c" :title="TimelineTitleEnum.FILTER">
       <n-space :size="18" vertical>
-        <n-text depth="3">过滤器默认处理接口返回值的「data」字段</n-text>
+        <n-text depth="3">Filters process the "data" field of the API response by default</n-text>
         <chart-data-monaco-editor></chart-data-monaco-editor>
       </n-space>
     </n-timeline-item>
@@ -82,7 +82,7 @@
                 <EditIcon />
               </n-icon>
             </template>
-            编辑
+            Edit
           </n-button>
           <n-upload
             v-model:file-list="uploadFileListRef"
@@ -97,7 +97,7 @@
                     <document-add-icon />
                   </n-icon>
                 </template>
-                导入（json / txt）
+                Import (json / txt)
               </n-button>
             </n-space>
           </n-upload>
@@ -108,7 +108,7 @@
                   <document-download-icon />
                 </n-icon>
               </template>
-              下载
+              Download
             </n-button>
             <n-tooltip trigger="hover">
               <template #trigger>
@@ -153,23 +153,23 @@
             <template #icon>
               <n-icon :component="DocumentTextIcon" />
             </template>
-            说明
+            Notes
           </n-tag>
           <n-space :wrap-item="false" vertical>
             <n-text class="go-ml-2" depth="3" style="font-size: 1">
-              1. 格式化代码：
+              1. Format code:
               <n-tag :bordered="false" type="warning" style="font-size: 12px">( shift + alt + f ) </n-tag>
               <n-divider vertical />
-              <n-tag :bordered="false" type="warning" style="font-size: 12px">右键 -> Format Document</n-tag>
+              <n-tag :bordered="false" type="warning" style="font-size: 12px">Right-click -> Format Document</n-tag>
             </n-text>
             <n-text class="go-ml-2" depth="3" style="font-size: 1; text-align: left">
-              2. 字符串需要用英文双引号包裹，否则会报错
+              2. Strings must use English double quotes, or an error will occur
             </n-text>
           </n-space>
         </div>
         <n-space>
-          <n-button class="go-px-4" :focusable="false" @click="closeOlineEditHandle">取消</n-button>
-          <n-button class="go-px-4" type="primary" @click="saveOlineEditHandle"> 保存 </n-button>
+          <n-button class="go-px-4" :focusable="false" @click="closeOlineEditHandle">Cancel</n-button>
+          <n-button class="go-px-4" type="primary" @click="saveOlineEditHandle"> Save </n-button>
         </n-space>
       </n-space>
     </template>
@@ -202,8 +202,8 @@ defineProps({
 })
 
 // 表格标题
-const tableTitle = ['字段', '映射', '状态']
-const vchartTableTitle = ['字段', '接口映射字段']
+const tableTitle = ['Field', 'Mapping', 'Status']
+const vchartTableTitle = ['Field', 'API mapping field']
 
 const { HelpOutlineIcon, DocumentTextIcon } = icon.ionicons5
 const { DocumentAddIcon, DocumentDownloadIcon, EditIcon } = icon.carbon
@@ -261,7 +261,7 @@ const dimensionsAndSourceHandle = () => {
       return index === 0
         ? {
             // 字段
-            field: '通用标识',
+            field: 'Common key',
             // 映射
             mapping: dimensionsItem,
             // 结果
@@ -337,10 +337,10 @@ const saveOlineEditHandle = () => {
               try {
                 setDataHandle(jsonData)
                 editorCode.value = ''
-                window['$message'].success('保存成功')
+                window['$message'].success('Saved successfully')
                 closeOlineEditHandle()
               } catch (error) {
-                window['$message'].error('内容应用错误, 请检查格式是否正确')
+                window['$message'].error('Failed to apply content. Please check the format.')
               }
             }
           })
@@ -348,15 +348,15 @@ const saveOlineEditHandle = () => {
           try {
             setDataHandle(jsonData)
             editorCode.value = ''
-            window['$message'].success('保存成功')
+            window['$message'].success('Saved successfully')
             closeOlineEditHandle()
           } catch (error) {
-            window['$message'].error('内容应用错误, 请检查格式是否正确')
+            window['$message'].error('Failed to apply content. Please check the format.')
           }
         }
       } catch (error) {
         console.log(error)
-        window['$message'].error('内容应用错误, 请检查格式是否正确')
+        window['$message'].error('Failed to apply content. Please check the format.')
       }
     }
   })

@@ -5,7 +5,7 @@ export const IconConfig: ConfigType = {
   key: 'Icon',
   chartKey: 'VIcon',
   conKey: 'VCIcon',
-  title: '图标',
+  title: 'Icon',
   category: ChatCategoryEnum.DEFAULT,
   categoryName: ChatCategoryEnumName.DEFAULT,
   package: PackagesCategoryEnum.ICONS,

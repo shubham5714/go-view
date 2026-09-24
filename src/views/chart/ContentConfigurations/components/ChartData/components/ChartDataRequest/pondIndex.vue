@@ -23,7 +23,7 @@
       <template #action>
         <n-space justify="space-between">
           <n-space v-if="targetDataRequest">
-            <n-tag :bordered="false" type="primary">名称：</n-tag>
+            <n-tag :bordered="false" type="primary">Name:</n-tag>
             <n-input
               v-model:value="targetDataRequest.dataPondName"
               ref="inputInstRef"
@@ -33,13 +33,13 @@
               :clearable="true"
               :minlength="1"
               :maxlength="16"
-              placeholder="请输入名称"
+              placeholder="Enter a name"
             ></n-input>
           </n-space>
           <span v-else></span>
           <n-space>
-            <n-button @click="closeHandle">取消</n-button>
-            <n-button type="primary" @click="closeAndSendHandle">保存</n-button>
+            <n-button @click="closeHandle">Cancel</n-button>
+            <n-button type="primary" @click="closeAndSendHandle">Save</n-button>
           </n-space>
         </n-space>
       </template>

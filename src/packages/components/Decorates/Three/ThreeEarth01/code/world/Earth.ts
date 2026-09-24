@@ -405,7 +405,7 @@ export default class earth {
     )
 
     this.circleLineList.push(line, l2, l3)
-    ball.name = ball2.name = ball3.name = '卫星'
+    ball.name = ball2.name = ball3.name = 'Satellite'
 
     for (let i = 0; i < this.options.satellite.number; i++) {
       const ball01 = ball.clone()

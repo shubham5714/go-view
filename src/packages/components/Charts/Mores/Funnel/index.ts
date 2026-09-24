@@ -5,7 +5,7 @@ export const FunnelConfig: ConfigType = {
   key: 'Funnel',
   chartKey: 'VFunnel',
   conKey: 'VCFunnel',
-  title: '漏斗图',
+  title: 'Funnel Chart',
   category: ChatCategoryEnum.MORE,
   categoryName: ChatCategoryEnumName.MORE,
   package: PackagesCategoryEnum.CHARTS,

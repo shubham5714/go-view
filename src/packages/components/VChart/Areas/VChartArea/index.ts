@@ -5,7 +5,7 @@ export const VChartAreaConfig: ConfigType = {
   key: 'VChartArea',
   chartKey: 'VVChartArea',
   conKey: 'VCVChartArea',
-  title: 'VChart面积图',
+  title: 'VChart Area Chart',
   category: ChatCategoryEnum.AREA,
   categoryName: ChatCategoryEnumName.AREA,
   package: PackagesCategoryEnum.VCHART,

@@ -14,7 +14,7 @@
           </n-icon>
         </n-button>
       </template>
-      <span>快捷键</span>
+      <span>Shortcuts</span>
     </n-tooltip>
   </div>
 </template>

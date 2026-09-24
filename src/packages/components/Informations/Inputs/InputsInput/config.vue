@@ -1,7 +1,7 @@
 <template>
-  <collapse-item name="输入框配置" :expanded="true">
-    <setting-item-box name="默认值" :alone="true">
-      <n-input  v-model:value="optionData.dataset"  placeholder="若未输入，则默认值为0"/>
+  <collapse-item name="Input config" :expanded="true">
+    <setting-item-box name="Default value" :alone="true">
+      <n-input  v-model:value="optionData.dataset"  placeholder="Defaults to 0 if empty"/>
     </setting-item-box>
   </collapse-item>
 </template>

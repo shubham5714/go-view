@@ -2,68 +2,68 @@ export const legendConfig = {
   // X轴位置
   lengendX: [
     {
-      label: '靠左',
+      label: 'Align left',
       value: 'left'
     },
     {
-      label: '居中',
+      label: 'Center',
       value: 'center'
     },
     {
-      label: '靠右',
+      label: 'Align right',
       value: 'right'
     }
   ],
   // y轴位置
   lengendY: [
     {
-      label: '靠上',
+      label: 'Align top',
       value: 'top'
     },
     {
-      label: '居中',
+      label: 'Center',
       value: 'center'
     },
     {
-      label: '靠下',
+      label: 'Align bottom',
       value: 'bottom'
     }
   ],
   // 排列方向
   orient: [
     {
-      label: '水平',
+      label: 'Horizontal',
       value: 'horizontal'
     },
     {
-      label: '垂直',
+      label: 'Vertical',
       value: 'vertical'
     }
   ],
   // 形状
   shape: [
     {
-      label: '圆形',
+      label: 'Circle',
       value: 'circle'
     },
     {
-      label: '方形',
+      label: 'Square',
       value: 'rect'
     },
     {
-      label: '圆角方形',
+      label: 'Rounded square',
       value: 'roundRect'
     },
     {
-      label: '三角形',
+      label: 'Triangle',
       value: 'triangle'
     },
     {
-      label: '钢笔形',
+      label: 'Pen shape',
       value: 'pin'
     },
     {
-      label: '箭头形',
+      label: 'Arrow shape',
       value: 'arrow'
     }
   ]

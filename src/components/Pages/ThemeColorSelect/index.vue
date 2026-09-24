@@ -1,5 +1,5 @@
 <template>
-  <n-button quaternary @click="modelShow = true" title="颜色">
+  <n-button quaternary @click="modelShow = true" title="Color">
     <n-icon size="20" :depth="1">
       <color-wand-icon></color-wand-icon>
     </n-icon>
@@ -7,7 +7,7 @@
   <n-modal v-model:show="modelShow">
     <div class="go-system-color-setting">
       <n-space justify="space-between">
-        <n-h3 class="title">主题颜色选择</n-h3>
+        <n-h3 class="title">Theme Color</n-h3>
         <n-icon size="20" class="go-cursor-pointer" @click="modelShow = false">
           <close-icon></close-icon>
         </n-icon>
@@ -20,7 +20,7 @@
         <div class="content-right">
           <div class="color-name-detail">
             <n-text v-if="appThemeDetail" class="color-name">{{ appThemeDetail.name }}</n-text>
-            <n-text v-else class="color-name">中国色</n-text>
+            <n-text v-else class="color-name">Chinese Colors</n-text>
             <n-text
               v-if="appThemeDetail"
               class="color-name-Pinyin"
@@ -35,7 +35,7 @@
         </div>
       </div>
       <div class="model-footer">
-        中国色列表来自于：
+        Chinese color list from:
         <n-a href="http://zhongguose.com" target="_blank">http://zhongguose.com</n-a>
       </div>
     </div>

@@ -4,7 +4,7 @@
     <n-tag type="warning"> Ungrouping will also remove « {{ isCanvas ? 'Filter' : 'Filter / Transform' }} »!</n-tag>
   </div>
 
-  <collapse-item :name="isCanvas ? '滤镜' : '滤镜 / 变换'">
+  <collapse-item :name="isCanvas ? 'Filter' : 'Filter / Transform'">
     <template #header>
       <n-switch v-model:value="chartStyles.filterShow" size="small"></n-switch>
     </template>

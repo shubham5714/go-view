@@ -2,45 +2,45 @@ export const legendsConfig = {
   // 位置
   orient: [
     {
-      label: '顶部',
+      label: 'Top',
       value: 'top'
     },
     {
-      label: '底部',
+      label: 'Bottom',
       value: 'bottom'
     },
     {
-      label: '左侧',
+      label: 'Left',
       value: 'left'
     },
     {
-      label: '右侧',
+      label: 'Right',
       value: 'right'
     }
   ],
   // 对齐方式
   position: [
     {
-      label: '起始',
+      label: 'Start',
       value: 'start'
     },
     {
-      label: '居中',
+      label: 'Center',
       value: 'middle'
     },
     {
-      label: '末尾',
+      label: 'End',
       value: 'end'
     }
   ],
   // 每一项的图例位置
   align: [
     {
-      label: '居左',
+      label: 'Left',
       value: 'left'
     },
     {
-      label: '居右',
+      label: 'Right',
       value: 'right'
     }
   ]
@@ -74,26 +74,26 @@ export const fontStyleConfig = {
       value: 600
     },
     {
-      label: '正常',
+      label: 'Normal',
       value: "normal"
     },
     {
-      label: '加粗',
+      label: 'Bold',
       value: "bold"
     }
   ],
   fontFamily: [
     {
-      label: '宋体',
+      label: 'SimSun',
       value: 'SimSun'
     },
     {
-      label: '黑体',
+      label: 'SimHei',
       value: 'SimHei'
     },
     {
-      label: '楷体',
-      value: '楷体'
+      label: 'KaiTi',
+      value: 'KaiTi'
     }
   ]
 }

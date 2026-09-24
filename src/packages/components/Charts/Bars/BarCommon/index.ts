@@ -5,7 +5,7 @@ export const BarCommonConfig: ConfigType = {
   key: 'BarCommon',
   chartKey: 'VBarCommon',
   conKey: 'VCBarCommon',
-  title: '柱状图',
+  title: 'Bar Chart',
   category: ChatCategoryEnum.BAR,
   categoryName: ChatCategoryEnumName.BAR,
   package: PackagesCategoryEnum.CHARTS,

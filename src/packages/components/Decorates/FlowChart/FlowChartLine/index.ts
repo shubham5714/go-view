@@ -5,7 +5,7 @@ export const FlowChartLineConfig: ConfigType = {
     key: 'FlowChartLine',
     chartKey: 'VFlowChartLine',
     conKey: 'VCFlowChartLine',
-    title: '流程线',
+    title: 'Flow Line',
     category: ChatCategoryEnum.FlowChart,
     categoryName: ChatCategoryEnumName.FlowChart,
     package: PackagesCategoryEnum.DECORATES,

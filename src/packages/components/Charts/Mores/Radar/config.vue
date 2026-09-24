@@ -2,35 +2,35 @@
   <div>
     <!-- Echarts 全局设置 -->
     <global-setting :optionData="optionData"></global-setting>
-    <CollapseItem name="雷达" :expanded="true">
-      <SettingItemBox name="样式">
+    <CollapseItem name="Radar" :expanded="true">
+      <SettingItemBox name="Style">
         <SettingItem>
-          <n-checkbox v-model:checked="radarConfig.splitArea.show">背景</n-checkbox>
+          <n-checkbox v-model:checked="radarConfig.splitArea.show">Background</n-checkbox>
         </SettingItem>
         <SettingItem>
-          <n-checkbox v-model:checked="radarConfig.splitLine.show">分割线</n-checkbox>
+          <n-checkbox v-model:checked="radarConfig.splitLine.show">Split line</n-checkbox>
         </SettingItem>
-        <SettingItem name="雷达形状">
+        <SettingItem name="Radar shape">
           <n-select
             v-model:value="radarConfig.shape"
             size="small"
             :options="RadarShapeEnumList"
-            placeholder="选择形状"
+            placeholder="Select shape"
           />
         </SettingItem>
       </SettingItemBox>
 
-      <SettingItemBox name="坐标轴">
+      <SettingItemBox name="Axis">
         <SettingItem>
-          <n-checkbox v-model:checked="radarConfig.axisLine.show">轴线</n-checkbox>
+          <n-checkbox v-model:checked="radarConfig.axisLine.show">Axis line</n-checkbox>
         </SettingItem>
         <SettingItem>
-          <n-checkbox v-model:checked="radarConfig.axisTick.show">刻度</n-checkbox>
+          <n-checkbox v-model:checked="radarConfig.axisTick.show">Tick</n-checkbox>
         </SettingItem>
       </SettingItemBox>
 
-      <SettingItemBox name="范围">
-        <setting-item :name="`最小值：${radarProp.radius[0]}%`">
+      <SettingItemBox name="Range">
+        <setting-item :name="`Min: ${radarProp.radius[0]}%`">
           <n-slider
             v-model:value="radarProp.radius[0]"
             :min="0"
@@ -39,7 +39,7 @@
             @update:value="updateRadius0"
           ></n-slider>
         </setting-item>
-        <setting-item :name="`最大值：${radarProp.radius[1]}%`">
+        <setting-item :name="`Max: ${radarProp.radius[1]}%`">
           <n-slider
             v-model:value="radarProp.radius[1]"
             :min="0"
@@ -50,8 +50,8 @@
         </setting-item>
       </SettingItemBox>
 
-      <SettingItemBox name="偏移">
-        <setting-item :name="`X 轴值：${radarProp.center[0]}%`">
+      <SettingItemBox name="Offset">
+        <setting-item :name="`X: ${radarProp.center[0]}%`">
           <n-slider
             v-model:value="radarProp.center[0]"
             :min="0"
@@ -60,7 +60,7 @@
             @update:value="updateCenter0"
           ></n-slider>
         </setting-item>
-        <setting-item :name="`Y 轴值：${radarProp.center[1]}%`">
+        <setting-item :name="`Y: ${radarProp.center[1]}%`">
           <n-slider
             v-model:value="radarProp.center[1]"
             :min="0"
@@ -71,20 +71,20 @@
         </setting-item>
       </SettingItemBox>
 
-      <SettingItemBox name="指示器">
-        <SettingItem name="颜色">
+      <SettingItemBox name="Indicator">
+        <SettingItem name="Color">
           <n-color-picker size="small" :modes="['hex']" v-model:value="radarConfig.axisName.color"></n-color-picker>
         </SettingItem>
-        <SettingItem name="大小">
+        <SettingItem name="Size">
           <n-input-number v-model:value="radarConfig.axisName.fontSize" size="small" :min="9"></n-input-number>
         </SettingItem>
         <SettingItem>
-          <n-checkbox v-model:checked="radarConfig.axisName.show">文字标签</n-checkbox>
+          <n-checkbox v-model:checked="radarConfig.axisName.show">Text label</n-checkbox>
         </SettingItem>
       </SettingItemBox>
 
-      <SettingItemBox name="系列" :alone="true">
-        <SettingItem name="背景透明度">
+      <SettingItemBox name="Series" :alone="true">
+        <SettingItem name="Background opacity">
           <n-input-number
             v-model:value="optionData.series[0].areaStyle.opacity"
             size="small"

@@ -14,7 +14,7 @@ export const option = {
   numberColor: '#4a9ef8',
   prefixText: '￥',
   prefixColor: '#4a9ef8',
-  suffixText: '元',
+  suffixText: 'Yuan',
   suffixColor: '#4a9ef8',
 }
 

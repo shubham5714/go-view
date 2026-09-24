@@ -1,35 +1,35 @@
 <template>
   <!-- Echarts 全局设置 -->
   <global-setting :optionData="optionData"></global-setting>
-  <CollapseItem v-for="(item, index) in seriesList" :key="index" :name="`柱状图-${index + 1}`" :expanded="true">
-    <SettingItemBox name="图形">
-      <SettingItem name="宽度">
+  <CollapseItem v-for="(item, index) in seriesList" :key="index" :name="`Bar-${index + 1}`" :expanded="true">
+    <SettingItemBox name="Shape">
+      <SettingItem name="Width">
         <n-input-number
           v-model:value="item.barWidth"
           :min="1"
           :max="100"
           size="small"
-          placeholder="自动计算"
+          placeholder="Auto calculate"
         ></n-input-number>
       </SettingItem>
-      <SettingItem name="圆角">
+      <SettingItem name="Rounded">
         <n-input-number v-model:value="item.itemStyle.borderRadius" :min="0" size="small"></n-input-number>
       </SettingItem>
     </SettingItemBox>
-    <setting-item-box name="标签">
+    <setting-item-box name="Label">
       <setting-item>
         <n-space>
           <n-switch v-model:value="item.label.show" size="small" />
-          <n-text>展示标签</n-text>
+          <n-text>Show label</n-text>
         </n-space>
       </setting-item>
-      <setting-item name="大小">
+      <setting-item name="Size">
         <n-input-number v-model:value="item.label.fontSize" size="small" :min="1"></n-input-number>
       </setting-item>
-      <setting-item name="颜色">
+      <setting-item name="Color">
         <n-color-picker size="small" :modes="['hex']" v-model:value="item.label.color"></n-color-picker>
       </setting-item>
-      <setting-item name="位置">
+      <setting-item name="Position">
         <n-select
           v-model:value="item.label.position"
           :options="[

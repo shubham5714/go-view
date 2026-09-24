@@ -2,7 +2,7 @@
   <div class="go-project-template-market">
     <div class="go-project-template-market-header">
       <h3>Library</h3>
-      <p>Browse common projects and quickly create copies for your tenant.</p>
+      <p>Browse ready to use templates.</p>
     </div>
 
     <div class="go-project-template-market-content">

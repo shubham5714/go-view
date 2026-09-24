@@ -1,31 +1,31 @@
 <template>
   <!-- todo 补充常用配置项 -->
   <div v-if="optionData.tooltip">
-    <collapse-item name="提示框">
+    <collapse-item name="Tooltip">
       <template #header>
         <n-switch v-model:value="optionData.tooltip.visible" size="small"></n-switch>
       </template>
-      <setting-item-box name="框">
-        <setting-item name="填充">
+      <setting-item-box name="Panel">
+        <setting-item name="Fill">
           <n-color-picker v-model:value="optionData.tooltip.style.panel.backgroundColor" size="small" />
         </setting-item>
-        <setting-item name="瞄边">
+        <setting-item name="Border">
           <n-color-picker v-model:value="optionData.tooltip.style.panel.border.color" size="small" />
         </setting-item>
-        <setting-item name="粗细">
+        <setting-item name="Width">
           <n-input-number v-model:value="optionData.tooltip.style.panel.border.width" :min="0" size="small" />
         </setting-item>
-        <setting-item name="圆角">
+        <setting-item name="Radius">
           <n-input-number v-model:value="optionData.tooltip.style.panel.border.radius" :min="0" size="small" />
         </setting-item>
       </setting-item-box>
-      <setting-item-box name="标题">
+      <setting-item-box name="Title">
         <FontStyle :style="toRefs(optionData.tooltip.style.titleLabel)"></FontStyle>
       </setting-item-box>
-      <setting-item-box name="名称">
+      <setting-item-box name="Name">
         <FontStyle :style="toRefs(optionData.tooltip.style.keyLabel)"></FontStyle>
       </setting-item-box>
-      <setting-item-box name="值">
+      <setting-item-box name="Value">
         <FontStyle :style="toRefs(optionData.tooltip.style.valueLabel)"></FontStyle>
       </setting-item-box>
     </collapse-item>

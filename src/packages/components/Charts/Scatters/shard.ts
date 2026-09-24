@@ -1,15 +1,15 @@
 export const ScatterEffectTypeEnumList = [
-  { label: '普通', value: 'scatter' },
-  { label: '特效', value: 'effectScatter' }
+  { label: 'Normal', value: 'scatter' },
+  { label: 'Effect', value: 'effectScatter' }
 ]
 
 export const SymbolEnumList = [
-  { label: '圆形', value: 'circle' },
-  { label: '正方形', value: 'rect' },
-  { label: '圆角正方形', value: 'roundRect' },
-  { label: '三角形', value: 'triangle' },
-  { label: '菱形', value: 'diamond' },
-  { label: '水滴', value: 'pin' },
-  { label: '箭头', value: 'arrow' },
-  { label: '无', value: 'none' }
+  { label: 'Circle', value: 'circle' },
+  { label: 'Square', value: 'rect' },
+  { label: 'Rounded square', value: 'roundRect' },
+  { label: 'Triangle', value: 'triangle' },
+  { label: 'Diamond', value: 'diamond' },
+  { label: 'Water drop', value: 'pin' },
+  { label: 'Arrow', value: 'arrow' },
+  { label: 'None', value: 'none' }
 ]

@@ -19,14 +19,20 @@ export const get = <T = any>(url: string, params?: object) => {
   })
 }
 
+const buildHeaders = (data?: object, headersType?: string) => {
+  // Let the browser set multipart boundary for FormData; never force Content-Type.
+  if (data instanceof FormData) return {}
+  return {
+    'Content-Type': headersType || ContentTypeEnum.JSON
+  }
+}
+
 export const post = <T = any>(url: string, data?: object, headersType?: string) => {
   return axiosInstance<T>({
     url: url,
     method: RequestHttpEnum.POST,
     data: data,
-    headers: {
-      'Content-Type': headersType || ContentTypeEnum.JSON
-    }
+    headers: buildHeaders(data, headersType)
   })
 }
 
@@ -35,9 +41,7 @@ export const patch = <T = any>(url: string, data?: object, headersType?: string)
     url: url,
     method: RequestHttpEnum.PATCH,
     data: data,
-    headers: {
-      'Content-Type': headersType || ContentTypeEnum.JSON
-    }
+    headers: buildHeaders(data, headersType)
   })
 }
 
@@ -46,9 +50,7 @@ export const put = <T = any>(url: string, data?: object, headersType?: ContentTy
     url: url,
     method: RequestHttpEnum.PUT,
     data: data,
-    headers: {
-      'Content-Type': headersType || ContentTypeEnum.JSON
-    }
+    headers: buildHeaders(data, headersType)
   })
 }
 
@@ -93,7 +95,7 @@ export const translateStr = (target: string | Record<any, any>) => {
         result = new Function(`${funcStr}`)()
       } catch (error) {
         console.log(error)
-        window['$message'].error('js内容解析有误！')
+        window['$message'].error('Failed to parse JavaScript content!')
       }
       return result
     } else {
@@ -197,7 +199,8 @@ export const customizeHttp = (targetParams: RequestConfigType, globalParams: Req
     }
 
     case RequestBodyEnum.FORM_DATA: {
-      headers['Content-Type'] = ContentTypeEnum.FORM_DATA
+      // Do not set Content-Type; browser must include multipart boundary
+      delete headers['Content-Type']
       const bodyFormUrlencoded = targetRequestParams.Body['form-data']
       for (const i in bodyFormUrlencoded) {
         formData.set(i, translateStr(bodyFormUrlencoded[i]))
@@ -253,6 +256,6 @@ export const customizeHttp = (targetParams: RequestConfigType, globalParams: Req
     })
   } catch (error) {
     console.log(error)
-    window['$message'].error('URL地址格式有误！')
+    window['$message'].error('Invalid URL format!')
   }
 }

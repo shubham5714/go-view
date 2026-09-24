@@ -5,7 +5,7 @@ export const TextCommonConfig: ConfigType = {
   key: 'TextCommon',
   chartKey: 'VTextCommon',
   conKey: 'VCTextCommon',
-  title: '文字',
+  title: 'Text',
   category: ChatCategoryEnum.TEXT,
   categoryName: ChatCategoryEnumName.TEXT,
   package: PackagesCategoryEnum.INFORMATIONS,

@@ -1,47 +1,47 @@
 <template>
-  <CollapseItem name="列表" :expanded="true">
-    <SettingItemBox name="基础">
-      <SettingItem name="表行数">
+  <CollapseItem name="List" :expanded="true">
+    <SettingItemBox name="Basic">
+      <SettingItem name="Row count">
         <n-input-number
           v-model:value="optionData.rowNum"
           :min="1"
           size="small"
-          placeholder="请输入自动计算"
+          placeholder="Please enter auto-calc"
         ></n-input-number>
       </SettingItem>
-      <SettingItem name="轮播时间(s)">
+      <SettingItem name="Carousel interval (s)">
         <n-input-number
           v-model:value="optionData.waitTime"
           :min="1"
           size="small"
-          placeholder="请输入轮播时间"
+          placeholder="Please enter carousel interval"
         ></n-input-number>
       </SettingItem>
-      <SettingItem name="数值单位">
+      <SettingItem name="Value unit">
         <n-input
           v-model:value="optionData.unit"
           size="small"
-          placeholder="数值单位"
+          placeholder="Value unit"
         ></n-input>
       </SettingItem>
     </SettingItemBox>
 
-    <SettingItemBox name="样式">
-      <SettingItem name="主体颜色">
+    <SettingItemBox name="Style">
+      <SettingItem name="Main color">
         <n-color-picker
           size="small"
           :modes="['hex']"
           v-model:value="optionData.color"
         ></n-color-picker>
       </SettingItem>
-      <SettingItem name="数据颜色">
+      <SettingItem name="Data color">
         <n-color-picker
           size="small"
           :modes="['hex']"
           v-model:value="optionData.textColor"
         ></n-color-picker>
       </SettingItem>
-      <SettingItem name="底部线条">
+      <SettingItem name="Bottom line">
         <n-color-picker
           size="small"
           :modes="['hex']"
@@ -50,22 +50,22 @@
       </SettingItem>
     </SettingItemBox>
 
-    <SettingItemBox name="字体样式">
-       <SettingItem name="序号字体">
+    <SettingItemBox name="Font style">
+       <SettingItem name="Index font">
         <n-input-number
           size="small"
           v-model:value="optionData.indexFontSize"
           :min="12"
         />
       </SettingItem>
-      <SettingItem name="左侧数据字体">
+      <SettingItem name="Left data font">
         <n-input-number
           size="small"
           v-model:value="optionData.leftFontSize"
           :min="12"
         />
       </SettingItem>
-      <SettingItem name="右侧数据字体">
+      <SettingItem name="Right data font">
         <n-input-number
           size="small"
           v-model:value="optionData.rightFontSize"

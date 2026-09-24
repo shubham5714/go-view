@@ -5,7 +5,7 @@ export const NumberConfig: ConfigType = {
   key: 'Number',
   chartKey: 'VNumber',
   conKey: 'VCNumber',
-  title: '数字计数',
+  title: 'Number Counter',
   category: ChatCategoryEnum.MORE,
   categoryName: ChatCategoryEnumName.MORE,
   package: PackagesCategoryEnum.DECORATES,

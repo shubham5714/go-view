@@ -5,7 +5,7 @@ export const LineCommonConfig: ConfigType = {
   key: 'LineCommon',
   chartKey: 'VLineCommon',
   conKey: 'VCLineCommon',
-  title: '折线图',
+  title: 'Line Chart',
   category: ChatCategoryEnum.LINE,
   categoryName: ChatCategoryEnumName.LINE,
   package: PackagesCategoryEnum.CHARTS,

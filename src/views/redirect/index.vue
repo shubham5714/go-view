@@ -1,8 +1,8 @@
 <template>
   <div class="go-redirect">
-    <n-empty description="你什么也找不到">
+    <n-empty description="Nothing to see here">
       <template #extra>
-        <n-button size="small" @click="goHome">看看别的</n-button>
+        <n-button size="small" @click="goHome">Go elsewhere</n-button>
       </template>
     </n-empty>
   </div>

@@ -5,31 +5,31 @@ import cloneDeep from 'lodash/cloneDeep'
 
 export const shapes = [
   {
-    label: '圆形',
+    label: 'Circle',
     value: 'circle'
   },
   {
-    label: '正方形',
+    label: 'Square',
     value: 'rect'
   },
   {
-    label: '带圆角的正方形',
+    label: 'Rounded square',
     value: 'roundRect'
   },
   {
-    label: '正三角形',
+    label: 'Equilateral triangle',
     value: 'triangle'
   },
   {
-    label: '菱形',
+    label: 'Diamond',
     value: 'diamond'
   },
   {
-    label: '水滴',
+    label: 'Water drop',
     value: 'pin'
   },
   {
-    label: '箭头',
+    label: 'Arrow',
     value: 'arrow'
   },
 ]

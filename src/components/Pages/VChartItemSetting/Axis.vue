@@ -3,74 +3,74 @@
     <template #header>
       <n-switch v-model:value="axis.visible" size="small"></n-switch>
     </template>
-    <setting-item-box name="单位">
-      <setting-item name="可见性">
+    <setting-item-box name="Unit">
+      <setting-item name="Visible">
         <n-space>
           <n-switch v-model:value="axis.unit.visible" size="small"></n-switch>
         </n-space>
       </setting-item>
-      <setting-item name="内容">
+      <setting-item name="Content">
         <n-input v-model:value="axis.unit.text" size="small"></n-input>
       </setting-item>
       <FontStyle :style="toRefs(axis.unit.style)"></FontStyle>
     </setting-item-box>
-    <setting-item-box name="轴标签">
-      <setting-item v-if="axis.label" name="可见性">
+    <setting-item-box name="Axis Label">
+      <setting-item v-if="axis.label" name="Visible">
         <n-space>
           <n-switch v-model:value="axis.label.visible" size="small"></n-switch>
         </n-space>
       </setting-item>
-      <setting-item v-if="axis.label" name="角度">
+      <setting-item v-if="axis.label" name="Angle">
         <n-input-number v-model:value="axis.label.style.angle" :min="0" :max="360" size="small" />
       </setting-item>
       <FontStyle v-if="axis.label" :style="toRefs(axis.label.style)"></FontStyle>
     </setting-item-box>
-    <setting-item-box name="轴标题">
-      <setting-item name="可见性">
+    <setting-item-box name="Axis Title">
+      <setting-item name="Visible">
         <n-space>
           <n-switch v-model:value="axis.title.visible" size="small"></n-switch>
         </n-space>
       </setting-item>
-      <setting-item name="内容">
+      <setting-item name="Content">
         <n-input v-model:value="axis.title.style.text" size="small"></n-input>
       </setting-item>
-      <setting-item name="位置">
+      <setting-item name="Position">
         <n-select v-model:value="axis.title.position" :options="legendsConfig.position" size="small" />
       </setting-item>
-      <setting-item name="角度">
+      <setting-item name="Angle">
         <n-input-number v-model:value="axis.title.angle" :min="0" :max="360" size="small" />
       </setting-item>
       <FontStyle :style="toRefs(axis.title.style)"></FontStyle>
     </setting-item-box>
-    <setting-item-box name="轴线">
-      <setting-item name="可见性">
+    <setting-item-box name="Axis Line">
+      <setting-item name="Visible">
         <n-space>
           <n-switch v-model:value="axis.domainLine.visible" size="small"></n-switch>
         </n-space>
       </setting-item>
       <setting-item name=""> </setting-item>
-      <setting-item name="粗细">
+      <setting-item name="Width">
         <n-input-number v-model:value="axis.domainLine.style.lineWidth" :min="0" size="small" />
       </setting-item>
-      <setting-item name="颜色">
+      <setting-item name="Color">
         <n-color-picker v-model:value="axis.domainLine.style.stroke" size="small" />
       </setting-item>
     </setting-item-box>
-    <setting-item-box name="网格线">
-      <setting-item name="可见性">
+    <setting-item-box name="Grid Lines">
+      <setting-item name="Visible">
         <n-space>
           <n-switch v-model:value="axis.grid.visible" size="small"></n-switch>
         </n-space>
       </setting-item>
-      <setting-item name="开启虚线">
+      <setting-item name="Dashed">
         <n-space>
           <n-switch v-model:value="isLineDashRef" size="small" @update:value="changeLineDash"></n-switch>
         </n-space>
       </setting-item>
-      <setting-item name="粗细">
+      <setting-item name="Width">
         <n-input-number v-model:value="axis.grid.style.lineWidth" :min="0" size="small" />
       </setting-item>
-      <setting-item name="颜色">
+      <setting-item name="Color">
         <n-color-picker v-model:value="axis.grid.style.stroke" size="small" />
       </setting-item>
     </setting-item-box>

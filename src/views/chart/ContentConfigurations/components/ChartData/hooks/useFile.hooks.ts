@@ -11,7 +11,7 @@ export const useFile = (targetData: any) => {
     uploadFileListRef.value = []
     const type = file.file.type
     if (type !== FileTypeEnum.JSON && type !== FileTypeEnum.TXT) {
-      window['$message'].warning('仅支持上传 【JSON】 格式文件，请重新上传！')
+      window['$message'].warning('Only JSON format files are supported. Please upload again!')
       return false
     }
     return true
@@ -26,7 +26,7 @@ export const useFile = (targetData: any) => {
           targetData.value.option.dataset = JSONParse(fileData)
         })
       } else {
-        window['$message'].error('导入数据失败，请稍后重试或联系管理员！')
+        window['$message'].error('Import failed. Please try again later or contact an administrator!')
       }
     })
   }
@@ -34,10 +34,10 @@ export const useFile = (targetData: any) => {
   // 下载文件
   const download = () => {
     try {
-      window['$message'].success('下载中，请耐心等待...')
+      window['$message'].success('Downloading, please wait...')
       downloadTextFile(JSONStringify(targetData.value.option.dataset), undefined, 'json')
     } catch (error) {
-      window['$message'].error('下载失败，数据错误！')
+      window['$message'].error('Download failed. Invalid data!')
     }
   }
   return {

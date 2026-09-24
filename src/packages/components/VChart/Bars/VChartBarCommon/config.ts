@@ -19,7 +19,7 @@ export const option: IBarOption & { dataset?: any } = {
   // 业务配置（后续会被转换为图表spec)
   category: VChartBarCommonConfig.category as ChatCategoryEnum.BAR,
   xAxis: {
-    name: 'x轴',
+    name: 'X Axis',
     ...(merge(cloneDeep(axisThemeJson), {
       unit: {
         style: {
@@ -34,7 +34,7 @@ export const option: IBarOption & { dataset?: any } = {
     }
   },
   yAxis: {
-    name: 'y轴',
+    name: 'Y Axis',
     ...(merge(cloneDeep(axisThemeJson), {
       unit: {
         style: {

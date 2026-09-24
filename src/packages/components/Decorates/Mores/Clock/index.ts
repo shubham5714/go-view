@@ -5,7 +5,7 @@ export const ClockConfig: ConfigType = {
   key: 'Clock',
   chartKey: 'VClock',
   conKey: 'VCClock',
-  title: '时钟',
+  title: 'Clock',
   category: ChatCategoryEnum.MORE,
   categoryName: ChatCategoryEnumName.MORE,
   package: PackagesCategoryEnum.DECORATES,

@@ -8,14 +8,14 @@ export const includes = ['legend']
 
 // 图表方向
 export const orientList = [
-  { label: '水平', value: 'horizontal' },
-  { label: '垂直', value: 'vertical' }
+  { label: 'Horizontal', value: 'horizontal' },
+  { label: 'Vertical', value: 'vertical' }
 ]
 
 // 标签展示
 export const toolTipSwitch = [
-  { label: '开启', value: 1 },
-  { label: '关闭', value: 0 }
+  { label: 'On', value: 1 },
+  { label: 'Off', value: 0 }
 ]
 
 export const option = {

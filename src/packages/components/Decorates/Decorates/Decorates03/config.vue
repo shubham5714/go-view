@@ -1,20 +1,20 @@
 <template>
-  <CollapseItem name="文字" :expanded="true">
-    <SettingItemBox name="内容" :alone="true">
+  <CollapseItem name="Text" :expanded="true">
+    <SettingItemBox name="Content" :alone="true">
       <SettingItem>
         <n-input v-model:value="optionData.dataset" size="small"></n-input>
       </SettingItem>
     </SettingItemBox>
 
-    <SettingItemBox name="样式">
-      <SettingItem name="颜色">
+    <SettingItemBox name="Style">
+      <SettingItem name="Color">
         <n-color-picker
           size="small"
           :modes="['hex']"
           v-model:value="optionData.textColor"
         ></n-color-picker>
       </SettingItem>
-      <SettingItem name="大小">
+      <SettingItem name="Size">
         <n-input-number
           v-model:value="optionData.textSize"
           size="small"
@@ -24,13 +24,13 @@
     </SettingItemBox>
   </CollapseItem>
 
-  <CollapseItem name="样式" :expanded="true">
+  <CollapseItem name="Style" :expanded="true">
     <SettingItemBox
-      :name="`颜色-${index + 1}`"
+      :name="`Color-${index + 1}`"
       v-for="(item, index) in optionData.colors"
       :key="index"
     >
-      <SettingItem name="颜色">
+      <SettingItem name="Color">
         <n-color-picker
           size="small"
           :modes="['hex']"
@@ -42,7 +42,7 @@
           size="small"
           @click="optionData.colors[index] = option.colors[index]"
         >
-          恢复默认
+          Restore Default
         </n-button>
       </SettingItem>
     </SettingItemBox>

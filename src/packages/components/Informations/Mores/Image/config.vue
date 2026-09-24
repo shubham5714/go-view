@@ -1,24 +1,24 @@
 <template>
-  <collapse-item name="属性" :expanded="true">
-    <setting-item-box name="路径" :alone="true">
+  <collapse-item name="Properties" :expanded="true">
+    <setting-item-box name="Path" :alone="true">
       <setting-item>
         <n-input v-model:value="optionData.dataset" size="small"></n-input>
       </setting-item>
     </setting-item-box>
-    <setting-item-box name="样式">
-      <setting-item name="类型">
+    <setting-item-box name="Style">
+      <setting-item name="Type">
         <n-select
           v-model:value="optionData.fit"
           size="small"
           :options="fitList"
         ></n-select>
       </setting-item>
-      <setting-item name="圆角">
+      <setting-item name="Rounded">
         <n-input-number
           v-model:value="optionData.borderRadius"
           size="small"
           :min="0"
-          placeholder="圆角"
+          placeholder="Rounded"
         ></n-input-number>
       </setting-item>
     </setting-item-box>

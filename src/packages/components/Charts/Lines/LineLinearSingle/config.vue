@@ -4,34 +4,34 @@
   <CollapseItem
     v-for="(item, index) in seriesList"
     :key="index"
-    :name="`样式`"
+    :name="`Style`"
     :expanded="true"
   >
-    <SettingItemBox name="线条">
-      <SettingItem name="颜色">
+    <SettingItemBox name="Line">
+      <SettingItem name="Color">
         <n-color-picker
           size="small"
           :modes="['hex']"
           v-model:value="item.lineStyle.color.colorStops[0].color"
        ></n-color-picker>
       </SettingItem>
-      <SettingItem name="颜色">
+      <SettingItem name="Color">
         <n-color-picker
           size="small"
           :modes="['hex']"
           v-model:value="item.lineStyle.color.colorStops[1].color"
        ></n-color-picker>
       </SettingItem>
-      <SettingItem name="宽度">
+      <SettingItem name="Width">
         <n-input-number
           v-model:value="item.lineStyle.width"
           :min="1"
           :max="100"
           size="small"
-          placeholder="自动计算"
+          placeholder="Auto calculate"
        ></n-input-number>
       </SettingItem>
-      <SettingItem name="类型">
+      <SettingItem name="Type">
         <n-select
           v-model:value="item.lineStyle.type"
           size="small"
@@ -39,19 +39,19 @@
        ></n-select>
       </SettingItem>
     </SettingItemBox>
-    <SettingItemBox name="实心点">
-      <SettingItem name="大小">
+    <SettingItemBox name="Solid dot">
+      <SettingItem name="Size">
         <n-input-number
           v-model:value="item.symbolSize"
           :min="1"
           :max="100"
           size="small"
-          placeholder="自动计算"
+          placeholder="Auto calculate"
         ></n-input-number>
       </SettingItem>
     </SettingItemBox>
-    <SettingItemBox name="阴影" :alone="true">
-      <SettingItem name="颜色">
+    <SettingItemBox name="Shadow" :alone="true">
+      <SettingItem name="Color">
         <n-color-picker
           size="small"
           :modes="['hex']"
@@ -60,13 +60,13 @@
       </SettingItem>
       
     </SettingItemBox>
-    <SettingItemBox name="设置">
-     <SettingItem name="阴影">
+    <SettingItemBox name="Settings">
+     <SettingItem name="Shadow">
         <n-button
           size="small"
           @click="item.lineStyle.shadowColor = 'rgba(0, 0, 0, 0)'"
         >
-          去除阴影
+          Remove Shadow
         </n-button>
       </SettingItem>
     </SettingItemBox>

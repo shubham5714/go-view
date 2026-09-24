@@ -5,7 +5,7 @@ export const VideoConfig: ConfigType = {
   key: 'Video',
   chartKey: 'VVideo',
   conKey: 'VCVideo',
-  title: '视频',
+  title: 'Video',
   category: ChatCategoryEnum.MORE,
   categoryName: ChatCategoryEnumName.MORE,
   package: PackagesCategoryEnum.INFORMATIONS,

@@ -1,17 +1,17 @@
 <template>
-  <collapse-item name="线条" v-if="optionData.line">
-    <SettingItemBox name="样式">
-      <setting-item name="宽度">
+  <collapse-item name="Line" v-if="optionData.line">
+    <SettingItemBox name="Style">
+      <setting-item name="Width">
         <n-input-number v-model:value="optionData.line.style.lineWidth" size="small" :min="1"></n-input-number>
       </setting-item>
-      <setting-item name="线条类型">
+      <setting-item name="Curve Type">
         <n-select
           v-model:value="optionData.line.style.curveType"
           :options="styleConfig.curveType"
           size="small"
         ></n-select>
       </setting-item>
-      <setting-item name="末端样式">
+      <setting-item name="Line Cap">
         <n-select v-model:value="optionData.line.style.lineCap" :options="styleConfig.lineCap" size="small"></n-select>
       </setting-item>
     </SettingItemBox>

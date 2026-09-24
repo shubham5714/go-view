@@ -14,12 +14,12 @@ export enum ComponentInteractParamsEnum {
 export const interactActions: InteractActionsType[] = [
     {
         interactType: InteractEventOn.CHANGE,
-        interactName: '选择完成',
+        interactName: 'Selection done',
         componentEmitEvents: {
             [ComponentInteractEventEnum.DATA]: [
                 {
                     value: ComponentInteractParamsEnum.DATA,
-                    label: '选择项'
+                    label: 'Option'
                 }
             ]
         }

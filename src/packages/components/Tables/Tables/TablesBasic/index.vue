@@ -2,7 +2,7 @@
   <div class="go-tables-basic">
     <n-input
       v-model:value="inputData"
-      placeholder="请输入信息"
+      placeholder="Please enter info"
       :style="`display: ${inputShow}`"
       style="margin-bottom: 5px; float: right; width: 240px"
     >

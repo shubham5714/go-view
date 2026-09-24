@@ -5,8 +5,8 @@ import cloneDeep from 'lodash/cloneDeep'
 import { chartInitConfig } from '@/settings/designSetting'
 
 export enum FontWeightEnum {
-  NORMAL = '常规',
-  BOLD = '加粗'
+  NORMAL = 'Normal',
+  BOLD = 'Bold'
 }
 
 export const FontWeightObject = {

@@ -28,14 +28,14 @@
 
   <setting-item-box :alone="true">
     <template #name>
-      测试
+      Test
       <n-tooltip trigger="hover">
         <template #trigger>
           <n-icon size="21" :depth="3">
             <help-outline-icon></help-outline-icon>
           </n-icon>
         </template>
-        默认赋值给 dataset 字段
+        Assigned to the dataset field by default
       </n-tooltip>
     </template>
     <n-button type="primary" ghost @click="sendHandle">
@@ -44,7 +44,7 @@
           <flash-icon />
         </n-icon>
       </template>
-      发送请求
+      Send request
     </n-button>
   </setting-item-box>
 

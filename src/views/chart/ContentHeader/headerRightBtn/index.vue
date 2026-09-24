@@ -1,6 +1,13 @@
 <template>
   <n-space class="go-mt-0" :wrap="false">
-    <n-button v-for="item in comBtnList" :key="item.key" :type="item.type()" ghost @click="item.event">
+    <n-button
+      v-for="item in comBtnList"
+      :key="item.key"
+      :type="item.type()"
+      ghost
+      :loading="item.loading?.()"
+      @click="item.event"
+    >
       <template #icon>
         <component :is="item.icon"></component>
       </template>
@@ -44,14 +51,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watchEffect } from 'vue'
+import { ref, computed, watchEffect, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useClipboard } from '@vueuse/core'
 import { PreviewEnum } from '@/enums/pageEnum'
 import { StorageEnum } from '@/enums/storageEnum'
 import { ResultEnum } from '@/enums/httpEnum'
+import { SyncEnum } from '@/enums/editPageEnum'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { syncData } from '../../ContentEdit/components/EditTools/hooks/useSyncUpdate.hook'
+import { useSync } from '../../hooks/useSync.hook'
 import { ProjectInfoEnum } from '@/store/modules/chartEditStore/chartEditStore.d'
 import { changeProjectReleaseApi } from '@/api/path'
 import {
@@ -68,7 +77,9 @@ import { icon } from '@/plugins'
 import { cloneDeep } from 'lodash'
 
 const { BrowsersOutlineIcon, SendIcon, AnalyticsIcon, CloseIcon } = icon.ionicons5
+const { SaveIcon } = icon.carbon
 const chartEditStore = useChartEditStore()
+const { dataSyncUpdate } = useSync()
 
 const previewPathRef = ref(previewPath())
 const { copy, isSupported } = useClipboard({ source: previewPathRef })
@@ -77,14 +88,65 @@ const routerParamsInfo = useRoute()
 
 const modelShow = ref<boolean>(false)
 const release = ref<boolean>(false)
+type SaveUiState = 'idle' | 'saving' | 'saved'
+const saveUi = ref<SaveUiState>('idle')
+let saveResetTimer: ReturnType<typeof setTimeout> | null = null
+let userInitiatedSave = false
 
 watchEffect(() => {
   release.value = chartEditStore.getProjectInfo.release || false
 })
 
+watch(
+  () => chartEditStore.getEditCanvas.saveStatus,
+  status => {
+    if (!userInitiatedSave && saveUi.value === 'idle') return
+    if (status === SyncEnum.START) {
+      saveUi.value = 'saving'
+      return
+    }
+    if (status === SyncEnum.SUCCESS) {
+      saveUi.value = 'saved'
+      userInitiatedSave = false
+      if (saveResetTimer) clearTimeout(saveResetTimer)
+      saveResetTimer = setTimeout(() => {
+        if (saveUi.value === 'saved') saveUi.value = 'idle'
+      }, 1200)
+      return
+    }
+    if (status === SyncEnum.FAILURE) {
+      const wasUserSave = userInitiatedSave
+      saveUi.value = 'idle'
+      userInitiatedSave = false
+      if (wasUserSave) {
+        window['$message'].error('Save failed. Please try again.')
+      }
+    }
+  }
+)
+
 // 关闭弹窗
 const closeHandle = () => {
   modelShow.value = false
+}
+
+const saveHandle = () => {
+  if (saveUi.value === 'saving') return
+  userInitiatedSave = true
+  saveUi.value = 'saving'
+  // Quiet save: no success toast; button state provides feedback
+  dataSyncUpdate(true, false)
+  // If throttle skips this click, unlock the button quickly
+  setTimeout(() => {
+    if (
+      userInitiatedSave &&
+      saveUi.value === 'saving' &&
+      chartEditStore.getEditCanvas.saveStatus !== SyncEnum.START
+    ) {
+      saveUi.value = 'idle'
+      userInitiatedSave = false
+    }
+  }, 350)
 }
 
 // 预览
@@ -159,10 +221,19 @@ const sendHandle = async () => {
 const btnList = [
   {
     select: true,
+    key: 'sync',
     title: () => 'Sync Content',
     type: () => 'primary',
     icon: renderIcon(AnalyticsIcon),
     event: syncData
+  },
+  {
+    key: 'save',
+    title: () => (saveUi.value === 'saved' ? 'Saved' : saveUi.value === 'saving' ? 'Saving' : 'Save'),
+    type: () => (saveUi.value === 'saved' ? 'primary' : 'default'),
+    icon: renderIcon(SaveIcon),
+    loading: () => saveUi.value === 'saving',
+    event: saveHandle
   },
   {
     key: 'preview',

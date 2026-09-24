@@ -4,22 +4,22 @@
   <CollapseItem
     v-for="(item, index) in seriesList"
     :key="index"
-    :name="`系列${index + 1}`"
+    :name="`Series ${index + 1}`"
     :expanded="true"
   >
     <template #header>
       <n-text class="go-fs-13" depth="3">
-        {{ item.type == 'bar' ? '「柱状图」' : '「折线图」' }}
+        {{ item.type == 'bar' ? '「Bar Chart」' : '「Line Chart」' }}
       </n-text>
     </template>
-    <SettingItemBox name="类型">
-      <SettingItem name="宽度">
+    <SettingItemBox name="Type">
+      <SettingItem name="Width">
         <n-select
           :value="item.type"
           size="small"
           :options="[
-            { label: '柱状图', value: 'bar' },
-            { label: '折线图', value: 'line' }
+            { label: 'Bar Chart', value: 'bar' },
+            { label: 'Line Chart', value: 'line' }
           ]"
           @update:value="(value: any) => {
             updateHandle(item, value)
@@ -28,72 +28,72 @@
       </SettingItem>
  
     </SettingItemBox>
-    <SettingItemBox name="图形" v-if="item.type == 'bar'">
-      <SettingItem name="宽度">
+    <SettingItemBox name="Shape" v-if="item.type == 'bar'">
+      <SettingItem name="Width">
         <n-input-number
           v-model:value="item.barWidth"
           :min="1"
           :max="100"
           size="small"
-          placeholder="自动计算"
+          placeholder="Auto calculate"
         ></n-input-number>
       </SettingItem>
-      <SettingItem name="圆角">
+      <SettingItem name="Rounded">
         <n-input-number v-model:value="item.itemStyle.borderRadius" :min="0" size="small"></n-input-number>
       </SettingItem>
     </SettingItemBox>
-    <SettingItemBox name="线条" v-if="item.type == 'line'">
-      <SettingItem name="宽度">
+    <SettingItemBox name="Line" v-if="item.type == 'line'">
+      <SettingItem name="Width">
         <n-input-number
           v-model:value="item.lineStyle.width"
           :min="1"
           :max="100"
           size="small"
-          placeholder="自动计算"
+          placeholder="Auto calculate"
         ></n-input-number>
       </SettingItem>
-      <SettingItem name="类型">
+      <SettingItem name="Type">
         <n-select v-model:value="item.lineStyle.type" size="small" :options="lineConf.lineStyle.type"></n-select>
       </SettingItem>
       <setting-item>
         <n-space>
           <n-switch v-model:value="item.smooth" size="small" />
-          <n-text>曲线</n-text>
+          <n-text>Curve</n-text>
         </n-space>
       </setting-item>
     </SettingItemBox>
-    <SettingItemBox name="实心点" v-if="item.type == 'line'">
-      <SettingItem name="大小">
+    <SettingItemBox name="Solid dot" v-if="item.type == 'line'">
+      <SettingItem name="Size">
         <n-input-number
           v-model:value="item.symbolSize"
           :min="1"
           :max="100"
           size="small"
-          placeholder="自动计算"
+          placeholder="Auto calculate"
         ></n-input-number>
       </SettingItem>
     </SettingItemBox>
-    <setting-item-box name="标签">
+    <setting-item-box name="Label">
       <setting-item>
         <n-space>
           <n-switch v-model:value="item.label.show" size="small" />
-          <n-text>展示标签</n-text>
+          <n-text>Show label</n-text>
         </n-space>
       </setting-item>
-      <setting-item name="大小">
+      <setting-item name="Size">
         <n-input-number v-model:value="item.label.fontSize" size="small" :min="1"></n-input-number>
       </setting-item>
-      <setting-item name="tip颜色">
+      <setting-item name="Tip color">
         <n-color-picker size="small" :modes="['hex']" v-model:value="item.label.color"></n-color-picker>
       </setting-item>
-      <setting-item name="位置">
+      <setting-item name="Position">
         <n-select
           v-model:value="item.label.position"
           :options="[
-            { label: '顶部', value: 'top' },
-            { label: '左侧', value: 'left' },
-            { label: '右侧', value: 'right' },
-            { label: '底部', value: 'bottom' }
+            { label: 'Top', value: 'top' },
+            { label: 'Left', value: 'left' },
+            { label: 'Right', value: 'right' },
+            { label: 'Bottom', value: 'bottom' }
           ]"
         />
       </setting-item>

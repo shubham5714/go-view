@@ -5,7 +5,7 @@ export const CapsuleChartConfig: ConfigType = {
   key: 'CapsuleChart',
   chartKey: 'VCapsuleChart',
   conKey: 'VCCapsuleChart',
-  title: '胶囊柱图',
+  title: 'Capsule Bar Chart',
   category: ChatCategoryEnum.BAR,
   categoryName: ChatCategoryEnumName.BAR,
   package: PackagesCategoryEnum.CHARTS,

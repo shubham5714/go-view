@@ -2,22 +2,22 @@ export const axisConfig = {
   // X轴位置
   xposition: [
     {
-      label: '顶部',
+      label: 'Top',
       value: 'top'
     },
     {
-      label: '底部',
+      label: 'Bottom',
       value: 'bottom'
     }
   ],
   // Y轴位置
   yposition: [
     {
-      label: '左侧',
+      label: 'Left',
       value: 'left'
     },
     {
-      label: '右侧',
+      label: 'Right',
       value: 'right'
     }
   ],
@@ -26,15 +26,15 @@ export const axisConfig = {
     lineStyle: {
       type: [
         {
-          label: '实线',
+          label: 'Solid',
           value: 'solid'
         },
         {
-          label: '虚线',
+          label: 'Dashed',
           value: 'dashed'
         },
         {
-          label: '点线',
+          label: 'Dotted',
           value: 'dotted'
         }
       ]
@@ -44,11 +44,11 @@ export const axisConfig = {
   visualMap: {
     orient: [
       {
-        label: '竖直',
+        label: 'Vertical',
         value: 'vertical'
       },
       {
-        label: '水平',
+        label: 'Horizontal',
         value: 'horizontal'
       }
     ]

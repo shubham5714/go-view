@@ -10,7 +10,7 @@ export default {
   fetchMockSingleData: {
     code: 0,
     status: 200,
-    msg: '请求成功',
+    msg: 'Success',
     data: {
     dimensions: ['product', 'dataOne'],
       'source|20': [
@@ -25,11 +25,11 @@ export default {
   fetchCapsule: {
     code: 0,
     status: 200,
-    msg: '请求成功',
+    msg: 'Success',
     data: {
       dimensions: ['name', 'value'],
       "source|2-5": [
-        { 'name|+1': ["厦门","福州","北京","上海","新疆","郑州","湖南","内蒙古"], 'value|0-40': 20 },
+        { 'name|+1': ["Xiamen","Fuzhou","Beijing","Shanghai","Xinjiang","Zhengzhou","Hunan","Inner Mongolia"], 'value|0-40': 20 },
       ]
     }
   },
@@ -37,7 +37,7 @@ export default {
   fetchMockData: {
     code: 0,
     status: 200,
-    msg: '请求成功',
+    msg: 'Success',
     data: {
       dimensions: ['product', 'dataOne', 'dataTwo', 'dataThree'],
       'source|20': [
@@ -54,60 +54,60 @@ export default {
   fetchRankList: {
     code: 0,
     status: 200,
-    msg: '请求成功',
+    msg: 'Success',
     'data|50': [{ name: '@name', 'value|100-900': 5 }]
   },
   // 轮播表格
   fetchScrollBoard: {
     code: 0,
     status: 200,
-    msg: '请求成功',
+    msg: 'Success',
     data: [
-      ['行1列1', '行1列2', '1'],
-      ['行2列1', '行2列2', '2'],
-      ['行3列1', '行3列2', '3'],
-      ['行4列1', '行4列2', '4'],
-      ['行5列1', '行5列2', '5'],
-      ['行6列1', '行6列2', '6'],
-      ['行7列1', '行7列2', '行7列3'],
-      ['行8列1', '行8列2', '行8列3'],
-      ['行9列1', '行9列2', '行9列3'],
-      ['行10列1', '行10列2', '行10列3']
+      ['R1C1', 'R1C2', '1'],
+      ['R2C1', 'R2C2', '2'],
+      ['R3C1', 'R3C2', '3'],
+      ['R4C1', 'R4C2', '4'],
+      ['R5C1', 'R5C2', '5'],
+      ['R6C1', 'R6C2', '6'],
+      ['R7C1', 'R7C2', 'R7C3'],
+      ['R8C1', 'R8C2', 'R8C3'],
+      ['R9C1', 'R9C2', 'R9C3'],
+      ['R10C1', 'R10C2', 'R10C3']
     ]
   },
   // 获取数字-浮点型
   fetchNumberFloat: {
     code: 0,
     status: 200,
-    msg: '请求成功',
+    msg: 'Success',
     data: '@float(0, 0.99, 1, 4)'
   },
   // 获取数字-整型
   fetchNumberInt: {
     code: 0,
     status: 200,
-    msg: '请求成功',
+    msg: 'Success',
     data: '@integer(0, 100)'
   },
   // 文字
   fetchText: {
     code: 0,
     status: 200,
-    msg: '请求成功',
+    msg: 'Success',
     data: '@paragraph(1, 10)'
   },
   // 图片
   fetchImage: (num: number) => ({
     code: 0,
     status: 200,
-    msg: '请求成功',
+    msg: 'Success',
     data: `https://robohash.org/${num}`
   }),
   // 雷达
   fetchRadar: {
     code: 0,
     status: 200,
-    msg: '请求成功',
+    msg: 'Success',
     data: {
       radarIndicator: [
         { name: '@name', max: 10000 },
@@ -147,28 +147,28 @@ export default {
   fetchHeatmap: {
     code: 0,
     status: 200,
-    msg: '请求成功',
+    msg: 'Success',
     data: heatmapJson
   },
   // 散点图
   fetchScatterBasic: {
     code: 0,
     status: 200,
-    msg: '请求成功',
+    msg: 'Success',
     data: scatterJson
   },
   // 中国地图
   fetchMap: {
     code: 0,
     status: 200,
-    msg: '请求成功',
+    msg: 'Success',
     data: mapJson
   },
   // 词云
   fetchWordCloud: {
     code: 0,
     status: 200,
-    msg: '请求成功',
+    msg: 'Success',
     data: [
       {
         name: '@name',
@@ -207,14 +207,14 @@ export default {
   fetchTreemap: {
     code: 0,
     status: 200,
-    msg: '请求成功',
+    msg: 'Success',
     data: tTreemapJson
   },
   // 三维地球
   threeEarth01Data: {
     code: 0,
     status: 200,
-    msg: '请求成功',
+    msg: 'Success',
     data: [
       {
         startArray: { name: '@name', N: '@integer(10, 100)', E: '@integer(10, 100)' },
@@ -226,14 +226,14 @@ export default {
   fetchSankey: {
     code: 0,
     status: 200,
-    msg: '请求成功',
+    msg: 'Success',
     data: sankeyJson
   },
   // 关系图
   graphData: {
     code: 0,
     status: 200,
-    msg: '请求成功',
+    msg: 'Success',
     data: graphDataJson
   },
 }

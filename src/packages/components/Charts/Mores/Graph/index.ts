@@ -5,7 +5,7 @@ export const GraphConfig: ConfigType = {
   key: 'Graph',
   chartKey: 'VGraph',
   conKey: 'VCGraph',
-  title: '关系图',
+  title: 'Graph Chart',
   category: ChatCategoryEnum.MORE,
   categoryName: ChatCategoryEnumName.MORE,
   package: PackagesCategoryEnum.CHARTS,

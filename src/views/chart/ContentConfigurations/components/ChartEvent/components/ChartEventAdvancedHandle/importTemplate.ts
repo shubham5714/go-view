@@ -21,7 +21,7 @@ console.log(node_modules)
 const addClickTemplateString = `
 // 在渲染之后才能获取 dom 实例
 e.el.addEventListener('click', () => {
-  alert('我触发拉~');
+  alert('Triggered!');
 }, false)
 `
 
@@ -50,7 +50,7 @@ chart.setOption({
   `
         <div>
           <img src="https://portrait.gitee.com/uploads/avatars/user/1654/4964818_MTrun_1653229420.png!avatar30">
-          <b><a href="https://gitee.com/dromara/go-view">《这是一个自定义的tooltip》</a></b>
+          <b><a href="https://gitee.com/dromara/go-view">Custom tooltip example</a></b>
         <div>
         <div style='border-radius:35px;color:#666'>
         ` +
@@ -151,39 +151,39 @@ const len = 3; // 轮播部分提示
 
 export const templateList = [
   {
-    description: '获取当前组件实例',
+    description: 'Get current component instance',
     code: eTemplateString
   },
   {
-    description: '获取全局 echarts 实例',
+    description: 'Get global echarts instance',
     code: echartsTemplateString
   },
   {
-    description: '获取组件图表集合',
+    description: 'Get component chart map',
     code: componentsTemplateString
   },
   {
-    description: '获取 nodeModules 实例',
+    description: 'Get nodeModules instance',
     code: nodeModulesTemplateString
   },
   {
-    description: '获取远程 CDN 库',
+    description: 'Load remote CDN library',
     code: importTemplateString
   },
   {
-    description: '设置文字组件点击事件',
+    description: 'Set text component click event',
     code: addClickTemplateString
   },
   {
-    description: '修改图表 tooltip',
+    description: 'Customize chart tooltip',
     code: tooltipTemplateString
   },
   {
-    description: '添加【轮播列表】样式',
+    description: 'Style a scroll board',
     code: addStyleString
   },
   {
-    description: '修改【地图】圆点，新增提示自动轮播',
+    description: 'Customize map points with auto-rotating tips',
     code: editMapPointString
   }
 ]

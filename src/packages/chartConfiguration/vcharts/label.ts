@@ -1,119 +1,119 @@
 export const labelConfig = {
   position: [
     {
-      label: '外部',
+      label: 'Outside',
       value: 'outside'
     },
     {
-      label: '内部',
+      label: 'Inside',
       value: 'inside'
     },
     {
-      label: '内部-外',
+      label: 'Inside-Outside',
       value: 'inside-outer'
     },
     {
-      label: '内部-里',
+      label: 'Inside-Inner',
       value: 'inside-inner'
     },
     {
-      label: '内部-居中',
+      label: 'Inside-Center',
       value: 'inside-center'
     }
   ],
   barPosition: [
     {
-      label: '外部',
+      label: 'Outside',
       value: 'outside'
     },
     {
-      label: '内部',
+      label: 'Inside',
       value: 'inside'
     },
     {
-      label: '顶部',
+      label: 'Top',
       value: 'top'
     },
     {
-      label: '底部',
+      label: 'Bottom',
       value: 'bottom'
     },
     {
-      label: '左侧',
+      label: 'Left',
       value: 'left'
     },
     {
-      label: '右侧',
+      label: 'Right',
       value: 'right'
     },
     {
-      label: '内部-顶',
+      label: 'Inside-Top',
       value: 'inside-top'
     },
     {
-      label: '内部-底',
+      label: 'Inside-Bottom',
       value: 'inside-bottom'
     },
     {
-      label: '内部-右',
+      label: 'Inside-Right',
       value: 'inside-right'
     },
     {
-      label: '内部-左',
+      label: 'Inside-Left',
       value: 'inside-left'
     },
     {
-      label: '顶部-右',
+      label: 'Top-Right',
       value: 'top-right'
     },
     {
-      label: '顶部-左',
+      label: 'Top-Left',
       value: 'top-left'
     },
     {
-      label: '底部-右',
+      label: 'Bottom-Right',
       value: 'bottom-right'
     },
     {
-      label: '底部-左',
+      label: 'Bottom-Left',
       value: 'bottom-left'
     }
   ],
   linePosition: [
     {
-      label: '顶部',
+      label: 'Top',
       value: 'top'
     },
     {
-      label: '底部',
+      label: 'Bottom',
       value: 'bottom'
     },
     {
-      label: '左侧',
+      label: 'Left',
       value: 'left'
     },
     {
-      label: '右侧',
+      label: 'Right',
       value: 'right'
     },
     {
-      label: '顶部-右',
+      label: 'Top-Right',
       value: 'top-right'
     },
     {
-      label: '顶部-左',
+      label: 'Top-Left',
       value: 'top-left'
     },
     {
-      label: '底部-右',
+      label: 'Bottom-Right',
       value: 'bottom-right'
     },
     {
-      label: '底部-左',
+      label: 'Bottom-Left',
       value: 'bottom-left'
     },
     {
-      label: '居中',
+      label: 'Center',
       value: 'center'
     }
   ]

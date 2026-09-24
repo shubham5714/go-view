@@ -1,12 +1,14 @@
 <template>
   <n-space class="header-left-btn" :wrap="false" :size="25">
-    <n-button size="small" quaternary @click="goHomeHandle()">
-      <template #icon>
-        <n-icon :depth="3">
-          <home-icon></home-icon>
-        </n-icon>
-      </template>
-    </n-button>
+    <img
+      class="header-brand-logo"
+      :src="brandLogo"
+      alt="DRX AISOC"
+      width="105"
+      height="32"
+      title="Home"
+      @click="goHomeHandle()"
+    />
     <n-space :wrap="false">
       <!-- 模块展示按钮 -->
       <n-tooltip v-for="item in btnList" :key="item.key" placement="bottom" trigger="hover">
@@ -29,53 +31,34 @@
         </template>
         <span>{{ item.title }}</span>
       </n-tooltip>
-
-      <n-divider vertical />
-
-      <!-- 保存 -->
-      <n-tooltip placement="bottom" trigger="hover">
-        <template #trigger>
-          <div class="save-btn">
-            <n-button
-              size="small"
-              type="primary"
-              ghost
-              :loading="saveLoading"
-              @click="handleSave"
-            >
-              <template #icon>
-                <n-icon>
-                  <SaveIcon></SaveIcon>
-                </n-icon>
-              </template>
-            </n-button>
-          </div>
-        </template>
-        <span>Save</span>
-      </n-tooltip>
     </n-space>
   </n-space>
 </template>
 
 <script setup lang="ts">
-import { toRefs, ref, Ref, reactive, computed } from 'vue'
+import { toRefs, Ref, reactive, computed } from 'vue'
 import { renderIcon, goDialog, goHome } from '@/utils'
 import { icon } from '@/plugins'
+import { useDesignStore } from '@/store/modules/designStore/designStore'
 import { useRemoveKeyboard } from '../../hooks/useKeyboard.hook'
-import { useSync } from '../../hooks/useSync.hook'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { useChartHistoryStore } from '@/store/modules/chartHistoryStore/chartHistoryStore'
 import { HistoryStackEnum } from '@/store/modules/chartHistoryStore/chartHistoryStore.d'
 import { useChartLayoutStore } from '@/store/modules/chartLayoutStore/chartLayoutStore'
 import { ChartLayoutStoreEnum } from '@/store/modules/chartLayoutStore/chartLayoutStore.d'
+import desktopDarkLogo from '@/assets/images/brand/desktop-dark.png'
+import desktopLightLogo from '@/assets/images/brand/desktop-logo.png'
 
-const { LayersIcon, BarChartIcon, PrismIcon, HomeIcon, ArrowBackIcon, ArrowForwardIcon } = icon.ionicons5
-const { SaveIcon } = icon.carbon
+const { LayersIcon, BarChartIcon, PrismIcon, ArrowBackIcon, ArrowForwardIcon } = icon.ionicons5
+const designStore = useDesignStore()
 const { setItem } = useChartLayoutStore()
-const { dataSyncUpdate } = useSync()
 const { getLayers, getCharts, getDetails } = toRefs(useChartLayoutStore())
 const chartEditStore = useChartEditStore()
 const chartHistoryStore = useChartHistoryStore()
+
+const brandLogo = computed(() =>
+  designStore.getDarkTheme ? desktopDarkLogo : desktopLightLogo
+)
 
 interface ItemType<T> {
   key: T
@@ -124,20 +107,6 @@ const historyList = reactive<ItemType<HistoryStackEnum>[]>([
     icon: renderIcon(ArrowForwardIcon)
   }
 ])
-const saveLoading = ref(false)
-
-const handleSave = () => {
-  if (saveLoading.value) return
-  saveLoading.value = true
-  // 手动保存时显示提示信息
-  dataSyncUpdate(true, true)
-  // dataSyncUpdate 由 throttle 包裹，不返回 Promise，这里只负责短暂的加载反馈
-  setTimeout(() => {
-    saveLoading.value = false
-  }, 1200)
-}
-
-
 
 // store 描述的是展示的值，所以和 ContentConfigurations 的 collapsed 是相反的
 const styleHandle = (item: ItemType<ChartLayoutStoreEnum>) => {
@@ -179,5 +148,15 @@ const goHomeHandle = () => {
 <style lang="scss" scoped>
 .header-left-btn {
   margin-left: -37px;
- }
+  align-items: center;
+}
+.header-brand-logo {
+  width: 105px;
+  height: 32px;
+  display: block;
+  object-fit: fill;
+  flex-shrink: 0;
+  cursor: pointer;
+  background: transparent;
+}
 </style>

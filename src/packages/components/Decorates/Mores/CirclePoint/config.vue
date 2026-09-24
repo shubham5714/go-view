@@ -1,29 +1,29 @@
 <template>
-  <CollapseItem name="线条" :expanded="true">
-    <SettingItemBox name="具体">
-      <SettingItem name="外圆环半径">
+  <CollapseItem name="Line" :expanded="true">
+    <SettingItemBox name="Detail">
+      <SettingItem name="Outer ring radius">
         <n-input-number
             size="small"
             v-model:value="optionData.outCircle"
         ></n-input-number>
       </SettingItem>
-      <SettingItem name="内部圆形半径">
+      <SettingItem name="Inner circle radius">
         <n-input-number
             size="small"
             v-model:value="optionData.inCircle"
         ></n-input-number>
       </SettingItem>
-      <SettingItem name="外圆环粗细">
+      <SettingItem name="Outer ring thickness">
         <n-input-number
             size="small"
             v-model:value="optionData.outCircleWidth"
         ></n-input-number>
       </SettingItem>
 
-      <SettingItem name="外圆环颜色">
+      <SettingItem name="Outer ring color">
         <n-color-picker size="small" :modes="['hex']" v-model:value="optionData.outCircleColor"></n-color-picker>
       </SettingItem>
-      <SettingItem name="内部圆形颜色">
+      <SettingItem name="Inner circle color">
         <n-color-picker size="small" :modes="['hex']" v-model:value="optionData.inCircleColor"></n-color-picker>
       </SettingItem>
     </SettingItemBox>

@@ -47,7 +47,7 @@ export const fetchPathByName = (pageName: string, p?: string) => {
     })
     return p ? (pathData as any)[p] : pathData
   } catch (error) {
-    window['$message'].warning('查询路由信息失败，请联系管理员！')
+    window['$message'].warning('Failed to resolve route. Please contact an administrator!')
   }
 }
 
@@ -159,7 +159,7 @@ export const fetchRouteParams = () => {
     const route = useRoute()
     return route.params
   } catch (error) {
-    window['$message'].warning('查询路由信息失败，请联系管理员！')
+    window['$message'].warning('Failed to resolve route. Please contact an administrator!')
   }
 }
 
@@ -172,7 +172,7 @@ export const fetchRouteParamsLocation = () => {
     // 防止添加query参数的时候，解析ID异常
     return document.location.hash.split('?')[0].split('/').pop() || ''
   } catch (error) {
-    window['$message'].warning('查询路由信息失败，请联系管理员！')
+    window['$message'].warning('Failed to resolve route. Please contact an administrator!')
     return ''
   }
 }
@@ -182,7 +182,7 @@ export const fetchRouteParamsLocation = () => {
  * @param confirm
  */
 export const goHome = () => {
-  routerTurnByName(PageEnum.BASE_HOME_NAME)
+  routerTurnByName(PageEnum.BASE_HOME_ITEMS_NAME)
 }
 
 /**

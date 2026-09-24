@@ -5,7 +5,7 @@ export const ImageConfig: ConfigType = {
   key: 'Image',
   chartKey: 'VImage',
   conKey: 'VCImage',
-  title: '图片',
+  title: 'Image',
   category: ChatCategoryEnum.MORE,
   categoryName: ChatCategoryEnumName.MORE,
   package: PackagesCategoryEnum.INFORMATIONS,

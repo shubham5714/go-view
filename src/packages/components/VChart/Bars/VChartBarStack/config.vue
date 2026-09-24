@@ -8,10 +8,10 @@
   <!-- 柱体 -->
   <Bar :optionData="optionData"></Bar>
   <!-- 开启百分比 -->
-  <CollapseItem name="百分比堆叠">
-    <SettingItemBox name="配置" alone>
+  <CollapseItem name="Percent stack">
+    <SettingItemBox name="Config" alone>
       <n-space>
-        <span>开启百分比堆叠</span>
+        <span>Enable percent stack</span>
         <n-switch v-model:value="optionData.percent" size="small"></n-switch>
       </n-space>
     </SettingItemBox>

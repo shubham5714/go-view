@@ -8,30 +8,30 @@ export const includes = []
 
 // 关系图布局
 export const GraphLayout = [
-  { label: '无', value: 'none' },
-  { label: '环形', value: 'circular' },
-  { label: '力引导', value: 'force' }
+  { label: 'None', value: 'none' },
+  { label: 'Ring', value: 'circular' },
+  { label: 'Force directed', value: 'force' }
 ]
 
 // 标签开关
 export const LabelSwitch = [
-  { label: '开启', value: 1 },
-  { label: '关闭', value: 0 }
+  { label: 'On', value: 1 },
+  { label: 'Off', value: 0 }
 ]
 
 // 标签位置
 export const LabelPosition = [
-  { label: '左侧', value: 'left' },
-  { label: '右侧', value: 'right' },
-  { label: '顶部', value: 'top' },
-  { label: '底部', value: 'bottom' },
-  { label: '内部', value: 'inside' }
+  { label: 'Left', value: 'left' },
+  { label: 'Right', value: 'right' },
+  { label: 'Top', value: 'top' },
+  { label: 'Bottom', value: 'bottom' },
+  { label: 'Inside', value: 'inside' }
 ]
 
 // 图-迭代动画
 export const LayoutAnimation = [
-  { label: '开启', value: 1 },
-  { label: '关闭', value: 0 }
+  { label: 'On', value: 1 },
+  { label: 'Off', value: 0 }
 ]
 
 export const option = {

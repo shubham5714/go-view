@@ -1,21 +1,21 @@
 <template>
   <div>
-    <CollapseItem name="桑基图" :expanded="true">
-      <SettingItemBox name="样式">
-        <SettingItem name="方向">
+    <CollapseItem name="Sankey Chart" :expanded="true">
+      <SettingItemBox name="Style">
+        <SettingItem name="Direction">
           <n-select
             v-model:value="sankeyConfig.orient"
             size="small"
             :options="orientList"
-            placeholder="选择方向"
+            placeholder="Select direction"
           />
         </SettingItem>
-        <SettingItem name="提示标签">
+        <SettingItem name="Tooltip label">
           <n-select
             v-model:value="optionData.tooltip.show"
             size="small"
             :options="toolTipSwitch"
-            placeholder="是否开启"
+            placeholder="Enabled"
           />
         </SettingItem>
       </SettingItemBox>

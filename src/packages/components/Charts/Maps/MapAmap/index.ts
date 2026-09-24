@@ -5,7 +5,7 @@ export const MapAmapConfig: ConfigType = {
   key: 'MapAmap',
   chartKey: 'VMapAmap',
   conKey: 'VCMapAmap',
-  title: '高德地图',
+  title: 'Amap',
   category: ChatCategoryEnum.MAP,
   categoryName: ChatCategoryEnumName.MAP,
   package: PackagesCategoryEnum.CHARTS,

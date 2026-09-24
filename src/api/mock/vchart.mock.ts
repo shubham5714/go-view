@@ -4,7 +4,7 @@ export default {
   bar: {
     code: 0,
     status: 200,
-    msg: '请求成功',
+    msg: 'Success',
     data: bar
   }
 }

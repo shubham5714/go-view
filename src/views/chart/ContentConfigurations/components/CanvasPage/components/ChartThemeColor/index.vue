@@ -52,7 +52,7 @@ type FormateCustomColorType = {
   }
 }
 
-const CreateColor = loadAsyncComponent(() => import('../CreateColor/index.vue'))
+const CreateColor = loadAsyncComponent(() => import('../CreateColor/index.vue'), { loading: false })
 
 const { SquareIcon, AddIcon } = icon.ionicons5
 const chartEditStore = useChartEditStore()

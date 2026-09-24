@@ -1,21 +1,21 @@
 <template>
-  <CollapseItem name="内容" :expanded="true">
-    <SettingItemBox name="数值">
-      <SettingItem name="终点值">
+  <CollapseItem name="Content" :expanded="true">
+    <SettingItemBox name="Value">
+      <SettingItem name="End value">
         <n-input-number
           v-model:value="optionData.dataset"
           size="small"
           :min="1"
         ></n-input-number>
       </SettingItem>
-      <SettingItem name="大小">
+      <SettingItem name="Size">
         <n-input-number
           v-model:value="optionData.numberSize"
           size="small"
           :min="1"
         ></n-input-number>
       </SettingItem>
-      <SettingItem name="精度">
+      <SettingItem name="Precision">
         <n-input-number
           v-model:value="optionData.precision"
           size="small"
@@ -25,36 +25,36 @@
       <SettingItem>
         <n-space>
           <n-switch v-model:value="optionData.showSeparator" size="small" />
-          <n-text>展示分割符</n-text>
+          <n-text>Show separator</n-text>
         </n-space>
       </SettingItem>
     </SettingItemBox>
 
-    <SettingItemBox name="数值">
-      <SettingItem name="前缀">
+    <SettingItemBox name="Value">
+      <SettingItem name="Prefix">
         <n-input v-model:value="optionData.prefixText" size="small"></n-input>
       </SettingItem>
-      <SettingItem name="后缀">
+      <SettingItem name="Suffix">
         <n-input v-model:value="optionData.suffixText" size="small"></n-input>
       </SettingItem>
     </SettingItemBox>
 
-    <SettingItemBox name="颜色">
-      <SettingItem name="前缀">
+    <SettingItemBox name="Color">
+      <SettingItem name="Prefix">
         <n-color-picker
           size="small"
           :modes="['hex']"
           v-model:value="optionData.prefixColor"
         ></n-color-picker>
       </SettingItem>
-      <SettingItem name="后缀">
+      <SettingItem name="Suffix">
         <n-color-picker
           size="small"
           :modes="['hex']"
           v-model:value="optionData.suffixColor"
         ></n-color-picker>
       </SettingItem>
-      <SettingItem name="数值">
+      <SettingItem name="Value">
         <n-color-picker
           size="small"
           :modes="['hex']"
@@ -64,8 +64,8 @@
     </SettingItemBox>
   </CollapseItem>
 
-  <CollapseItem name="动画" :expanded="true">
-    <SettingItemBox name="速度(s)">
+  <CollapseItem name="Animation" :expanded="true">
+    <SettingItemBox name="Speed (s)">
       <SettingItem>
         <n-input-number
           v-model:value="optionData.dur"

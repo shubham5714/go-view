@@ -4,7 +4,7 @@
       <n-space justify="space-between">
         <!-- 名称 -->
         <n-input-group>
-          <n-input-group-label>名称:</n-input-group-label>
+          <n-input-group-label>Name:</n-input-group-label>
           <n-input
             class="create-color-name"
             v-model:value.trim="editColor.name"
@@ -14,7 +14,7 @@
             @change="titleChangeHandle"
           />
         </n-input-group>
-        <n-tag type="warning">底部图表仅展示 7 条数据</n-tag>
+        <n-tag type="warning">Chart preview shows only 7 data points</n-tag>
       </n-space>
       <!-- 颜色 -->
       <n-scrollbar style="max-height: 132px">
@@ -36,7 +36,7 @@
                       <trash-icon></trash-icon>
                     </n-icon>
                   </template>
-                  删除颜色
+                  Delete color
                 </n-tooltip>
               </div>
             </div>
@@ -44,7 +44,7 @@
           <div>
             <n-button type="primary" secondary @click="addColor">
               <div class="go-flex-items-center">
-                <span class="go-mr-4">添加</span>
+                <span class="go-mr-4">Add</span>
                 <n-icon size="16">
                   <add-icon></add-icon>
                 </n-icon>
@@ -58,7 +58,7 @@
     <!-- 扩展色 -->
     <div class="expend-color-box">
       <n-card class="go-mt-3 expend-color" :bordered="false" role="dialog" size="small" aria-modal="true">
-        <n-text>默认扩展色：</n-text>
+        <n-text>Default extended colors:</n-text>
         <n-divider style="margin: 10px 0"></n-divider>
         <n-space :size="[4, 0]" justify="center">
           <div
@@ -73,7 +73,7 @@
         </n-space>
       </n-card>
       <n-card class="go-mt-3 expend-color" :bordered="false" role="dialog" size="small" aria-modal="true">
-        <n-text>透明扩展色：</n-text>
+        <n-text>Transparent extended colors:</n-text>
         <n-divider style="margin: 10px 0"></n-divider>
         <n-space :size="[4, 0]" justify="center">
           <div
@@ -113,7 +113,9 @@ const props = defineProps({
 const emit = defineEmits(['updateColor'])
 
 const { AddIcon, TrashIcon } = icon.ionicons5
-const CreateColorRenderChart = loadAsyncComponent(() => import('../CreateColorRenderChart/index.vue'))
+const CreateColorRenderChart = loadAsyncComponent(() => import('../CreateColorRenderChart/index.vue'), {
+  loading: false
+})
 
 // 拷贝的一份数据
 const editColor = ref<ColorType | undefined>()

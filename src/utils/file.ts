@@ -75,7 +75,7 @@ export const readFile = (file: File) => {
       }
       reader.readAsText(file)
     } catch (error) {
-      window['$message'].error('文件读取失败！')
+      window['$message'].error('Failed to read file!')
     }
   })
 }

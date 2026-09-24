@@ -4,7 +4,7 @@ import { Border04Config } from './index'
 import cloneDeep from 'lodash/cloneDeep'
 
 export const option = {
-  borderTitle: '边框-04',
+  borderTitle: 'Border-04',
   borderTitleWidth: 250,
   borderTitleHeight: 32,
   borderTitleSize: 18,

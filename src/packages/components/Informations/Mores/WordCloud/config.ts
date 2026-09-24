@@ -7,13 +7,13 @@ import dataJson from './data.json'
 export const includes = []
 
 export const ShapeEnumList = [
-  { label: '圆形', value: 'circle' },
-  { label: '心形', value: 'cardioid' },
-  { label: '钻石', value: 'diamond' },
-  { label: '右三角形', value: 'triangle-forward' },
-  { label: '三角形', value: 'triangle' },
-  { label: '五边形', value: 'pentagon' },
-  { label: '星星', value: 'star' }
+  { label: 'Circle', value: 'circle' },
+  { label: 'Heart', value: 'cardioid' },
+  { label: 'Diamond', value: 'diamond' },
+  { label: 'Right triangle', value: 'triangle-forward' },
+  { label: 'Triangle', value: 'triangle' },
+  { label: 'Pentagon', value: 'pentagon' },
+  { label: 'Star', value: 'star' }
 ]
 
 export const option = {

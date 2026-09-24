@@ -5,7 +5,7 @@ export const TextBarrageConfig: ConfigType = {
   key: 'TextBarrage',
   chartKey: 'VTextBarrage',
   conKey: 'VCTextBarrage',
-  title: '弹幕文字',
+  title: 'Barrage Text',
   category: ChatCategoryEnum.TEXT,
   categoryName: ChatCategoryEnumName.TEXT,
   package: PackagesCategoryEnum.INFORMATIONS,

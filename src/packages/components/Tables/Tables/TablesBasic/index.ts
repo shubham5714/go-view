@@ -5,7 +5,7 @@ export const TablesBasicConfig: ConfigType = {
   key: 'TablesBasic',
   chartKey: 'VTablesBasic',
   conKey: 'VCTablesBasic',
-  title: '基础分页表格',
+  title: 'Basic Paginated Table',
   category: ChatCategoryEnum.TABLE,
   categoryName: ChatCategoryEnumName.TABLE,
   package: PackagesCategoryEnum.TABLES,

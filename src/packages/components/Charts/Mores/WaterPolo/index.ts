@@ -5,7 +5,7 @@ export const WaterPoloConfig: ConfigType = {
   key: 'WaterPolo',
   chartKey: 'VWaterPolo',
   conKey: 'VCWaterPolo',
-  title: '水球图',
+  title: 'Liquid Fill Chart',
   category: ChatCategoryEnum.MORE,
   categoryName: ChatCategoryEnumName.MORE,
   package: PackagesCategoryEnum.CHARTS,

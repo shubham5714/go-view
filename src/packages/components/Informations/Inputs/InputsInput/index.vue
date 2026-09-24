@@ -2,7 +2,7 @@
   <div>
     <n-input :style="`width:${w}px;`" type="text"
              v-model:value="option.value.dataset"
-             placeholder="请输入"
+             placeholder="Please enter"
              @change="onChange">
 
     </n-input>

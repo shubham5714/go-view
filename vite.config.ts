@@ -52,6 +52,11 @@ export default ({ mode }) => defineConfig({
         changeOrigin: true,
         ws: true,
         secure: true,
+      },
+      // Uploaded assets are served by Spring at /oss/** (same host as API in prod)
+      '/oss': {
+        target: loadEnv(mode, process.cwd()).VITE_DEV_PATH,
+        changeOrigin: true,
       }
     }
   },

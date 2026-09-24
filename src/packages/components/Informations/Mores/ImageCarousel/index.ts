@@ -5,7 +5,7 @@ export const ImageCarouselConfig: ConfigType = {
   key: 'ImageCarousel',
   chartKey: 'VImageCarousel',
   conKey: 'VCImageCarousel',
-  title: '轮播图',
+  title: 'Carousel',
   category: ChatCategoryEnum.MORE,
   categoryName: ChatCategoryEnumName.MORE,
   package: PackagesCategoryEnum.INFORMATIONS,

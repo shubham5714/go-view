@@ -80,31 +80,31 @@ export const loadingError = () => {
     // 自定义
     [DialogEnum.DELETE]: {
       fn: window['$dialog'].warning,
-      message: message || '是否删除此数据?'
+      message: message || 'Delete this item?'
     },
     // 原有
     [DialogEnum.WARNING]: {
       fn: window['$dialog'].warning,
-      message: message || '是否执行此操作?'
+      message: message || 'Continue with this action?'
     },
     [DialogEnum.ERROR]: {
       fn: window['$dialog'].error,
-      message: message || '是否执行此操作?'
+      message: message || 'Continue with this action?'
     },
     [DialogEnum.SUCCESS]: {
       fn: window['$dialog'].success,
-      message: message || '是否执行此操作?'
+      message: message || 'Continue with this action?'
     }
   }
 
   const dialog: DialogReactive = typeObj[type || DialogEnum.WARNING]['fn']({
     // 导入其余 NaiveUI 支持参数
     ...params,
-    title: title || '提示',
+    title: title || 'Confirm',
     icon: renderIcon(InformationCircleIcon, { size: dialogIconSize }),
     content: typeObj[type || DialogEnum.WARNING]['message'],
-    positiveText: positiveText || '确定',
-    negativeText: closeNegativeText ? undefined : (negativeText || '取消'),
+    positiveText: positiveText || 'Confirm',
+    negativeText: closeNegativeText ? undefined : (negativeText || 'Cancel'),
     // 是否通过遮罩关闭
     maskClosable: isMaskClosable || maskClosable,
     onPositiveClick: async () => {

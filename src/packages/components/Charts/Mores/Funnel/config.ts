@@ -8,15 +8,15 @@ export const includes = ['legend']
 
 // 排序枚举
 export const FunnelOrderEnumList = [
-  { label: '倒三角', value: 'descending' },
-  { label: '正三角', value: 'ascending' }
+  { label: 'Inverted triangle', value: 'descending' },
+  { label: 'Triangle', value: 'ascending' }
 ]
 // 标签位置枚举
 export const FunnelLabelPositionEnumList = [
-  { label: '内部', value: 'inside' },
-  { label: '外部', value: 'outside' },
-  { label: '内部左侧', value: 'insideLeft' },
-  { label: '内部右侧', value: 'insideRight' }
+  { label: 'Inside', value: 'inside' },
+  { label: 'Outside', value: 'outside' },
+  { label: 'Inside left', value: 'insideLeft' },
+  { label: 'Inside right', value: 'insideRight' }
 ]
 
 export const option = {

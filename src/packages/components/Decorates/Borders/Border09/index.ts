@@ -5,7 +5,7 @@ export const Border09Config: ConfigType = {
   key: 'Border09',
   chartKey: 'VBorder09',
   conKey: 'VCBorder09',
-  title: '边框-09',
+  title: 'Border-09',
   category: ChatCategoryEnum.BORDER,
   categoryName: ChatCategoryEnumName.BORDER,
   package: PackagesCategoryEnum.DECORATES,

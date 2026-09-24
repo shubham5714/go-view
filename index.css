@@ -1,5 +1,11 @@
 * {
   margin: 0;
+  font-family: "Poppins", sans-serif;
+}
+html,
+body,
+#app {
+  font-family: "Poppins", sans-serif;
 }
 .first-loading-wrp {
   display: flex;

@@ -34,7 +34,7 @@
             </n-icon>
           </n-button>
         </template>
-        <span>{{ lockScale ? '解锁' : '锁定' }}当前比例</span>
+        <span>{{ lockScale ? 'Unlock' : 'Lock' }} current scale</span>
       </n-tooltip>
 
       <!-- 拖动 -->
@@ -96,7 +96,7 @@ let filterOptions = [
     value: 50
   },
   {
-    label: '自适应',
+    label: 'Fit',
     value: 0
   }
 ]

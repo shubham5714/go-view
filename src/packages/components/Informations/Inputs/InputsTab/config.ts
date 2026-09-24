@@ -10,21 +10,21 @@ export const option = {
   // 时间组件展示类型，必须和 interactActions 中定义的数据一致
   [COMPONENT_INTERACT_EVENT_KET]: ComponentInteractEventEnum.DATA,
   // 默认值
-  tabLabel: '选项1',
+  tabLabel: 'Option 1',
   // 样式
   tabType: 'segment',
   // 暴露配置内容给用户
   dataset: [
     {
-      label: '选项1',
+      label: 'Option 1',
       value: '1'
     },
     {
-      label: '选项2',
+      label: 'Option 2',
       value: '2'
     },
     {
-      label: '选项3',
+      label: 'Option 3',
       value: '3'
     }
   ]

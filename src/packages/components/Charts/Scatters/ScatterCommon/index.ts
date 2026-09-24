@@ -5,7 +5,7 @@ export const ScatterCommonConfig: ConfigType = {
   key: 'ScatterCommon',
   chartKey: 'VScatterCommon',
   conKey: 'VCScatterCommon',
-  title: '散点图',
+  title: 'Scatter Chart',
   category: ChatCategoryEnum.SCATTER,
   categoryName: ChatCategoryEnumName.SCATTER,
   package: PackagesCategoryEnum.CHARTS,

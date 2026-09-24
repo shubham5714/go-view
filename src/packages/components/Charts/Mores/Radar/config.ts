@@ -8,8 +8,8 @@ export const includes = ['legend']
 
 // 雷达形状
 export const RadarShapeEnumList = [
-  { label: '多边形', value: 'polygon' },
-  { label: '圆形', value: 'circle' }
+  { label: 'Polygon', value: 'polygon' },
+  { label: 'Circle', value: 'circle' }
 ]
 
 export const option = {

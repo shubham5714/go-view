@@ -5,7 +5,7 @@ export const FullScreenConfig: ConfigType = {
   key: 'FullScreen',
   chartKey: 'VFullScreen',
   conKey: 'VCFullScreen',
-  title: '全屏按钮',
+  title: 'Fullscreen Button',
   category: ChatCategoryEnum.MORE,
   categoryName: ChatCategoryEnumName.MORE,
   package: PackagesCategoryEnum.DECORATES,

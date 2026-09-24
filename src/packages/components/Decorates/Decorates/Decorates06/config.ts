@@ -6,7 +6,7 @@ import cloneDeep from 'lodash/cloneDeep'
 
 export const option = {
   colors: ['#1DC1F533', '#1DC1F5FF'],
-  dataset: '我是标题',
+  dataset: 'Sample title',
   textColor: '#fff',
   textSize: 32
 }

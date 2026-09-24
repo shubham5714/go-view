@@ -4,9 +4,9 @@
       <img src="~@/assets/images/exception/404.svg" alt="" />
     </div>
     <div class="text-center">
-      <h1>抱歉，你访问的页面不存在</h1>
+      <h1>Sorry, the page you visited does not exist</h1>
     </div>
-    <n-button type="primary" @click="goHome">回到首页</n-button>
+    <n-button type="primary" @click="goHome">Back to home</n-button>
   </div>
 </template>
 
@@ -14,7 +14,7 @@
 import { PageEnum } from '@/enums/pageEnum'
 import { routerTurnByName } from '@/utils'
 function goHome() {
-  routerTurnByName(PageEnum.BASE_HOME_NAME)
+  routerTurnByName(PageEnum.BASE_HOME_ITEMS_NAME)
 }
 </script>
 

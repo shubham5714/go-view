@@ -1,38 +1,38 @@
 <template>
-  <CollapseItem name="标题" :expanded="true">
-    <SettingItemBox name="内容" :alone="true">
+  <CollapseItem name="Title" :expanded="true">
+    <SettingItemBox name="Content" :alone="true">
       <n-input
         size="small"
         v-model:value="optionData.borderTitle"
         :minlength="1"
         type="text"
-        placeholder="请输入标题内容"
+        placeholder="Please enter title"
       />
     </SettingItemBox>
 
-    <SettingItemBox name="样式">
-      <SettingItem name="颜色">
+    <SettingItemBox name="Style">
+      <SettingItem name="Color">
         <n-color-picker
           size="small"
           :modes="['hex']"
           v-model:value="optionData.borderTitleColor"
         ></n-color-picker>
       </SettingItem>
-      <SettingItem name="文字大小">
+      <SettingItem name="Text size">
         <n-input-number
           size="small"
           v-model:value="optionData.borderTitleSize"
           :min="12"
         />
       </SettingItem>
-      <SettingItem name="高度">
+      <SettingItem name="Height">
         <n-input-number
           size="small"
           v-model:value="optionData.borderTitleHeight"
           :min="24"
         />
       </SettingItem>
-      <SettingItem name="宽度">
+      <SettingItem name="Width">
         <n-input-number
           size="small"
           v-model:value="optionData.borderTitleWidth"
@@ -43,13 +43,13 @@
     </SettingItemBox>
   </CollapseItem>
 
-  <CollapseItem name="边框" :expanded="true">
+  <CollapseItem name="Border" :expanded="true">
     <SettingItemBox
-      :name="`颜色-${index + 1}`"
+      :name="`Color-${index + 1}`"
       v-for="(item, index) in optionData.colors"
       :key="index"
     >
-      <SettingItem name="颜色">
+      <SettingItem name="Color">
         <n-color-picker
           size="small"
           :modes="['hex']"
@@ -61,14 +61,14 @@
           size="small"
           @click="optionData.colors[index] = option.colors[index]"
         >
-          恢复默认
+          Restore Default
         </n-button>
       </SettingItem>
     </SettingItemBox>
   </CollapseItem>
 
-  <CollapseItem name="背景" :expanded="true">
-    <SettingItemBox name="颜色">
+  <CollapseItem name="Background" :expanded="true">
+    <SettingItemBox name="Color">
       <SettingItem>
         <n-color-picker
           size="small"

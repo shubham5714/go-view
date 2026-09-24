@@ -526,7 +526,7 @@ export const useChartEditStore = defineStore({
             type: isCut ? HistoryActionTypeEnum.CUT : HistoryActionTypeEnum.COPY
           }
           this.setRecordChart(copyData)
-          window['$message'].success(isCut ? '剪切图表成功' : '复制图表成功！')
+          window['$message'].success(isCut ? 'Chart cut successfully' : 'Chart copied successfully!')
           loadingFinish()
         }
       } catch (value) {
@@ -845,7 +845,7 @@ export const useChartEditStore = defineStore({
         loadingFinish()
       } catch (error) {
         console.log(error)
-        window['$message'].error('创建分组失败，请联系管理员')
+        window['$message'].error('Failed to create group. Please contact an administrator.')
         loadingFinish()
       }
     },
@@ -890,7 +890,7 @@ export const useChartEditStore = defineStore({
         loadingFinish()
       } catch (error) {
         console.log(error)
-        window['$message'].error('解除分组失败，请联系管理员')
+        window['$message'].error('Failed to ungroup. Please contact an administrator.')
         loadingFinish()
       }
     },
@@ -991,7 +991,7 @@ export const useChartEditStore = defineStore({
           this.setScale(scaleHeight > 1 ? 1 : scaleHeight)
         }
       } else {
-        window['$message'].warning('请先创建画布，再进行缩放')
+        window['$message'].warning('Create a canvas before zooming')
       }
     },
     // * 监听缩放

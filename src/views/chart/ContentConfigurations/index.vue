@@ -16,43 +16,29 @@
     >
       <content-box class="go-content-configurations go-boderbox" :show-top="false" :depth="2">
         <!-- 页面配置 -->
-        <n-tabs v-if="!selectTarget" class="tabs-box" size="small" type="segment">
+        <n-tabs v-if="!selectTarget" class="tabs-box" size="small" type="line" animated>
           <n-tab-pane
             v-for="item in globalTabList"
             :key="item.key"
             :name="item.key"
+            :tab="item.title"
             size="small"
             display-directive="show:lazy"
           >
-            <template #tab>
-              <n-space>
-                <span>{{ item.title }}</span>
-                <n-icon size="16" class="icon-position">
-                  <component :is="item.icon"></component>
-                </n-icon>
-              </n-space>
-            </template>
             <component :is="item.render"></component>
           </n-tab-pane>
         </n-tabs>
 
         <!-- 编辑 -->
-        <n-tabs v-if="selectTarget" v-model:value="tabsSelect" class="tabs-box" size="small" type="segment">
+        <n-tabs v-if="selectTarget" v-model:value="tabsSelect" class="tabs-box" size="small" type="line" animated>
           <n-tab-pane
             v-for="item in selectTarget.isGroup ? chartsDefaultTabList : chartsTabList"
             :key="item.key"
             :name="item.key"
+            :tab="item.title"
             size="small"
             display-directive="show:lazy"
           >
-            <template #tab>
-              <n-space>
-                <span>{{ item.title }}</span>
-                <n-icon size="16" class="icon-position">
-                  <component :is="item.icon"></component>
-                </n-icon>
-              </n-space>
-            </template>
             <component :is="item.render"></component>
           </n-tab-pane>
         </n-tabs>
@@ -63,7 +49,6 @@
 
 <script setup lang="ts">
 import { ref, toRefs, watch, computed } from 'vue'
-import { icon } from '@/plugins'
 import { loadAsyncComponent } from '@/utils'
 import { ContentBox } from '../ContentBox/index'
 import { TabsEnum } from './index.d'
@@ -75,14 +60,13 @@ const { getDetails } = toRefs(useChartLayoutStore())
 const { setItem } = useChartLayoutStore()
 const chartEditStore = useChartEditStore()
 
-const { ConstructIcon, FlashIcon, DesktopOutlineIcon, LeafIcon, RocketIcon } = icon.ionicons5
-
-const ContentEdit = loadAsyncComponent(() => import('../ContentEdit/index.vue'))
-const CanvasPage = loadAsyncComponent(() => import('./components/CanvasPage/index.vue'))
-const ChartSetting = loadAsyncComponent(() => import('./components/ChartSetting/index.vue'))
-const ChartData = loadAsyncComponent(() => import('./components/ChartData/index.vue'))
-const ChartEvent = loadAsyncComponent(() => import('./components/ChartEvent/index.vue'))
-const ChartAnimation = loadAsyncComponent(() => import('./components/ChartAnimation/index.vue'))
+const quiet = { loading: false } as const
+const ContentEdit = loadAsyncComponent(() => import('../ContentEdit/index.vue'), quiet)
+const CanvasPage = loadAsyncComponent(() => import('./components/CanvasPage/index.vue'), quiet)
+const ChartSetting = loadAsyncComponent(() => import('./components/ChartSetting/index.vue'), quiet)
+const ChartData = loadAsyncComponent(() => import('./components/ChartData/index.vue'), quiet)
+const ChartEvent = loadAsyncComponent(() => import('./components/ChartEvent/index.vue'), quiet)
+const ChartAnimation = loadAsyncComponent(() => import('./components/ChartAnimation/index.vue'), quiet)
 
 const collapsed = ref<boolean>(getDetails.value)
 const tabsSelect = ref<TabsEnum>(TabsEnum.CHART_SETTING)
@@ -122,7 +106,6 @@ const globalTabList = [
   {
     key: TabsEnum.PAGE_SETTING,
     title: 'Page',
-    icon: DesktopOutlineIcon,
     render: CanvasPage
   }
 ]
@@ -130,14 +113,12 @@ const globalTabList = [
 const chartsDefaultTabList = [
   {
     key: TabsEnum.CHART_SETTING,
-    title: 'Customize',
-    icon: ConstructIcon,
+    title: 'Style',
     render: ChartSetting
   },
   {
     key: TabsEnum.CHART_ANIMATION,
-    title: 'Animation',
-    icon: LeafIcon,
+    title: 'Animate',
     render: ChartAnimation
   }
 ]
@@ -147,13 +128,11 @@ const chartsTabList = [
   {
     key: TabsEnum.CHART_DATA,
     title: 'Data',
-    icon: FlashIcon,
     render: ChartData
   },
   {
     key: TabsEnum.CHART_EVENT,
     title: 'Events',
-    icon: RocketIcon,
     render: ChartEvent
   }
 ]
@@ -164,9 +143,6 @@ const chartsTabList = [
   overflow: hidden;
   .tabs-box {
     padding: 10px;
-    .icon-position {
-      padding-top: 2px;
-    }
   }
 }
 </style>

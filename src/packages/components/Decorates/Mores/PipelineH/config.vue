@@ -1,21 +1,21 @@
 <template>
-  <CollapseItem name="管道" :expanded="true">
-    <SettingItemBox name="默认颜色">
+  <CollapseItem name="Pipeline" :expanded="true">
+    <SettingItemBox name="Default color">
       <SettingItem>
         <n-select v-model:value="optionData.color_type" :options="colorOptions" @update:value="handleColorChange" />
       </SettingItem>
     </SettingItemBox>
-    <SettingItemBox name="管道颜色">
+    <SettingItemBox name="Pipeline color">
       <SettingItem>
         <n-color-picker size="small" :modes="['hex']" v-model:value="optionData.o_color"></n-color-picker>
       </SettingItem>
     </SettingItemBox>
-    <SettingItemBox name="水流颜色">
+    <SettingItemBox name="Water flow color">
       <SettingItem>
         <n-color-picker size="small" :modes="['hex']" v-model:value="optionData.i_color"></n-color-picker>
       </SettingItem>
     </SettingItemBox>
-    <SettingItemBox name="流向">
+    <SettingItemBox name="Flow">
       <SettingItem>
         <n-select v-model:value="optionData.line_class" :options="options" />
       </SettingItem>
@@ -38,26 +38,26 @@ const props = defineProps({
 const options = ref([
   {
     value: 'svg_ani_flow',
-    label: '正向'
+    label: 'Forward'
   },
   {
     value: 'svg_ani_flow_back',
-    label: '反向'
+    label: 'Reverse'
   },
   {
     value: 'svg_ani_flow_stop',
-    label: '停止'
+    label: 'Stop'
   }
 ])
 
 const colorOptions = ref([
   {
     value: 1,
-    label: '蓝'
+    label: 'Blue'
   },
   {
     value: 2,
-    label: '黄'
+    label: 'Yellow'
   }
 ])
 

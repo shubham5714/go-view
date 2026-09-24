@@ -173,7 +173,7 @@ const createSaveHandle = (newData: RequestDataPondItemType) => {
   try {
     if (editData.value) {
       requestDataPond.value.unshift(newData)
-      window.$message.success('创建成功!')
+      window.$message.success('Created successfully!')
     } else {
       window.$message.error('Create failed. Please try again later.')
     }

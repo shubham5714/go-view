@@ -4,19 +4,19 @@
   <CollapseItem
     v-for="(item, index) in seriesList"
     :key="index"
-    name="单折线面积图"
+    name="Single Area Chart"
     :expanded="true"
   >
-    <SettingItemBox name="线条">
-      <SettingItem name="宽度">
+    <SettingItemBox name="Line">
+      <SettingItem name="Width">
         <n-input-number
           v-model:value="item.lineStyle.width"
           :min="1"
           size="small"
-          placeholder="自动计算"
+          placeholder="Auto calculate"
         ></n-input-number>
       </SettingItem>
-      <SettingItem name="类型">
+      <SettingItem name="Type">
         <n-select
           v-model:value="item.lineStyle.type"
           size="small"
@@ -24,39 +24,39 @@
         ></n-select>
       </SettingItem>
     </SettingItemBox>
-    <SettingItemBox name="实心点">
-      <SettingItem name="大小">
+    <SettingItemBox name="Solid dot">
+      <SettingItem name="Size">
         <n-input-number
           v-model:value="item.symbolSize"
           :min="1"
           :max="100"
           size="small"
-          placeholder="自动计算"
+          placeholder="Auto calculate"
         ></n-input-number>
       </SettingItem>
     </SettingItemBox>
-    <setting-item-box name="标签">
+    <setting-item-box name="Label">
       <setting-item>
         <n-space>
           <n-switch v-model:value="item.label.show" size="small" />
-          <n-text>展示标签</n-text>
+          <n-text>Show label</n-text>
         </n-space>
       </setting-item>
-      <setting-item name="大小">
+      <setting-item name="Size">
         <n-input-number
           v-model:value="item.label.fontSize"
           size="small"
           :min="1"
         ></n-input-number>
       </setting-item>
-      <setting-item name="颜色">
+      <setting-item name="Color">
         <n-color-picker
           size="small"
           :modes="['hex']"
           v-model:value="item.label.color"
         ></n-color-picker>
       </setting-item>
-      <setting-item name="位置">
+      <setting-item name="Position">
         <n-select
           v-model:value="item.label.position"
           :options="[

@@ -7,7 +7,7 @@
         preview-disabled
         :src="requireErrorImg()"
      ></n-image>
-      <n-h3>暂时还没有东西呢</n-h3>
+      <n-h3>Nothing here yet</n-h3>
     </n-space>
   </div>
 </template>

@@ -5,7 +5,7 @@ export const TextGradientConfig: ConfigType = {
   key: 'TextGradient',
   chartKey: 'VTextGradient',
   conKey: 'VCTextGradient',
-  title: '渐变文字',
+  title: 'Gradient Text',
   category: ChatCategoryEnum.TEXT,
   categoryName: ChatCategoryEnumName.TEXT,
   package: PackagesCategoryEnum.INFORMATIONS,

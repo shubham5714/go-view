@@ -68,17 +68,17 @@ const btnList: {
   icon: any
 }[] = [
   {
-    title: '关闭',
+    title: 'Close',
     key: 'close',
     icon: CloseIcon
   },
   {
-    title: '缩小',
+    title: 'Minimize',
     key: 'remove',
     icon: RemoveIcon
   },
   {
-    title: isFull.value ? '缩小' : '放大',
+    title: isFull.value ? 'Minimize' : 'Maximize',
     key: props.narrow ? 'fullResize' : 'resize',
     icon: ResizeIcon
   }

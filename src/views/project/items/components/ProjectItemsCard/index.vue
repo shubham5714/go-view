@@ -24,26 +24,26 @@
         </div>
       </div>
       <template #action>
-        <div class="go-flex-items-center list-footer" justify="space-between">
-          <n-text class="go-ellipsis-1">
-            {{ cardData.title || cardData.id || '未命名' }}
+        <div class="list-footer">
+          <n-text class="list-footer-title" :title="cardData.title || cardData.id || 'Untitled'">
+            {{ cardData.title || cardData.id || 'Untitled' }}
           </n-text>
-          <!-- 工具 -->
-          <div class="go-flex-items-center list-footer-ri">
-            <n-space>
-              <n-text>
-                <n-badge
-                  class="go-animation-twinkle"
-                  dot
-                  :color="cardData.release ? '#34c749' : '#fcbc40'"
+          <div class="list-footer-meta">
+            <div class="list-footer-status">
+              <n-badge
+                class="go-animation-twinkle"
+                dot
+                :color="cardData.release ? '#34c749' : '#fcbc40'"
               ></n-badge>
+              <n-text depth="3" class="list-footer-status-text">
                 {{
                   cardData.release
                     ? $t('project.release')
                     : $t('project.unreleased')
                 }}
               </n-text>
-
+            </div>
+            <div class="list-footer-actions">
               <template v-for="item in fnBtnList" :key="item.key">
                 <template v-if="item.key === 'select'">
                   <n-dropdown
@@ -53,7 +53,7 @@
                     :show-arrow="true"
                     @select="handleSelect"
                   >
-                    <n-button size="small">
+                    <n-button size="small" ghost>
                       <template #icon>
                         <component :is="item.icon"></component>
                       </template>
@@ -61,19 +61,19 @@
                   </n-dropdown>
                 </template>
 
-                <n-tooltip v-else placement="bottom" trigger="hover">
-                  <template #trigger>
-                    <n-button size="small" @click="handleSelect(item.key)">
-                      <template #icon>
-                        <component :is="item.icon"></component>
-                      </template>
-                    </n-button>
+                <n-button
+                  v-else
+                  size="small"
+                  ghost
+                  @click="handleSelect(item.key)"
+                >
+                  <template #icon>
+                    <component :is="item.icon"></component>
                   </template>
-                  <component :is="item.label"></component>
-                </n-tooltip>
+                  <span>{{ item.labelText }}</span>
+                </n-button>
               </template>
-            </n-space>
-          <!-- end -->
+            </div>
           </div>
         </div>
       </template>
@@ -86,19 +86,15 @@
 
 <script setup lang="ts">
 import { reactive, ref, PropType, computed } from 'vue'
-import { renderIcon, renderLang,  requireErrorImg } from '@/utils'
+import { renderIcon, renderLang, requireErrorImg } from '@/utils'
 import { icon } from '@/plugins'
 import { MacOsControlBtn } from '@/components/Tips/MacOsControlBtn'
 import { Chartype } from '../../index.d'
-import { log } from 'console'
 const {
   EllipsisHorizontalCircleSharpIcon,
-  CopyIcon,
   TrashIcon,
-  PencilIcon,
-  DownloadIcon,
+  CreateIcon,
   BrowsersOutlineIcon,
-  HammerIcon,
   SendIcon
 } = icon.ionicons5
 
@@ -112,12 +108,12 @@ const isLocked = computed(() => props.cardData?.locked === true)
 
 const fnBtnList = reactive([
   {
-    label: renderLang('global.r_edit'),
+    labelText: 'Edit',
     key: 'edit',
-    icon: renderIcon(HammerIcon)
+    icon: renderIcon(CreateIcon)
   },
   {
-    lable: renderLang('global.r_more'),
+    labelText: 'More',
     key: 'select',
     icon: renderIcon(EllipsisHorizontalCircleSharpIcon)
   }
@@ -237,12 +233,46 @@ $contentHeight: 180px;
     }
   }
   .list-footer {
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    line-height: 30px;
-    &-ri {
-      justify-content: flex-end;
-      min-width: 180px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    line-height: 1.3;
+    min-width: 0;
+
+    &-title {
+      display: block;
+      width: 100%;
+      min-width: 0;
+      font-weight: 500;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    &-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    &-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    &-status-text {
+      font-size: 12px;
+    }
+
+    &-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
     }
   }
   .locked-badge {

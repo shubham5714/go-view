@@ -20,7 +20,7 @@ export const option: IAreaOption & { dataset?: any } = {
   // 业务配置（后续会被转换为图表spec)
   category: VChartPercentAreaConfig.category,
   xAxis: {
-    name: 'x轴',
+    name: 'X Axis',
     ...axisThemeJson,
     grid: {
       ...axisThemeJson.grid,
@@ -28,7 +28,7 @@ export const option: IAreaOption & { dataset?: any } = {
     }
   },
   yAxis: {
-    name: 'y轴',
+    name: 'Y Axis',
     ...axisThemeJson,
     grid: {
       ...axisThemeJson.grid,

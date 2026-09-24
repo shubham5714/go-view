@@ -3,7 +3,7 @@
     <n-popover class="edit-history-popover" :show-arrow="false" size="small" trigger="click" placement="top-start">
       <template #trigger>
         <n-button class="mr-10" secondary size="small" :disabled="options.length === 0">
-          <span class="btn-text">历史记录</span>
+          <span class="btn-text">History</span>
         </n-button>
       </template>
 
@@ -29,7 +29,7 @@
           <help-outline-icon></help-outline-icon>
         </n-icon>
       </template>
-      <span>最多只保留{{ editHistoryMax }}条记录</span>
+      <span>Keeps up to {{ editHistoryMax }} records</span>
     </n-tooltip>
   </div>
 </template>

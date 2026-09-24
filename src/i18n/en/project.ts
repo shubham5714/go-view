@@ -1,17 +1,17 @@
 export default {
   create_btn: 'Create',
-  create_success: 'Create Success!',
-  create_failure: 'Failed to create, please try again later！',
-  create_tip: 'Please select a content for development!',
+  create_success: 'Created successfully!',
+  create_failure: 'Failed to create. Please try again later!',
+  create_tip: 'Where would you like to start?',
   project: 'Project',
   my: 'My',
   new_project: 'New Project',
-  all_project: 'All Project',
-  my_template: 'My Template',
-  template_market: 'Choose from Library',
+  all_project: 'All Projects',
+  my_template: 'My Templates',
+  template_market: 'Template Library',
 
-  // items 
-  release: 'Release',
-  unreleased: 'Unrelease',
-  last_edit: 'Last edit time'
+  // items
+  release: 'Published',
+  unreleased: 'Draft',
+  last_edit: 'Last edited'
 }

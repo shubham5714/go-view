@@ -11,7 +11,7 @@ export const ProcessConfig: ConfigType = {
   // 配置组件渲染 Components 格式: VC + key
   conKey: 'VCProcess',
   // 名称
-  title: 'NaiveUI-进度',
+  title: 'NaiveUI Progress',
   // 子分类目录
   category: ChatCategoryEnum.MORE,
   // 子分类目录

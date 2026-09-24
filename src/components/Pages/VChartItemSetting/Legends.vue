@@ -2,19 +2,19 @@
   <!-- todo 补充常用配置项 -->
   <div v-if="optionData.legends">
     <div v-for="(legendItem, index) in optionData.legends" :key="index">
-      <collapse-item name="图例">
+      <collapse-item name="Legend">
         <template #header>
           <n-switch v-model:value="legendItem.visible" size="small"></n-switch>
         </template>
-        <setting-item-box name="布局">
-          <setting-item name="位置">
+        <setting-item-box name="Layout">
+          <setting-item name="Position">
             <n-select v-model:value="legendItem.orient" size="small" :options="legendsConfig.orient" />
           </setting-item>
-          <setting-item name="对齐方式">
+          <setting-item name="Alignment">
             <n-select v-model:value="legendItem.position" size="small" :options="legendsConfig.position" />
           </setting-item>
         </setting-item-box>
-        <setting-item-box name="项配置">
+        <setting-item-box name="Item">
           <FontStyle :style="toRefs(legendItem.item.label.style)"></FontStyle>
         </setting-item-box>
       </collapse-item>

@@ -42,7 +42,7 @@ import { fetchPathByName, routerTurnByPath, routerTurnByName, renderLang, getUUI
 import { createProjectApi } from '@/api/path'
 import { useSystemStore } from '@/store/modules/systemStore/systemStore'
 
-const { FishIcon, CloseIcon } = icon.ionicons5
+const { CloseIcon, AddIcon } = icon.ionicons5
 const { StoreIcon, ObjectStorageIcon } = icon.carbon
 const showRef = ref(false)
 
@@ -57,7 +57,7 @@ const typeList = shallowRef([
   {
     title: renderLang('project.new_project'),
     key: ChartEnum.CHART_HOME_NAME,
-    icon: FishIcon,
+    icon: AddIcon,
     disabled: false
   },
   {

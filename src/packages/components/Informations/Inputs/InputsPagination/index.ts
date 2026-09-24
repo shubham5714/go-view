@@ -5,7 +5,7 @@ export const InputsPaginationConfig: ConfigType = {
     key: 'InputsPagination',
     chartKey: 'VInputsPagination',
     conKey: 'VCInputsPagination',
-    title: '分页',
+    title: 'Pagination',
     category: ChatCategoryEnum.INPUTS,
     categoryName: ChatCategoryEnumName.INPUTS,
     package: PackagesCategoryEnum.INFORMATIONS,

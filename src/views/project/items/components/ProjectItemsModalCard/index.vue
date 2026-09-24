@@ -11,7 +11,7 @@
         <n-space class="list-content-top go-px-0" justify="center">
           <n-space>
             <n-text>
-              {{ cardData?.title || cardData?.id || '未命名' }}
+              {{ cardData?.title || cardData?.id || 'Untitled' }}
             </n-text>
           </n-space>
         </n-space>

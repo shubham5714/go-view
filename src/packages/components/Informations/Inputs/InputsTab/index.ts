@@ -5,7 +5,7 @@ export const InputsTabConfig: ConfigType = {
   key: 'InputsTab',
   chartKey: 'VInputsTab',
   conKey: 'VCInputsTab',
-  title: '标签选择器',
+  title: 'Tab Selector',
   category: ChatCategoryEnum.INPUTS,
   categoryName: ChatCategoryEnumName.INPUTS,
   package: PackagesCategoryEnum.INFORMATIONS,

@@ -1,10 +1,10 @@
 <template>
   <n-space>
     <n-icon size="20" :depth="3">
-      <fish-icon></fish-icon>
+      <create-icon></create-icon>
     </n-icon>
     <n-text @click="handleFocus">
-      Workspace -
+      Name:
       <n-button v-show="!focus" secondary size="tiny">
         <span class="title">
           {{ comTitle }}
@@ -17,10 +17,10 @@
       ref="inputInstRef"
       size="small"
       type="text"
-      maxlength="16"
+      maxlength="50"
       show-count
       placeholder="Enter project name"
-      v-model:value.trim="title"
+      v-model:value="title"
       @keyup.enter="handleBlur"
       @blur="handleBlur"
     ></n-input>
@@ -39,7 +39,7 @@ import { icon } from '@/plugins'
 
 const chartEditStore = useChartEditStore()
 const { dataSyncUpdate } = useSync()
-const { FishIcon } = icon.ionicons5
+const { CreateIcon } = icon.ionicons5
 
 const focus = ref<boolean>(false)
 const inputInstRef = ref(null)
@@ -51,10 +51,8 @@ watchEffect(() => {
 })
 
 const comTitle = computed(() => {
-  // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-  title.value = title.value.replace(/\s/g, '')
-  const newTitle = title.value.length ? title.value : 'New Project'
-  setTitle(`Workspace-${newTitle}`)
+  const newTitle = title.value.trim().length ? title.value.trim() : 'New Project'
+  setTitle(newTitle)
   chartEditStore.setEditCanvasConfig(EditCanvasConfigEnum.PROJECT_NAME, newTitle)
   return newTitle
 })
@@ -68,10 +66,12 @@ const handleFocus = () => {
 
 const handleBlur = async () => {
   focus.value = false
-  chartEditStore.setProjectInfo(ProjectInfoEnum.PROJECT_NAME, title.value || '')
+  const nextTitle = title.value.trim()
+  title.value = nextTitle
+  chartEditStore.setProjectInfo(ProjectInfoEnum.PROJECT_NAME, nextTitle || '')
   const res = (await updateProjectApi({
     id: fetchRouteParamsLocation(),
-    projectName: title.value
+    projectName: nextTitle
   }))
   if (res && res.code === ResultEnum.SUCCESS) {
     dataSyncUpdate()

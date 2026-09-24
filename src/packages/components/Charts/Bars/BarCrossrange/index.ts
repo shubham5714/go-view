@@ -5,7 +5,7 @@ export const BarCrossrangeConfig: ConfigType = {
   key: 'BarCrossrange',
   chartKey: 'VBarCrossrange',
   conKey: 'VCBarCrossrange',
-  title: '横向柱状图',
+  title: 'Horizontal Bar Chart',
   category: ChatCategoryEnum.BAR,
   categoryName: ChatCategoryEnumName.BAR,
   package: PackagesCategoryEnum.CHARTS,

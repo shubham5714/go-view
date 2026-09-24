@@ -1,18 +1,18 @@
 <template>
-  <CollapseItem name="时钟" expanded>
-    <SettingItemBox name="表盘">
-      <SettingItem name="背景色">
+  <CollapseItem name="Clock" expanded>
+    <SettingItemBox name="Dial">
+      <SettingItem name="Background color">
         <n-color-picker size="small" :modes="['hex']" v-model:value="optionData.bgColor"></n-color-picker>
       </SettingItem>
-      <SettingItem name="边框色">
+      <SettingItem name="Border color">
         <n-color-picker size="small" :modes="['hex']" v-model:value="optionData.borderColor"></n-color-picker>
       </SettingItem>
-      <SettingItem name="边框大小">
+      <SettingItem name="Border size">
         <n-input-number v-model:value="optionData.border" size="small" :step="0.5" :min="0"></n-input-number>
       </SettingItem>
     </SettingItemBox>
-    <SettingItemBox name="指针">
-      <SettingItem name="颜色">
+    <SettingItemBox name="Pointer">
+      <SettingItem name="Color">
         <n-color-picker size="small" :modes="['hex']" v-model:value="optionData.color"></n-color-picker>
       </SettingItem>
     </SettingItemBox>

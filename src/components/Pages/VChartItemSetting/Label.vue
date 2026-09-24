@@ -1,12 +1,12 @@
 <template>
   <template v-if="optionData.label">
-    <collapse-item name="标签">
+    <collapse-item name="Label">
       <template #header>
         <n-switch v-model:value="optionData.label.visible" size="small"></n-switch>
       </template>
 
-      <setting-item-box name="布局">
-        <setting-item name="位置">
+      <setting-item-box name="Layout">
+        <setting-item name="Position">
           <n-select
             v-model:value="optionData.label.position"
             size="small"
@@ -14,12 +14,12 @@
           />
         </setting-item>
 
-        <setting-item name="间距">
+        <setting-item name="Offset">
           <n-input-number v-model:value="optionData.label.offset" :min="1" size="small" />
         </setting-item>
       </setting-item-box>
 
-      <setting-item-box name="字体">
+      <setting-item-box name="Font">
         <FontStyle :style="toRefs(optionData.label.style)"></FontStyle>
       </setting-item-box>
     </collapse-item>

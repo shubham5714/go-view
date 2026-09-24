@@ -1,34 +1,34 @@
 <template>
   <template v-if="optionData.point">
-    <collapse-item name="实心点(图元)">
+    <collapse-item name="Point">
       <template #header>
         <n-switch v-model:value="optionData.point.visible" size="small"></n-switch>
       </template>
 
-      <setting-item-box name="样式">
-        <setting-item name="位置">
+      <setting-item-box name="Style">
+        <setting-item name="Shape">
           <n-select v-model:value="optionData.point.style.symbolType" size="small" :options="styleConfig.symbolType" />
         </setting-item>
 
-        <setting-item name="大小">
+        <setting-item name="Size">
           <n-input-number v-model:value="optionData.point.style.size" :min="0" size="small" />
         </setting-item>
-        <setting-item name="填充透明度">
+        <setting-item name="Fill Opacity">
           <n-input-number v-model:value="optionData.point.style.fillOpacity" :step="0.1" :min="0" size="small" />
         </setting-item>
-        <setting-item name="边框宽度">
+        <setting-item name="Border Width">
           <n-input-number v-model:value="optionData.point.style.lineWidth" :min="0" size="small" />
         </setting-item>
-        <setting-item name="边框颜色">
+        <setting-item name="Border Color">
           <n-color-picker v-model:value="optionData.point.style.stroke" size="small" />
         </setting-item>
-        <setting-item name="边框透明度">
+        <setting-item name="Border Opacity">
           <n-input-number v-model:value="optionData.point.style.strokeOpacity" :step="0.1" :min="0" size="small" />
         </setting-item>
-        <setting-item name="偏移X">
+        <setting-item name="Offset X">
           <n-input-number v-model:value="optionData.point.style.dx" :min="0" size="small" />
         </setting-item>
-        <setting-item name="偏移Y">
+        <setting-item name="Offset Y">
           <n-input-number v-model:value="optionData.point.style.dy" :min="0" size="small" />
         </setting-item>
       </setting-item-box>

@@ -1,11 +1,11 @@
 <template>
-  <collapse-item name="信息" :expanded="true">
-    <setting-item-box name="文字" :alone="true">
+  <collapse-item name="Info" :expanded="true">
+    <setting-item-box name="Text" :alone="true">
       <setting-item>
         <n-input v-model:value="optionData.dataset" type="textarea" size="small"></n-input>
       </setting-item>
     </setting-item-box>
-    <setting-item-box name="链接" :alone="true">
+    <setting-item-box name="Link" :alone="true">
       <setting-item>
         <n-input-group>
           <n-select
@@ -15,66 +15,66 @@
             :options="linkHeadOptions"
           />
           <n-input v-model:value="optionData.link" size="small"></n-input>
-          <n-button :disabled="!optionData.link" secondary size="small" @click="handleLinkClick">跳转</n-button>
+          <n-button :disabled="!optionData.link" secondary size="small" @click="handleLinkClick">Navigate</n-button>
         </n-input-group>
       </setting-item>
     </setting-item-box>
   </collapse-item>
 
-  <collapse-item name="样式" :expanded="true">
-    <setting-item-box name="文字">
-      <setting-item name="颜色">
+  <collapse-item name="Style" :expanded="true">
+    <setting-item-box name="Text">
+      <setting-item name="Color">
         <n-color-picker size="small" :modes="['hex']" v-model:value="optionData.fontColor"></n-color-picker>
       </setting-item>
-      <setting-item name="字体大小">
-        <n-input-number v-model:value="optionData.fontSize" size="small" placeholder="字体大小"></n-input-number>
+      <setting-item name="Font size">
+        <n-input-number v-model:value="optionData.fontSize" size="small" placeholder="Font size"></n-input-number>
       </setting-item>
-      <setting-item name="字体粗细">
+      <setting-item name="Font weight">
         <n-select v-model:value="optionData.fontWeight" size="small" :options="fontWeightOptions" />
       </setting-item>
-      <setting-item name="X轴内边距">
-        <n-input-number v-model:value="optionData.paddingX" size="small" placeholder="输入内边距"></n-input-number>
+      <setting-item name="X-axis padding">
+        <n-input-number v-model:value="optionData.paddingX" size="small" placeholder="Input padding"></n-input-number>
       </setting-item>
-      <setting-item name="Y轴内边距">
-        <n-input-number v-model:value="optionData.paddingY" size="small" placeholder="输入内边距"></n-input-number>
+      <setting-item name="Y-axis padding">
+        <n-input-number v-model:value="optionData.paddingY" size="small" placeholder="Input padding"></n-input-number>
       </setting-item>
 
-      <setting-item name="水平对齐">
+      <setting-item name="Horizontal align">
         <n-select v-model:value="optionData.textAlign" size="small" :options="textAlignOptions" />
       </setting-item>
-      <setting-item name="文本方向">
+      <setting-item name="Text direction">
         <n-select v-model:value="optionData.writingMode" size="small" :options="verticalOptions" />
       </setting-item>
 
-      <setting-item name="字间距">
-        <n-input-number v-model:value="optionData.letterSpacing" size="small" placeholder="输入字间距"></n-input-number>
+      <setting-item name="Letter spacing">
+        <n-input-number v-model:value="optionData.letterSpacing" size="small" placeholder="Input letter spacing"></n-input-number>
       </setting-item>
     </setting-item-box>
 
-    <setting-item-box name="边框">
-      <setting-item name="宽度">
+    <setting-item-box name="Border">
+      <setting-item name="Width">
         <n-input-number
           v-model:value="optionData.borderWidth"
           size="small"
           :min="0"
-          placeholder="宽度"
+          placeholder="Width"
         ></n-input-number>
       </setting-item>
-      <setting-item name="颜色">
+      <setting-item name="Color">
         <n-color-picker size="small" :modes="['hex']" v-model:value="optionData.borderColor"></n-color-picker>
       </setting-item>
-      <setting-item name="圆角">
+      <setting-item name="Rounded">
         <n-input-number
           v-model:value="optionData.borderRadius"
           size="small"
           :min="0"
-          placeholder="圆角"
+          placeholder="Rounded"
         ></n-input-number>
       </setting-item>
     </setting-item-box>
 
-    <setting-item-box name="背景" :alone="true">
-      <setting-item name="背景颜色">
+    <setting-item-box name="Background" :alone="true">
+      <setting-item name="Background color">
         <n-color-picker size="small" :modes="['hex']" v-model:value="optionData.backgroundColor"></n-color-picker>
       </setting-item>
     </setting-item-box>
@@ -93,9 +93,9 @@ const props = defineProps({
 })
 
 const textAlignOptions = [
-  { label: '左对齐', value: 'start' },
-  { label: '居中', value: 'center' },
-  { label: '右对齐', value: 'end' }
+  { label: 'Left align', value: 'start' },
+  { label: 'Center', value: 'center' },
+  { label: 'Right align', value: 'end' }
 ]
 
 const verticalOptions = [

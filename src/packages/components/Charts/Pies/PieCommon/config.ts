@@ -7,9 +7,9 @@ import dataJson from './data.json'
 export const includes = ['legend']
 
 export enum PieTypeEnum {
-  NORMAL = '常规图',
-  RING = '环形图',
-  ROSE = '玫瑰图'
+  NORMAL = 'Normal chart',
+  RING = 'Donut Chart',
+  ROSE = 'Rose Chart'
 }
 
 export const PieTypeObject = {

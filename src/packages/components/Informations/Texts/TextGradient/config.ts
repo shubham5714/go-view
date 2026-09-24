@@ -4,7 +4,7 @@ import { TextGradientConfig } from './index'
 import cloneDeep from 'lodash/cloneDeep'
 
 export const option = {
-  dataset: '我是渐变文本',
+  dataset: 'Gradient text',
   size: 20,
   gradient: {
     from: '#0000FFFF',

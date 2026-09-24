@@ -21,9 +21,10 @@ import { ChartFrameEnum } from '@/packages/index.d'
 import { useTargetData } from '../hooks/useTargetData.hook'
 import { SelectCreateDataType, SelectCreateDataEnum } from './index.d'
 
-const ChartDataStatic = loadAsyncComponent(() => import('./components/ChartDataStatic/index.vue'))
-const ChartDataAjax = loadAsyncComponent(() => import('./components/ChartDataAjax/index.vue'))
-const ChartDataPond = loadAsyncComponent(() => import('./components/ChartDataPond/index.vue'))
+const quiet = { loading: false } as const
+const ChartDataStatic = loadAsyncComponent(() => import('./components/ChartDataStatic/index.vue'), quiet)
+const ChartDataAjax = loadAsyncComponent(() => import('./components/ChartDataAjax/index.vue'), quiet)
+const ChartDataPond = loadAsyncComponent(() => import('./components/ChartDataPond/index.vue'), quiet)
 
 const { targetData } = useTargetData()
 

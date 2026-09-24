@@ -89,7 +89,7 @@
         </n-table>
       </setting-item-box>
 
-      <n-tag :bordered="false" type="primary"> 关联目标请求参数 </n-tag>
+      <n-tag :bordered="false" type="primary"> Linked target request params </n-tag>
 
       <setting-item-box
         :name="requestParamsItem"

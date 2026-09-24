@@ -72,7 +72,7 @@ export const screenfullFn = (isFullscreen?: boolean, isEnabled?: boolean) => {
     return
   }
   // TODO lang
-  window['$message'].warning('您的浏览器不支持全屏功能！')
+  window['$message'].warning('Your browser does not support fullscreen!')
 }
 
 /**
@@ -156,7 +156,7 @@ export const removeEventListener = <K extends keyof WindowEventMap>(
  */
 export const canvasCut = (html: HTMLElement | null, callback?: Function) => {
   if (!html) {
-    window['$message'].error('导出失败！')
+    window['$message'].error('Export failed!')
     if (callback) callback()
     return
   }
@@ -166,7 +166,7 @@ export const canvasCut = (html: HTMLElement | null, callback?: Function) => {
     allowTaint: true,
     useCORS: true
   }).then((canvas: HTMLCanvasElement) => {
-    window['$message'].success('导出成功！')
+    window['$message'].success('Exported successfully!')
     downloadByA(canvas.toDataURL(), undefined, 'png')
     if (callback) callback()
   })
@@ -201,7 +201,7 @@ export const newFunctionHandle = (
   } catch (error) {
     // 失败回调
     errorCallBack && errorCallBack(error)
-    return '函数执行错误'
+    return 'Function execution error'
   }
 }
 
@@ -265,7 +265,7 @@ export const setKeyboardDressShow = (keyCode?: number) => {
   }
   if (keyCode && code.has(keyCode)) {
     if (keyCode == 32) window.onKeySpacePressHold?.(true)
-    dom.innerText = `按下了「${code.get(keyCode)}」键`
+    dom.innerText = `Pressed 「${code.get(keyCode)}」`
   }
 }
 
@@ -344,10 +344,10 @@ export const addWindowUnload = () => {
     e = e || window.event
     // 兼容IE8和Firefox 4之前的版本
     if (e) {
-      e.returnValue = '您确定要离开当前页面吗？请确认是否保存数据！'
+      e.returnValue = 'Are you sure you want to leave? Please confirm your data is saved!'
     }
     // Chrome, Safari, Firefox 4+, Opera 12+ , IE 9+
-    return '您确定要离开当前页面吗？请确认是否保存数据！'
+    return 'Are you sure you want to leave? Please confirm your data is saved!'
   }
   // 返回销毁事件函数
   return () => {

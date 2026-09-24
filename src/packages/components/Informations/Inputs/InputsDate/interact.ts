@@ -42,36 +42,36 @@ export enum DifferUnitEnum {
 
 export const DifferUnitObject = {
   // https://day.js.org/docs/en/manipulate/add
-  [DifferUnitEnum.DAY]: '天',
-  [DifferUnitEnum.WEEK]: '周',
-  [DifferUnitEnum.MONTH]: '月',
-  [DifferUnitEnum.QUARTER]: '季度',
-  [DifferUnitEnum.YEAR]: '年',
-  [DifferUnitEnum.HOUR]: '小时',
-  [DifferUnitEnum.MINUTE]: '分钟',
-  [DifferUnitEnum.SECOND]: '秒',
-  [DifferUnitEnum.MILLISECOND]: '毫秒',
+  [DifferUnitEnum.DAY]: 'Day',
+  [DifferUnitEnum.WEEK]: 'Week',
+  [DifferUnitEnum.MONTH]: 'Month',
+  [DifferUnitEnum.QUARTER]: 'Quarter',
+  [DifferUnitEnum.YEAR]: 'Year',
+  [DifferUnitEnum.HOUR]: 'Hour',
+  [DifferUnitEnum.MINUTE]: 'Minute',
+  [DifferUnitEnum.SECOND]: 'Sec',
+  [DifferUnitEnum.MILLISECOND]: 'Millisecond',
 }
 
 const time = [
   {
     value: ComponentInteractParamsEnum.DATE,
-    label: '日期'
+    label: 'Date'
   }
 ]
 
 const timeRange = [
   {
     value: ComponentInteractParamsEnum.DATE_START,
-    label: '开始时间'
+    label: 'Start time'
   },
   {
     value: ComponentInteractParamsEnum.DATE_END,
-    label: '结束时间'
+    label: 'End time'
   },
   {
     value: ComponentInteractParamsEnum.DATE_RANGE,
-    label: '日期范围'
+    label: 'Date range'
   }
 ]
 
@@ -79,7 +79,7 @@ const timeRange = [
 export const interactActions: InteractActionsType[] = [
   {
     interactType: InteractEventOn.CHANGE,
-    interactName: '选择完成',
+    interactName: 'Selection done',
     componentEmitEvents: {
       [ComponentInteractEventEnum.DATE]: time,
       [ComponentInteractEventEnum.DATE_TIME]: time,

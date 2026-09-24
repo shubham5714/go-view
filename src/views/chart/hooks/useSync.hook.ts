@@ -249,6 +249,8 @@ export const useSync = () => {
     // 切换语言等操作会导致重新执行 dataSyncFetch,此时pinia中并未清空chartEditStore.componentList，导致图层重复
     chartEditStore.componentList = []
     chartEditStore.setEditCanvas(EditCanvasTypeEnum.SAVE_STATUS, SyncEnum.START)
+    // Single editor boot overlay (replaces per-section async spinners)
+    chartLayoutStore.setItemUnHandle(ChartLayoutStoreEnum.PERCENTAGE, 1)
     try {
       const res = await fetchProjectApi({ projectId: fetchRouteParamsLocation() })
       if (res && res.code === ResultEnum.SUCCESS) {
@@ -256,17 +258,21 @@ export const useSync = () => {
           updateStoreInfo(res.data)
           // 更新全局数据
           await updateComponent(JSONParse(res.data.content))
+          chartLayoutStore.setItemUnHandle(ChartLayoutStoreEnum.PERCENTAGE, 0)
           return
         }else {
           chartEditStore.setProjectInfo(ProjectInfoEnum.PROJECT_ID, fetchRouteParamsLocation())
         }
+        chartLayoutStore.setItemUnHandle(ChartLayoutStoreEnum.PERCENTAGE, 0)
         setTimeout(() => {
           chartEditStore.setEditCanvas(EditCanvasTypeEnum.SAVE_STATUS, SyncEnum.SUCCESS)
         }, 1000)
         return
       }
+      chartLayoutStore.setItemUnHandle(ChartLayoutStoreEnum.PERCENTAGE, 0)
       chartEditStore.setEditCanvas(EditCanvasTypeEnum.SAVE_STATUS, SyncEnum.FAILURE)
     } catch (error) {
+      chartLayoutStore.setItemUnHandle(ChartLayoutStoreEnum.PERCENTAGE, 0)
       chartEditStore.setEditCanvas(EditCanvasTypeEnum.SAVE_STATUS, SyncEnum.FAILURE)
       httpErrorHandle()
     }
@@ -278,69 +284,65 @@ export const useSync = () => {
 
     let projectId = chartEditStore.getProjectInfo[ProjectInfoEnum.PROJECT_ID];
     if(projectId === null || projectId === ''){
-      window['$message'].error('数据初未始化成功,请刷新页面！')
+      window['$message'].error('Data not initialized successfully. Please refresh the page!')
       return
     }
 
     chartEditStore.setEditCanvas(EditCanvasTypeEnum.SAVE_STATUS, SyncEnum.START)
 
-    // 异常处理：缩略图上传失败不影响JSON的保存
-    try {
-      if (updateImg) {
-        // 获取缩略图片
-        const range = document.querySelector('.go-edit-range') as HTMLElement
-        // 生成图片
-        const canvasImage: HTMLCanvasElement = await html2canvas(range, {
-          backgroundColor: null,
-          allowTaint: true,
-          useCORS: true
-        })
-
-        // 上传预览图
-        let uploadParams = new FormData()
-        uploadParams.append('object', base64toFile(canvasImage.toDataURL(), `${fetchRouteParamsLocation()}_index_preview.png`))
-        const uploadRes = await uploadFile(uploadParams)
-        // 保存预览图
-        if(uploadRes && uploadRes.code === ResultEnum.SUCCESS) {
-          if (uploadRes.data.fileurl) {
-            await updateProjectApi({
-              id: fetchRouteParamsLocation(),
-              indexImage: `${uploadRes.data.fileurl}`
-            })
-          } else {
-            await updateProjectApi({
-              id: fetchRouteParamsLocation(),
-              indexImage: `${systemStore.getFetchInfo.OSSUrl}${uploadRes.data.fileName}`
-            })
-          }
-        }
-      }
-    } catch (e) {
-      console.log(e)
-    }
-
-    // 保存数据
+    // Save dashboard JSON first so the UI can finish quickly
     let params = new FormData()
     params.append('projectId', projectId)
     params.append('content', JSONStringify(chartEditStore.getStorageInfo() || {}))
-    const res= await saveProjectApi(params)
+    const res = await saveProjectApi(params)
 
     if (res && res.code === ResultEnum.SUCCESS) {
-      // 成功状态
-      setTimeout(() => {
-        chartEditStore.setEditCanvas(EditCanvasTypeEnum.SAVE_STATUS, SyncEnum.SUCCESS)
-      }, 1000)
+      chartEditStore.setEditCanvas(EditCanvasTypeEnum.SAVE_STATUS, SyncEnum.SUCCESS)
       if (showMessage) {
         window['$message'].success('Saved successfully')
       }
+      // Thumbnail refresh is best-effort and must not block save feedback
+      if (updateImg) {
+        void (async () => {
+          try {
+            const range = document.querySelector('.go-edit-range') as HTMLElement
+            if (!range) return
+            const canvasImage: HTMLCanvasElement = await html2canvas(range, {
+              backgroundColor: null,
+              allowTaint: true,
+              useCORS: true
+            })
+            const uploadParams = new FormData()
+            uploadParams.append(
+              'object',
+              base64toFile(canvasImage.toDataURL(), `${fetchRouteParamsLocation()}_index_preview.png`)
+            )
+            const uploadRes = await uploadFile(uploadParams)
+            if (uploadRes && uploadRes.code === ResultEnum.SUCCESS) {
+              if (uploadRes.data.fileurl) {
+                await updateProjectApi({
+                  id: fetchRouteParamsLocation(),
+                  indexImage: `${uploadRes.data.fileurl}`
+                })
+              } else {
+                await updateProjectApi({
+                  id: fetchRouteParamsLocation(),
+                  indexImage: `${systemStore.getFetchInfo.OSSUrl}${uploadRes.data.fileName}`
+                })
+              }
+            }
+          } catch (e) {
+            console.log(e)
+          }
+        })()
+      }
       return
     }
-    // 失败状态
     chartEditStore.setEditCanvas(EditCanvasTypeEnum.SAVE_STATUS, SyncEnum.FAILURE)
     if (showMessage) {
       window['$message'].error('Save failed, please try again')
     }
-  }, 3000)
+  }, 1200)
 
   // * 定时处理
   const intervalDataSyncUpdate = () => {

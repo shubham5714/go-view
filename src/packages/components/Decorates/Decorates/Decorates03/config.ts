@@ -5,7 +5,7 @@ import cloneDeep from 'lodash/cloneDeep'
 import { chartInitConfig } from '@/settings/designSetting'
 
 export const option = {
-  dataset: '我是标题',
+  dataset: 'Sample title',
   textColor: '#fff',
   textSize: 32,
   colors: ['#1dc1f5', '#1dc1f5']

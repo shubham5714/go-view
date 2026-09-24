@@ -1,26 +1,26 @@
 <template>
-  <collapse-item name="信息" :expanded="true">
-    <setting-item-box name="文字" :alone="true">
+  <collapse-item name="Info" :expanded="true">
+    <setting-item-box name="Text" :alone="true">
       <setting-item>
         <n-input v-model:value="optionData.dataset" type="textarea" size="small"></n-input>
       </setting-item>
     </setting-item-box>
   </collapse-item>
-  <collapse-item name="样式" :expanded="true">
-    <setting-item-box name="文字">
-      <setting-item name="字体大小">
-        <n-input-number v-model:value="optionData.size" size="small" placeholder="字体大小"></n-input-number>
+  <collapse-item name="Style" :expanded="true">
+    <setting-item-box name="Text">
+      <setting-item name="Font size">
+        <n-input-number v-model:value="optionData.size" size="small" placeholder="Font size"></n-input-number>
       </setting-item>
     </setting-item-box>
-    <setting-item-box name="渐变色参数">
-      <setting-item name="起始值">
+    <setting-item-box name="Gradient params">
+      <setting-item name="Start value">
         <n-color-picker size="small" :modes="['hex']" v-model:value="optionData.gradient.from"></n-color-picker>
       </setting-item>
-      <setting-item name="结束值">
+      <setting-item name="End value">
         <n-color-picker size="small" :modes="['hex']" v-model:value="optionData.gradient.to"></n-color-picker>
       </setting-item>
-      <setting-item name="偏移角度">
-        <n-input-number v-model:value="optionData.gradient.deg" size="small" placeholder="颜色旋转"></n-input-number>
+      <setting-item name="Offset angle">
+        <n-input-number v-model:value="optionData.gradient.deg" size="small" placeholder="Color rotate"></n-input-number>
       </setting-item>
     </setting-item-box>
 

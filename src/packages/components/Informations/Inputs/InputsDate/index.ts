@@ -5,7 +5,7 @@ export const InputsDateConfig: ConfigType = {
   key: 'InputsDate',
   chartKey: 'VInputsDate',
   conKey: 'VCInputsDate',
-  title: '时间选择器',
+  title: 'Date Picker',
   category: ChatCategoryEnum.INPUTS,
   categoryName: ChatCategoryEnumName.INPUTS,
   package: PackagesCategoryEnum.INFORMATIONS,

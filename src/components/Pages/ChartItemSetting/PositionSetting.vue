@@ -12,7 +12,7 @@
       </template>
     </n-button>
   </n-space>
-  <setting-item-box name="位置">
+  <setting-item-box name="Position">
     <n-input-number
       v-model:value="chartAttr.y"
       :min="0"
@@ -20,7 +20,7 @@
       placeholder="px"
     >
       <template #prefix>
-        <n-text depth="3">上</n-text>
+        <n-text depth="3">Top</n-text>
       </template>
     </n-input-number>
     <n-input-number
@@ -30,7 +30,7 @@
       placeholder="px"
     >
       <template #prefix>
-        <n-text depth="3">左</n-text>
+        <n-text depth="3">Left</n-text>
       </template>
     </n-input-number>
   </setting-item-box>
@@ -56,32 +56,32 @@ const {
 const positionList = [
   {
     key: 'AlignHorizontalLeftIcon',
-    lable: '局左',
+    lable: 'Align Left',
     icon: renderIcon(AlignHorizontalLeftIcon)
   },
   {
     key: 'AlignVerticalCenterIcon',
-    lable: 'X轴居中',
+    lable: 'Center X',
     icon: renderIcon(AlignVerticalCenterIcon)
   },
   {
     key: 'AlignHorizontalRightIcon',
-    lable: '局右',
+    lable: 'Align Right',
     icon: renderIcon(AlignHorizontalRightIcon)
   },
   {
     key: 'AlignVerticalTopIcon',
-    lable: '顶部',
+    lable: 'Align Top',
     icon: renderIcon(AlignVerticalTopIcon)
   },
   {
     key: 'AlignHorizontalCenterIcon',
-    lable: 'Y轴居中',
+    lable: 'Center Y',
     icon: renderIcon(AlignHorizontalCenterIcon)
   },
   {
     key: 'AlignVerticalBottomIcon',
-    lable: '底部',
+    lable: 'Align Bottom',
     icon: renderIcon(AlignVerticalBottomIcon)
   }
 ]

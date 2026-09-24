@@ -15,16 +15,16 @@ export enum ComponentInteractParamsEnum {
 export const interactActions: InteractActionsType[] = [
     {
         interactType: InteractEventOn.CHANGE,
-        interactName: '选择完成',
+        interactName: 'Selection done',
         componentEmitEvents: {
             [ComponentInteractEventEnum.DATA]: [
                 {
                     value: ComponentInteractParamsEnum.DATA,
-                    label: '页数'
+                    label: 'Pages'
                 },
                 {
                     value: ComponentInteractParamsEnum.DATA2,
-                    label: '每页条数'
+                    label: 'Items per page'
                 }
             ]
         }

@@ -36,7 +36,7 @@ export class Resources {
 
     this.manager.onError = url => {
       loadingError()
-      window['$message'].error('数据加载失败，请刷新重试！')
+      window['$message'].error('Data load failed. Please refresh and try again!')
     }
   }
 

@@ -5,7 +5,7 @@ export const VChartLineConfig: ConfigType = {
   key: 'VChartLine',
   chartKey: 'VVChartLine',
   conKey: 'VCVChartLine',
-  title: '折线图-VChart',
+  title: 'Line Chart - VChart',
   category: ChatCategoryEnum.LINE,
   categoryName: ChatCategoryEnumName.LINE,
   package: PackagesCategoryEnum.VCHART,

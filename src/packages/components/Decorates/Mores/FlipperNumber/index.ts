@@ -5,7 +5,7 @@ export const FlipperNumberConfig: ConfigType = {
   key: 'FlipperNumber',
   chartKey: 'VFlipperNumber',
   conKey: 'VCFlipperNumber',
-  title: '数字翻牌-需动态触发',
+  title: 'Flipper Number (Dynamic)',
   category: ChatCategoryEnum.MORE,
   categoryName: ChatCategoryEnumName.MORE,
   package: PackagesCategoryEnum.DECORATES,

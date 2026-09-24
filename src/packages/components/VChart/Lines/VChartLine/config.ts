@@ -21,7 +21,7 @@ export const option: ILineOption & { dataset?: any } = {
   // 业务配置（后续会被转换为图表spec)
   category: VChartLineConfig.category as ChatCategoryEnum.LINE,
   xAxis: {
-    name: 'x轴',
+    name: 'X Axis',
     ...axisThemeJson,
     grid: {
       ...axisThemeJson.grid,
@@ -29,7 +29,7 @@ export const option: ILineOption & { dataset?: any } = {
     }
   } as any,
   yAxis: {
-    name: 'y轴',
+    name: 'Y Axis',
     ...axisThemeJson,
     grid: {
       ...axisThemeJson.grid,

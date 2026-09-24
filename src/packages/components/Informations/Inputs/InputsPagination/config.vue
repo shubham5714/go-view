@@ -1,15 +1,15 @@
 <template>
-    <collapse-item name="分页配置" :expanded="true">
-      <setting-item-box :alone="false" name="分页设置">
-        <setting-item  name="默认页码" :alone="true">
-          <n-input-number v-model:value="optionData.pageValue" size="small" placeholder="字体大小"></n-input-number>
+    <collapse-item name="Pagination config" :expanded="true">
+      <setting-item-box :alone="false" name="Pagination settings">
+        <setting-item  name="Default page" :alone="true">
+          <n-input-number v-model:value="optionData.pageValue" size="small" placeholder="Font size"></n-input-number>
         </setting-item>
-        <setting-item  name="分页" :alone="true">
+        <setting-item  name="Pagination" :alone="true">
           <n-select v-model:value="optionData.pageSize" size="small"
                     :options="page" />
         </setting-item>
-        <setting-item  name="页数" :alone="true">
-          <n-input-number v-model:value="optionData.dataset" size="small" placeholder="字体大小"></n-input-number>
+        <setting-item  name="Pages" :alone="true">
+          <n-input-number v-model:value="optionData.dataset" size="small" placeholder="Font size"></n-input-number>
         </setting-item>
       </setting-item-box>
     </collapse-item>

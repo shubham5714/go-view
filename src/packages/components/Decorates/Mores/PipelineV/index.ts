@@ -5,7 +5,7 @@ export const PipelineVConfig: ConfigType = {
   key: 'PipelineV',
   chartKey: 'VPipelineV',
   conKey: 'VCPipelineV',
-  title: '管道-纵向',
+  title: 'Pipeline Vertical',
   category: ChatCategoryEnum.MORE,
   categoryName: ChatCategoryEnumName.MORE,
   package: PackagesCategoryEnum.DECORATES,

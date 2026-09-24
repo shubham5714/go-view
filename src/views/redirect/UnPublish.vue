@@ -4,7 +4,7 @@
       <img src="~@/assets/images/exception/nodata.svg" alt="" />
     </div>
     <div class="text-center">
-      <h1>当前项目暂未发布</h1>
+      <h1>This project has not been published yet</h1>
     </div>
   </div>
 </template>

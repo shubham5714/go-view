@@ -5,7 +5,7 @@ export const VChartPieConfig: ConfigType = {
   key: 'VChartPie',
   chartKey: 'VVChartPie',
   conKey: 'VCVChartPie',
-  title: '饼图多欢-VChart',
+  title: 'Multi Pie Chart - VChart',
   category: ChatCategoryEnum.PIE,
   categoryName: ChatCategoryEnumName.PIE,
   package: PackagesCategoryEnum.VCHART,

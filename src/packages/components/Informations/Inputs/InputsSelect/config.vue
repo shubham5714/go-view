@@ -1,6 +1,6 @@
 <template>
-  <collapse-item name="下拉配置" :expanded="true">
-    <setting-item-box name="默认值" :alone="true">
+  <collapse-item name="Dropdown config" :expanded="true">
+    <setting-item-box name="Default value" :alone="true">
       <n-select size="small" v-model:value="optionData.selectValue" :options="optionData.dataset" />
     </setting-item-box>
   </collapse-item>

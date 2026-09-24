@@ -5,7 +5,7 @@ export const WordCloudConfig: ConfigType = {
   key: 'WordCloud',
   chartKey: 'VWordCloud',
   conKey: 'VCWordCloud',
-  title: '词云',
+  title: 'Word Cloud',
   category: ChatCategoryEnum.MORE,
   categoryName: ChatCategoryEnumName.MORE,
   package: PackagesCategoryEnum.INFORMATIONS,

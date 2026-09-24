@@ -1,17 +1,17 @@
 <template>
-  <collapse-item name="属性" :expanded="true">
-    <setting-item-box name="路径" :alone="true">
-      <setting-item name="请填写 https 协议的网址">
+  <collapse-item name="Properties" :expanded="true">
+    <setting-item-box name="Path" :alone="true">
+      <setting-item name="Please enter a URL with https protocol">
         <n-input v-model:value="optionData.dataset" size="small"></n-input>
       </setting-item>
     </setting-item-box>
-    <setting-item-box name="样式">
-      <setting-item name="圆角">
+    <setting-item-box name="Style">
+      <setting-item name="Rounded">
         <n-input-number
           v-model:value="optionData.borderRadius"
           size="small"
           :min="0"
-          placeholder="圆角"
+          placeholder="Rounded"
         ></n-input-number>
       </setting-item>
     </setting-item-box>

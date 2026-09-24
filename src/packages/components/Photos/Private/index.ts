@@ -28,11 +28,11 @@ const uploadFile = (callback: Function | null = null) => {
     const file = input.files[0]
     const { name, size, type } = file
     if (size > 1024 * 1024 * backgroundImageSize) {
-      window['$message'].warning(`图片超出 ${backgroundImageSize}M 限制，请重新上传！`)
+      window['$message'].warning(`Image exceeds the ${backgroundImageSize}M limit. Please re-upload!`)
       return false
     }
     if (type !== FileTypeEnum.PNG && type !== FileTypeEnum.JPEG && type !== FileTypeEnum.GIF) {
-      window['$message'].warning('文件格式不符合，请重新上传！')
+      window['$message'].warning('Invalid file format. Please re-upload!')
       return false
     }
     const reader = new FileReader()
@@ -51,7 +51,7 @@ const addConfig = {
   categoryName: ChatCategoryEnumName.PRIVATE,
   package: PackagesCategoryEnum.PHOTOS,
   chartFrame: ChartFrameEnum.STATIC,
-  title: '点击上传图片',
+  title: 'Click to Upload Image',
   image: 'upload.png',
   redirectComponent: `${ImageConfig.package}/${ImageConfig.category}/${ImageConfig.key}`, // 跳转组件路径规则：packageName/categoryName/componentKey
   disabled: true,
@@ -59,7 +59,7 @@ const addConfig = {
     // 点击上传事件
     addHandle: (photoConfig: ConfigType) => {
       goDialog({
-        message: `图片需小于 ${backgroundImageSize}M 且只暂存在浏览器中。当前图片暂存上限5M，超过不再缓存新图片，请自行对接后端接口！现编译成 base64 进行渲染，对接后端后请使用【URL地址】进行交互！`,
+        message: `Image must be smaller than ${backgroundImageSize}M and is only stored temporarily in the browser. Current temp limit is 5M; new images beyond that are not cached—please connect your own backend. Currently rendered as base64; after backend integration use a [URL] instead!`,
         transformOrigin: 'center',
         onPositiveCallback: () => {
           uploadFile((e: UploadCompletedEventType) => {

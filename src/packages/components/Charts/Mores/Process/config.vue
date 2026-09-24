@@ -1,47 +1,47 @@
 <template>
   <!-- 默认展开 -->
-  <CollapseItem name="进度条" :expanded="true">
-    <SettingItemBox name="内容">
-      <SettingItem name="数值">
+  <CollapseItem name="Progress bar" :expanded="true">
+    <SettingItemBox name="Content">
+      <SettingItem name="Value">
         <!-- 与 config.ts 里的 option 对应 --><!-- n-input-number 是 NaiveUI 的控件 -->
-        <n-input-number v-model:value="optionData.dataset" size="small" :min="0" placeholder="进度值"></n-input-number>
+        <n-input-number v-model:value="optionData.dataset" size="small" :min="0" placeholder="Progress value"></n-input-number>
       </SettingItem>
-      <setting-item name="单位">
+      <setting-item name="Unit">
         <n-input v-model:value="optionData.unit" size="small"></n-input>
       </setting-item>
     </SettingItemBox>
 
-    <SettingItemBox name="轨道">
-      <SettingItem name="形状">
-        <n-select v-model:value="optionData.type" :options="types" placeholder="选择形状" />
+    <SettingItemBox name="Track">
+      <SettingItem name="Shape">
+        <n-select v-model:value="optionData.type" :options="types" placeholder="Select shape" />
       </SettingItem>
 
       <!-- 颜色粗细等等... -->
-      <SettingItem name="进度条颜色">
+      <SettingItem name="Progress bar color">
         <n-color-picker size="small" :modes="['hex']" v-model:value="optionData.color"></n-color-picker>
       </SettingItem>
-      <SettingItem name="轨道颜色">
+      <SettingItem name="Track color">
         <n-color-picker size="small" :modes="['hex']" v-model:value="optionData.railColor"></n-color-picker>
       </SettingItem>
-      <setting-item name="偏移角度" v-if="optionData.type !== types[0].value">
+      <setting-item name="Offset angle" v-if="optionData.type !== types[0].value">
         <n-input-number v-model:value="optionData.offsetDegree" size="small"></n-input-number>
       </setting-item>
       <SettingItem v-if="optionData.type == types[0].value">
         <n-space>
           <n-switch v-model:value="optionData.processing" size="small" />
-          <n-text>进行时动画</n-text>
+          <n-text>In-progress animation</n-text>
         </n-space>
       </SettingItem>
     </SettingItemBox>
 
-    <SettingItemBox name="指标">
-      <SettingItem name="位置" v-if="optionData.type == types[0].value">
-        <n-select v-model:value="optionData.indicatorPlacement" :options="indicatorPlacements" placeholder="选择形状" />
+    <SettingItemBox name="Metric">
+      <SettingItem name="Position" v-if="optionData.type == types[0].value">
+        <n-select v-model:value="optionData.indicatorPlacement" :options="indicatorPlacements" placeholder="Select shape" />
       </SettingItem>
-      <SettingItem name="文本颜色">
+      <SettingItem name="Text color">
         <n-color-picker size="small" :modes="['hex']" v-model:value="optionData.indicatorTextColor"></n-color-picker>
       </SettingItem>
-       <setting-item name="文本大小">
+       <setting-item name="Text size">
         <n-input-number v-model:value="optionData.indicatorTextSize" size="small"></n-input-number>
       </setting-item>
     </SettingItemBox>

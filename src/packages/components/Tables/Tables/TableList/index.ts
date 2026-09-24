@@ -5,7 +5,7 @@ export const TableListConfig: ConfigType = {
   key: 'TableList',
   chartKey: 'VTableList',
   conKey: 'VCTableList',
-  title: '滚动排名列表',
+  title: 'Scroll Ranking List',
   category: ChatCategoryEnum.TABLE,
   categoryName: ChatCategoryEnumName.TABLE,
   package: PackagesCategoryEnum.TABLES,

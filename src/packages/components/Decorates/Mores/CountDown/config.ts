@@ -5,7 +5,7 @@ import cloneDeep from 'lodash/cloneDeep'
 import { chartInitConfig } from '@/settings/designSetting'
 import { FlipType } from '@/components/Pages/Flipper'
 
-type STYLE = '时分秒' | '冒号'
+type STYLE = 'HMS' | 'Colon'
 
 export interface OptionType {
   dataset: number
@@ -27,7 +27,7 @@ export const option: OptionType = {
   dataset: 10 * 60, // 10分钟
   useEndDate: false,
   endDate: new Date().getTime(), // 当前时间
-  style: '时分秒',
+  style: 'HMS',
   showDay: false,
   flipperBgColor: '#16293E',
   flipperTextColor: '#4A9EF8FF',

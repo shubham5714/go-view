@@ -5,7 +5,7 @@ export const PieCommonConfig: ConfigType = {
   key: 'PieCommon',
   chartKey: 'VPieCommon',
   conKey: 'VCPieCommon',
-  title: '饼图',
+  title: 'Pie Chart',
   category: ChatCategoryEnum.PIE,
   categoryName: ChatCategoryEnumName.PIE,
   package: PackagesCategoryEnum.CHARTS,

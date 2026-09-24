@@ -12,8 +12,6 @@
       <div class="header-item right">
         <n-space>
           <slot name="ri-left"> </slot>
-          <theme-color-select></theme-color-select>
-          <go-theme-select></go-theme-select>
           <slot name="ri-right"> </slot>
         </n-space>
       </div>
@@ -24,14 +22,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { GoThemeSelect } from '@/components/GoThemeSelect'
-import { ThemeColorSelect } from '@/components/Pages/ThemeColorSelect'
 import { PageEnum } from '@/enums/pageEnum'
 
 const route = useRoute()
 
 const isProject = computed(() => {
-  return route.fullPath === PageEnum.BASE_HOME_ITEMS
+  return route.path.startsWith(PageEnum.BASE_HOME)
 })
 </script>
 
@@ -42,6 +38,7 @@ const isProject = computed(() => {
     justify-content: space-between;
     &.is-project {
       grid-template-columns: none;
+      padding-left: 20px;
     }
     .header-item {
       display: flex;

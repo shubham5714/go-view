@@ -2,35 +2,35 @@
   <!-- Echarts 全局设置 -->
   <global-setting :optionData="optionData" :in-chart="true"></global-setting>
 
-  <CollapseItem :name="`散点-${index + 1}`" expanded v-for="(item, index) in optionData.series" :key="index">
-    <SettingItemBox name="样式">
-      <SettingItem name="类型">
-        <n-select v-model:value="item.type" size="small" :options="ScatterEffectTypeEnumList" placeholder="选择" />
+  <CollapseItem :name="`Scatter-${index + 1}`" expanded v-for="(item, index) in optionData.series" :key="index">
+    <SettingItemBox name="Style">
+      <SettingItem name="Type">
+        <n-select v-model:value="item.type" size="small" :options="ScatterEffectTypeEnumList" placeholder="Select" />
       </SettingItem>
-      <SettingItem name="大小">
+      <SettingItem name="Size">
         <n-input-number v-model:value="item.symbolSize" size="small" :min="1"></n-input-number>
       </SettingItem>
     </SettingItemBox>
 
-    <SettingItemBox name="标域">
-      <SettingItem name="粗细(0不显示)">
+    <SettingItemBox name="Mark area">
+      <SettingItem name="Thickness (0 = hide)">
         <n-input-number v-model:value="item.markArea.itemStyle.borderWidth" size="small" :min="0"></n-input-number>
       </SettingItem>
-      <SettingItem name="符号">
+      <SettingItem name="Symbol">
         <n-select
           v-model:value="item.markArea.itemStyle.borderType"
           size="small"
           :options="axisConfig.splitLint.lineStyle.type"
-          placeholder="选择"
+          placeholder="Select"
         />
       </SettingItem>
     </SettingItemBox>
 
-    <SettingItemBox name="标点">
-      <SettingItem name="形状">
-        <n-select v-model:value="item.markPoint.symbol" size="small" :options="SymbolEnumList" placeholder="选择" />
+    <SettingItemBox name="Marker">
+      <SettingItem name="Shape">
+        <n-select v-model:value="item.markPoint.symbol" size="small" :options="SymbolEnumList" placeholder="Select" />
       </SettingItem>
-      <SettingItem name="大小">
+      <SettingItem name="Size">
         <n-input-number v-model:value="item.markPoint.symbolSize" size="small" :min="0"></n-input-number>
       </SettingItem>
     </SettingItemBox>

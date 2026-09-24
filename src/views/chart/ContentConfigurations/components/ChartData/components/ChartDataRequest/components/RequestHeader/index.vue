@@ -2,8 +2,8 @@
   <n-space vertical>
     <div style="width: 600px">
       <n-tabs v-model:value="requestContentType" type="segment" size="small">
-        <n-tab :name="RequestContentTypeEnum.DEFAULT" tab="普通请求"> </n-tab>
-        <n-tab :name="RequestContentTypeEnum.SQL" tab="SQL 请求"> </n-tab>
+        <n-tab :name="RequestContentTypeEnum.DEFAULT" tab="Standard request"> </n-tab>
+        <n-tab :name="RequestContentTypeEnum.SQL" tab="SQL request"> </n-tab>
       </n-tabs>
     </div>
     <div v-show="requestContentType === RequestContentTypeEnum.DEFAULT">
@@ -29,7 +29,7 @@
 
           <!-- 为 none 时 -->
           <n-card class="go-mt-3 go-pb-3" v-if="requestParamsBodyType === RequestBodyEnum['NONE']">
-            <n-text depth="3">该接口没有 Body 体</n-text>
+            <n-text depth="3">This API has no request body</n-text>
           </n-card>
 
           <!-- 具有对象属性时 -->
@@ -70,14 +70,14 @@
     </div>
     <div v-show="requestContentType === RequestContentTypeEnum.SQL">
       <template v-if="requestHttpType === RequestHttpEnum.GET">
-        <n-text>SQL 类型不支持 Get 请求，请使用其它方式</n-text>
+        <n-text>SQL type does not support GET requests. Please use another method.</n-text>
       </template>
       <template v-else>
-        <n-tag type="warning">需要后台提供专门处理 sql 的接口</n-tag>
-        <setting-item-box name="键名">
+        <n-tag type="warning">Requires a backend API dedicated to handling SQL</n-tag>
+        <setting-item-box name="Key">
           <n-tag type="primary" :bordered="false" style="width: 40px; font-size: 16px"> sql </n-tag>
         </setting-item-box>
-        <setting-item-box name="键值">
+        <setting-item-box name="Value">
           <monaco-editor v-model:modelValue="requestSQLContent['sql']" width="600px" height="200px" language="sql" />
         </setting-item-box>
       </template>

@@ -68,7 +68,7 @@ function createFlyLine(radius, startAngle, endAngle, color) {
   }
   const FlyLine = new Points(geometry, material)
   material.color = new Color(color)
-  FlyLine.name = '飞行线'
+  FlyLine.name = 'Flight line'
 
   return FlyLine
 }

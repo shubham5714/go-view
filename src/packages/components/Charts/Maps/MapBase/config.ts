@@ -93,7 +93,7 @@ export const option = {
       }
     },
     {
-      name: '区域',
+      name: 'Region',
       type: 'map',
       map: 'china',
       data: [],

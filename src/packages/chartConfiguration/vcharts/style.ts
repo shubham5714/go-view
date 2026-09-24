@@ -1,149 +1,149 @@
 export const styleConfig = {
   texture: [
     {
-      label: '无纹理',
+      label: 'No texture',
       value: ''
     },
     {
-      label: '圆形',
+      label: 'Circle',
       value: 'circle'
     },
     {
-      label: '钻石',
+      label: 'Diamond',
       value: 'diamond'
     },
     {
-      label: '矩形',
+      label: 'Rectangle',
       value: 'rect'
     },
     {
-      label: '竖线',
+      label: 'Vertical line',
       value: 'horizontal-line'
     },
     {
-      label: '横线',
+      label: 'Horizontal line',
       value: 'vertical-line'
     },
     {
-      label: '右向左斜线',
+      label: 'Right-to-left slash',
       value: 'bias-rl'
     },
     {
-      label: '左向右斜线',
+      label: 'Left-to-right slash',
       value: 'bias-lr'
     },
     {
-      label: '格子',
+      label: 'Grid',
       value: 'grid'
     }
   ],
   curveType: [
     {
-      label: '线性',
+      label: 'Linear',
       value: 'linear'
     },
     {
-      label: '平滑',
+      label: 'Smooth',
       value: 'monotone'
     },
     {
-      label: '平滑趋近X',
+      label: 'Smooth toward X',
       value: 'monotoneX'
     },
     {
-      label: '台阶',
+      label: 'Step',
       value: 'step'
     },
     {
-      label: '连线闭合',
+      label: 'Closed path',
       value: 'catmullRom'
     },
     {
-      label: '顺滑闭合',
+      label: 'Smooth close',
       value: 'catmullRomClosed'
     }
   ],
   lineCap: [
     {
-      label: '默认',
+      label: 'Default',
       value: 'butt'
     },
     {
-      label: '圆形',
+      label: 'Circle',
       value: 'round'
     },
     {
-      label: '方形',
+      label: 'Square',
       value: 'square'
     }
   ],
   symbolType: [
     {
-      label: '圆形',
+      label: 'Circle',
       value: 'circle'
     },
     {
-      label: '方形',
+      label: 'Square',
       value: 'rect'
     },
     {
-      label: '菱形',
+      label: 'Diamond',
       value: 'diamond'
     },
     {
-      label: '三角形',
+      label: 'Triangle',
       value: 'square'
     },
     {
-      label: '指向向上',
+      label: 'Point up',
       value: 'arrow'
     },
     {
-      label: '指向向左',
+      label: 'Point left',
       value: 'arrow2Left'
     },
     {
-      label: '箭头向右',
+      label: 'Arrow right',
       value: 'arrow2Right'
     },
     {
-      label: '瘦箭头向上',
+      label: 'Thin arrow up',
       value: 'wedge'
     },
     {
-      label: '箭头向上',
+      label: 'Arrow up',
       value: 'triangle'
     },
     {
-      label: '箭头向下',
+      label: 'Arrow down',
       value: 'triangleDown'
     },
     {
-      label: '箭头向右',
+      label: 'Arrow right',
       value: 'triangleRight'
     },
     {
-      label: '箭头向左',
+      label: 'Arrow left',
       value: 'triangleLeft'
     },
     {
-      label: '星星',
+      label: 'Star',
       value: 'star'
     },
     {
-      label: 'y字形物',
+      label: 'Y-shape',
       value: 'wye'
     },
     {
-      label: '矩形',
+      label: 'Rectangle',
       value: 'rect'
     },
     {
-      label: '圆角矩形',
+      label: 'Rounded rectangle',
       value: 'rectRound'
     },
     {
-      label: '扁平矩形',
+      label: 'Flat rectangle',
       value: 'roundLine'
     }
   ]

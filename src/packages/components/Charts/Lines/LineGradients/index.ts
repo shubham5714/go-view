@@ -5,7 +5,7 @@ export const LineGradientsConfig: ConfigType = {
   key: 'LineGradients',
   chartKey: 'VLineGradients',
   conKey: 'VCLineGradients',
-  title: '双折线渐变面积图',
+  title: 'Dual Gradient Area Chart',
   category: ChatCategoryEnum.LINE,
   categoryName: ChatCategoryEnumName.LINE,
   package: PackagesCategoryEnum.CHARTS,

@@ -15,6 +15,7 @@ export const useThemeOverridesHook = () => {
       // 通用
       const commonObj = {
         common: {
+          fontFamily: '"Poppins", sans-serif',
           primaryColor: getAppTheme.value,
           primaryColorHover: lighten(alpha(getAppTheme.value), 0.1),
           primaryColorPressed: lighten(alpha(getAppTheme.value), 0.1),

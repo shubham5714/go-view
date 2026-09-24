@@ -1,5 +1,5 @@
 <template>
-  <img class="list-img" v-lazy="imageInfo" alt="图表图片" />
+  <img class="list-img" v-lazy="imageInfo" alt="Chart image" />
 </template>
 
 <script setup lang="ts">

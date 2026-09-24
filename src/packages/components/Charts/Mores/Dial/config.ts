@@ -49,7 +49,7 @@ const option = {
       animationDuration: 2000,
     },
     {
-      name: '外部刻度',
+      name: 'Outer ticks',
       type: 'gauge',
       center: ['50%', '55%'],
       radius: '90%',

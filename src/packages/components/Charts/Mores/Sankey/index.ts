@@ -5,7 +5,7 @@ export const SankeyConfig: ConfigType = {
   key: 'Sankey',
   chartKey: 'VSankey',
   conKey: 'VCSankey',
-  title: '桑基图',
+  title: 'Sankey Chart',
   category: ChatCategoryEnum.MORE,
   categoryName: ChatCategoryEnumName.MORE,
   package: PackagesCategoryEnum.CHARTS,

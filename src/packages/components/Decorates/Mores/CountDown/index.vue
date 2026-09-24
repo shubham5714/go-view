@@ -22,7 +22,7 @@
           :key="index"
           class="go-d-block"
         />
-        <div v-if="style === '时分秒'">天</div>
+        <div v-if="style === 'HMS'">Day</div>
         <div v-else>:</div>
       </template>
       <flipper
@@ -38,7 +38,7 @@
         :key="index"
         class="go-d-block"
       />
-      <div v-if="style === '时分秒'">时</div>
+      <div v-if="style === 'HMS'">Hour</div>
       <div v-else>:</div>
       <flipper
         :count="item"
@@ -53,7 +53,7 @@
         :key="index"
         class="go-d-block"
       />
-      <div v-if="style === '时分秒'">分</div>
+      <div v-if="style === 'HMS'">Min</div>
       <div v-else>:</div>
       <flipper
         :count="item"
@@ -68,7 +68,7 @@
         :key="index"
         class="go-d-block"
       />
-      <div v-if="style === '时分秒'">秒</div>
+      <div v-if="style === 'HMS'">Sec</div>
     </n-space>
   </div>
 </template>

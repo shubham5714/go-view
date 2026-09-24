@@ -5,7 +5,7 @@ export const TreeMapConfig: ConfigType = {
   key: 'TreeMap',
   chartKey: 'VTreeMap',
   conKey: 'VCTreeMap',
-  title: '树形分布',
+  title: 'Tree Map',
   category: ChatCategoryEnum.MORE,
   categoryName: ChatCategoryEnumName.MORE,
   package: PackagesCategoryEnum.CHARTS,

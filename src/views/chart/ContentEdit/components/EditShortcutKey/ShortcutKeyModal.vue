@@ -59,7 +59,7 @@ const shortcutKeyOptions = [
   },
   {
     label: 'Move up/right/down/left',
-    win: `${WinKeyboard.CTRL.toUpperCase()} + ↑ 或 → 或 ↓ 或 ←`,
+    win: `${WinKeyboard.CTRL.toUpperCase()} + ↑ or → or ↓ or ←`,
     mac: `${MacKeyboard.CTRL.toUpperCase()} + ↑ `
   },
   {

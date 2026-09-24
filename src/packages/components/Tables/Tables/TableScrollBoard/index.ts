@@ -5,7 +5,7 @@ export const TableScrollBoardConfig: ConfigType = {
   key: 'TableScrollBoard',
   chartKey: 'VTableScrollBoard',
   conKey: 'VCTableScrollBoard',
-  title: '轮播列表',
+  title: 'Scroll Board',
   category: ChatCategoryEnum.TABLE,
   categoryName: ChatCategoryEnumName.TABLE,
   package: PackagesCategoryEnum.TABLES,

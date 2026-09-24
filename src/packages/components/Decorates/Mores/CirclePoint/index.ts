@@ -5,7 +5,7 @@ export const CirclePointConfig: ConfigType = {
     key: 'CirclePoint',
     chartKey: 'VCirclePoint',
     conKey: 'VCCirclePoint',
-    title: '圆点光环',
+    title: 'Circle Halo',
     category: ChatCategoryEnum.MORE,
     categoryName: ChatCategoryEnumName.MORE,
     package: PackagesCategoryEnum.DECORATES,

@@ -1,14 +1,14 @@
 <template>
-  <CollapseItem name="内容" :expanded="true">
-    <SettingItemBox name="字体">
-      <SettingItem name="大小">
+  <CollapseItem name="Content" :expanded="true">
+    <SettingItemBox name="Font">
+      <SettingItem name="Size">
         <n-input-number
           v-model:value="optionData.timeSize"
           size="small"
           :min="1"
         ></n-input-number>
       </SettingItem>
-      <SettingItem name="粗细">
+      <SettingItem name="Thickness">
         <n-select
           v-model:value="optionData.fontWeight"
           size="small"
@@ -16,15 +16,15 @@
         />
       </SettingItem>
     </SettingItemBox>
-    <SettingItemBox name="间距">
-      <SettingItem name="字距">
+    <SettingItemBox name="Gap">
+      <SettingItem name="Letter spacing">
         <n-input-number
           v-model:value="optionData.timeTextIndent"
           size="small"
           :min="1"
         ></n-input-number>
       </SettingItem>
-      <SettingItem name="行距">
+      <SettingItem name="Line spacing">
         <n-input-number
           v-model:value="optionData.timeLineHeight"
           size="small"
@@ -33,8 +33,8 @@
       </SettingItem>
     </SettingItemBox>
 
-    <SettingItemBox name="颜色">
-      <SettingItem name="时间">
+    <SettingItemBox name="Color">
+      <SettingItem name="Time">
         <n-color-picker
           size="small"
           :modes="['hex']"
@@ -42,11 +42,11 @@
         ></n-color-picker>
       </SettingItem>
     </SettingItemBox>
-    <SettingItemBox name="阴影">
+    <SettingItemBox name="Shadow">
       <SettingItem>
         <n-space>
           <n-switch v-model:value="optionData.showShadow" size="small" />
-          <n-text>展示阴影</n-text>
+          <n-text>Show shadow</n-text>
         </n-space>
       </SettingItem>
       <SettingItem name="x">
@@ -55,13 +55,13 @@
       <SettingItem name="y">
         <n-input-number v-model:value="optionData.vShadow" size="small"></n-input-number
       ></SettingItem>
-      <SettingItem name="模糊">
+      <SettingItem name="Blur">
         <n-input-number
           v-model:value="optionData.blurShadow"
           size="small"
         ></n-input-number
       ></SettingItem>
-      <SettingItem name="颜色">
+      <SettingItem name="Color">
         <n-color-picker
           size="small"
           :modes="['hex']"

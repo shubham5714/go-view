@@ -5,7 +5,7 @@ export const VChartBarCommonConfig: ConfigType = {
   key: 'VChartBarCommon',
   chartKey: 'VVChartBarCommon',
   conKey: 'VCVChartBarCommon',
-  title: '并列柱状图-VChart',
+  title: 'Grouped Bar Chart - VChart',
   category: ChatCategoryEnum.BAR,
   categoryName: ChatCategoryEnumName.BAR,
   package: PackagesCategoryEnum.VCHART,

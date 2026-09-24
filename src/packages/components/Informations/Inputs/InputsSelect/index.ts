@@ -5,7 +5,7 @@ export const InputsSelectConfig: ConfigType = {
   key: 'InputsSelect',
   chartKey: 'VInputsSelect',
   conKey: 'VCInputsSelect',
-  title: '下拉选择器',
+  title: 'Select',
   category: ChatCategoryEnum.INPUTS,
   categoryName: ChatCategoryEnumName.INPUTS,
   package: PackagesCategoryEnum.INFORMATIONS,

@@ -5,8 +5,8 @@ import { chartInitConfig } from '@/settings/designSetting'
 import cloneDeep from 'lodash/cloneDeep'
 
 export enum FontWeightEnum {
-  NORMAL = '常规',
-  BOLD = '加粗',
+  NORMAL = 'Normal',
+  BOLD = 'Bold',
 }
 
 export const FontWeightObject = {
@@ -15,7 +15,7 @@ export const FontWeightObject = {
 }
 
 export const option = {
-  dataset: '让数字化看得见',
+  dataset: 'Make digital visible',
   fontSize: 32,
   fontColor: '#ffffff',
   fontWeight: 'normal',

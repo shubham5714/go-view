@@ -153,8 +153,9 @@ const uploadFileListRef = ref()
 const switchSelectColorLoading = ref(false)
 const selectColorValue = ref(0)
 
-const ChartThemeColor = loadAsyncComponent(() => import('./components/ChartThemeColor/index.vue'))
-const VChartThemeColor = loadAsyncComponent(() => import('./components/VChartThemeColor/index.vue'))
+const quiet = { loading: false } as const
+const ChartThemeColor = loadAsyncComponent(() => import('./components/ChartThemeColor/index.vue'), quiet)
+const VChartThemeColor = loadAsyncComponent(() => import('./components/VChartThemeColor/index.vue'), quiet)
 
 // 默认应用类型
 const selectColorOptions = [
@@ -285,7 +286,6 @@ const customRequest = (options: UploadCustomRequestOptions) => {
       })
       let uploadParams = new FormData()
       uploadParams.append('object', newNameFile)
-      window['$message'].warn('This upload endpoint is shared with project preview. Add a dedicated background upload API on the backend if needed.')
       const uploadRes = await uploadFile(uploadParams)
 
       if (uploadRes && uploadRes.code === ResultEnum.SUCCESS) {

@@ -48,8 +48,8 @@
           </setting-item-box>
         </div>
         <n-divider />
-        <setting-item-box name="类型">
-          <setting-item name="配置类型">
+        <setting-item-box name="Type">
+          <setting-item name="Config type">
             <n-input
               size="small"
               :placeholder="targetData && requestContentTypeObj[requestContentType]"
@@ -159,8 +159,8 @@ const {
 
 const tabs = [RequestParamsTypeEnum.HEADER]
 const requestContentTypeObj = {
-  [RequestContentTypeEnum.DEFAULT]: '普通请求',
-  [RequestContentTypeEnum.SQL]: 'SQL 请求'
+  [RequestContentTypeEnum.DEFAULT]: 'Standard request',
+  [RequestContentTypeEnum.SQL]: 'SQL request'
 }
 const tabValue = ref<RequestParamsTypeEnum>(RequestParamsTypeEnum.PARAMS)
 

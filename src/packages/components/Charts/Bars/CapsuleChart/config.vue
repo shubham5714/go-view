@@ -2,35 +2,35 @@
   <!-- Echarts 全局设置 -->
   <global-setting :optionData="optionData"> </global-setting>
   <!-- 胶囊柱图 -->
-  <collapse-item name="胶囊柱图" expanded>
-    <SettingItemBox name="布局">
-      <setting-item name="左侧边距">
+  <collapse-item name="Capsule Bar Chart" expanded>
+    <SettingItemBox name="Layout">
+      <setting-item name="Left margin">
         <n-input-number v-model:value="optionData.paddingLeft" :min="10" :step="1" size="small"></n-input-number>
       </setting-item>
-      <setting-item name="右侧边距">
+      <setting-item name="Right margin">
         <n-input-number v-model:value="optionData.paddingRight" :min="10" :step="1" size="small"></n-input-number>
       </setting-item>
-      <setting-item name="每块高度(px)">
+      <setting-item name="Block height (px)">
         <n-input-number v-model:value="optionData.itemHeight" :min="0" :step="1" size="small"></n-input-number>
       </setting-item>
     </SettingItemBox>
-    <SettingItemBox name="文本">
-      <setting-item name="所有文字大小">
+    <SettingItemBox name="Text">
+      <setting-item name="All text size">
         <n-input-number v-model:value="optionData.valueFontSize" :min="0" :step="1" size="small"></n-input-number>
       </setting-item>
-      <setting-item name="单位">
+      <setting-item name="Unit">
         <n-input v-model:value="optionData.unit" size="small"></n-input>
       </setting-item>
 
       <SettingItem>
         <n-space>
           <n-switch v-model:value="optionData.showValue" size="small"></n-switch>
-          <n-text>显示数值</n-text>
+          <n-text>Show value</n-text>
         </n-space>
       </SettingItem>
     </SettingItemBox>
-    <SettingItemBox name="颜色">
-      <setting-item v-for="(item, index) in optionData.colors" :key="index" :name="`颜色${index}`">
+    <SettingItemBox name="Color">
+      <setting-item v-for="(item, index) in optionData.colors" :key="index" :name="`Color${index}`">
         <n-color-picker v-model:value="optionData.colors[index]" size="small" :modes="['hex']"></n-color-picker>
       </setting-item>
     </SettingItemBox>

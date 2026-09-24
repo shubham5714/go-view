@@ -5,7 +5,7 @@ import cloneDeep from 'lodash/cloneDeep'
 import dataJson from './data.json'
 
 export const option = {
-  header: ['列1', '列2', '列3'],
+  header: ['Col 1', 'Col 2', 'Col 3'],
   dataset: dataJson,
   index: true,
   columnWidth: [30, 100, 100],

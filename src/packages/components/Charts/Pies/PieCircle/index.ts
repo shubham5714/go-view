@@ -6,7 +6,7 @@ export const PieCircleConfig: ConfigType = {
   key: 'PieCircle',
   chartKey: 'VPieCircle',
   conKey: 'VCPieCircle',
-  title: '饼图-环形',
+  title: 'Donut Chart',
   category: ChatCategoryEnum.PIE,
   categoryName: ChatCategoryEnumName.PIE,
   package: PackagesCategoryEnum.CHARTS,

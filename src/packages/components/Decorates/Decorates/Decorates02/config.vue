@@ -1,11 +1,11 @@
 <template>
-  <CollapseItem name="线条" :expanded="true">
+  <CollapseItem name="Line" :expanded="true">
     <SettingItemBox
-      :name="`颜色-${index + 1}`"
+      :name="`Color-${index + 1}`"
       v-for="(item, index) in optionData.colors"
       :key="index"
     >
-      <SettingItem name="颜色">
+      <SettingItem name="Color">
         <n-color-picker
           size="small"
           :modes="['hex']"
@@ -17,7 +17,7 @@
           size="small"
           @click="optionData.colors[index] = option.colors[index]"
         >
-          恢复默认
+          Restore Default
         </n-button>
       </SettingItem>
     </SettingItemBox>

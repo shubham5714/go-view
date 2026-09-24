@@ -5,8 +5,8 @@
         <th></th>
         <th>Key</th>
         <th>Value</th>
-        <th>操作</th>
-        <th>结果</th>
+        <th>Actions</th>
+        <th>Result</th>
       </tr>
     </thead>
     <tbody>
@@ -38,8 +38,8 @@
           </div>
         </td>
         <td>
-          <n-button v-if="item.error" class="go-ml-2" text type="error"> 格式错误 </n-button>
-          <n-button v-else class="go-ml-2" text type="primary"> 格式通过 </n-button>
+          <n-button v-if="item.error" class="go-ml-2" text type="error"> Invalid format </n-button>
+          <n-button v-else class="go-ml-2" text type="primary"> Valid format </n-button>
         </td>
       </tr>
     </tbody>
