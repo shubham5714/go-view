@@ -98,6 +98,7 @@ import { SelectHttpType } from '../../index.d'
 import { ChartDataMatchingAndShow } from '../ChartDataMatchingAndShow'
 import { useTargetData } from '../../../hooks/useTargetData.hook'
 import { newFunctionHandle } from '@/utils'
+import { getLastRawResponse, setLastRawResponse } from '../../hooks/useLastRawResponse'
 
 const { HelpOutlineIcon, FlashIcon, PulseIcon } = icon.ionicons5
 const { targetData, chartEditStore } = useTargetData()
@@ -130,6 +131,7 @@ const sendHandle = async () => {
     const res = await customizeHttp(toRaw(targetData.value.request), toRaw(chartEditStore.getRequestGlobalConfig))
     loading.value = false
     if (res) {
+      setLastRawResponse(targetData.value, res)
       const { data } = res
       if (!data && !targetData.value.filter) {
         window['$message'].warning('Data format is invalid. Please configure a filter.')
@@ -148,6 +150,17 @@ const sendHandle = async () => {
   }
 }
 
+/** Re-apply filter on last API result without re-fetching. */
+const applyFilterLocally = () => {
+  const cached = getLastRawResponse(targetData.value)
+  if (!cached) {
+    window['$message']?.info?.('Filter saved. Click Send request to apply it to a fresh result.')
+    return
+  }
+  targetData.value.option.dataset = newFunctionHandle(cached?.data, cached, targetData.value.filter)
+  showMatching.value = true
+}
+
 // 颜色
 const themeColor = computed(() => {
   return designStore.getAppTheme
@@ -157,7 +170,7 @@ watchEffect(() => {
   const filter = targetData.value?.filter
   if (lastFilter !== filter && firstFocus) {
     lastFilter = filter
-    sendHandle()
+    applyFilterLocally()
   }
   firstFocus++
 })

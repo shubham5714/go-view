@@ -215,6 +215,23 @@ export interface RequestGlobalConfigType extends RequestPublicConfigType {
   requestDataPond: RequestDataPondItemType[]
 }
 
+/** Persisted FastMCP tool selection for chart data requests */
+export type RequestMcpConfigType = {
+  instanceToolId?: number | null
+  instanceId?: number | null
+  toolLabel?: string
+  toolName?: string
+  mcpToolName?: string
+  mcpServerUrl?: string
+  instanceName?: string
+  /**
+   * User-facing params keyed by input schema field name.
+   * Each value is either a legacy plain value, or `{ mode: 'fixed' | 'expression', value }`.
+   * Expressions are JavaScript resolved at execute/poll time (see utils/paramExpression).
+   */
+  params?: Record<string, unknown>
+}
+
 // 单个图表请求配置
 export interface RequestConfigType extends RequestPublicConfigType {
   // 所选全局数据池的对应 id
@@ -237,6 +254,8 @@ export interface RequestConfigType extends RequestPublicConfigType {
   }
   // Whether to proxy this request through the Private Worker
   useProxy?: boolean
+  // FastMCP (requestDataType === MCP)
+  requestMcp?: RequestMcpConfigType
 }
 
 // Store 类型

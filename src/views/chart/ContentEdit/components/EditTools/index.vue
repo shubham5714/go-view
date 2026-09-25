@@ -51,6 +51,23 @@
               <n-text depth="3" v-show="!isAside">{{ item.name }}</n-text>
             </n-button>
           </n-upload>
+          <n-dropdown
+            v-else-if="item.type === TypeEnum.DROPDOWN"
+            trigger="click"
+            :placement="isAside ? 'left-start' : 'top'"
+            :options="item.options"
+            @select="item.handleSelect"
+          >
+            <n-button :circle="isAside" secondary>
+              <template #icon>
+                <n-icon size="22" v-if="isAside">
+                  <component :is="item.icon"></component>
+                </n-icon>
+                <component v-else :is="item.icon"></component>
+              </template>
+              <n-text depth="3" v-show="!isAside">{{ item.name }}</n-text>
+            </n-button>
+          </n-dropdown>
         </div>
       </template>
       <!-- 提示 -->
@@ -78,7 +95,7 @@ import { EditEnum } from '@/enums/pageEnum'
 import { StorageEnum } from '@/enums/storageEnum'
 import { useRoute } from 'vue-router'
 import { GoSystemSet } from '@/components/GoSystemSet/index'
-import { exportHandle } from './utils'
+import { exportHandle, exportPdfHandle } from './utils'
 import { useFile } from './hooks/useFile.hooks'
 import { useSyncUpdate } from './hooks/useSyncUpdate.hook'
 import { BtnListType, TypeEnum } from './index.d'
@@ -186,10 +203,17 @@ const btnList: BtnListType[] = [
   },
   {
     key: 'export',
-    type: TypeEnum.BUTTON,
+    type: TypeEnum.DROPDOWN,
     name: 'Export',
     icon: DownloadIcon,
-    handle: exportHandle
+    options: [
+      { label: 'Export Image / JSON', key: 'image' },
+      { label: 'Export PDF', key: 'pdf' }
+    ],
+    handleSelect: (key: string) => {
+      if (key === 'pdf') exportPdfHandle()
+      else exportHandle()
+    }
   },
   {
     key: 'edit',

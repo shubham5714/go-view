@@ -68,6 +68,7 @@ import { useDesignStore } from '@/store/modules/designStore/designStore'
 import { useTargetData } from '../../../hooks/useTargetData.hook'
 import { ChartDataMatchingAndShow } from '../ChartDataMatchingAndShow'
 import { newFunctionHandle } from '@/utils'
+import { getLastRawResponse, setLastRawResponse } from '../../hooks/useLastRawResponse'
 
 const designStore = useDesignStore()
 const { HelpOutlineIcon, FlashIcon, PulseIcon, FishIcon } = icon.ionicons5
@@ -117,6 +118,7 @@ const sendHandle = async () => {
     const res = await customizeHttp(toRaw(targetData.value.request), toRaw(chartEditStore.getRequestGlobalConfig))
     loading.value = false
     if (res) {
+      setLastRawResponse(targetData.value, res)
       if (!res?.data && !targetData.value.filter) {
         window['$message'].warning('Data format is invalid. Please configure a filter.')
         showMatching.value = true
@@ -134,11 +136,21 @@ const sendHandle = async () => {
   }
 }
 
+const applyFilterLocally = () => {
+  const cached = getLastRawResponse(targetData.value)
+  if (!cached) {
+    window['$message']?.info?.('Filter saved. Click Get data to apply it to a fresh result.')
+    return
+  }
+  targetData.value.option.dataset = newFunctionHandle(cached?.data, cached, targetData.value.filter)
+  showMatching.value = true
+}
+
 watchEffect(() => {
   const filter = targetData.value?.filter
   if (lastFilter !== filter && firstFocus) {
     lastFilter = filter
-    sendHandle()
+    applyFilterLocally()
   }
   firstFocus++
 })

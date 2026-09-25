@@ -41,6 +41,16 @@ export const requestConfig: RequestConfigType = {
     },
     Header: {},
     Params: {}
+  },
+  requestMcp: {
+    instanceToolId: null,
+    instanceId: null,
+    toolLabel: '',
+    toolName: '',
+    mcpToolName: '',
+    mcpServerUrl: '',
+    instanceName: '',
+    params: {}
   }
 }
 

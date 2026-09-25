@@ -9,6 +9,8 @@
     <chart-data-ajax v-if="targetData.request.requestDataType === RequestDataTypeEnum.AJAX"></chart-data-ajax>
     <!-- 数据池 -->
     <chart-data-pond v-if="targetData.request.requestDataType === RequestDataTypeEnum.Pond"></chart-data-pond>
+    <!-- DRX Tools -->
+    <chart-data-mcp v-if="targetData.request.requestDataType === RequestDataTypeEnum.MCP"></chart-data-mcp>
   </div>
 </template>
 
@@ -25,6 +27,7 @@ const quiet = { loading: false } as const
 const ChartDataStatic = loadAsyncComponent(() => import('./components/ChartDataStatic/index.vue'), quiet)
 const ChartDataAjax = loadAsyncComponent(() => import('./components/ChartDataAjax/index.vue'), quiet)
 const ChartDataPond = loadAsyncComponent(() => import('./components/ChartDataPond/index.vue'), quiet)
+const ChartDataMcp = loadAsyncComponent(() => import('./components/ChartDataMcp/index.vue'), quiet)
 
 const { targetData } = useTargetData()
 
@@ -41,6 +44,10 @@ const selectOptions: SelectCreateDataType[] = [
   {
     label: SelectCreateDataEnum.Pond,
     value: RequestDataTypeEnum.Pond
+  },
+  {
+    label: SelectCreateDataEnum.MCP,
+    value: RequestDataTypeEnum.MCP
   }
 ]
 

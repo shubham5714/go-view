@@ -56,6 +56,14 @@
           <n-divider vertical style="height: 480px" />
           <n-scrollbar style="max-height: 480px">
             <n-space :size="15" vertical>
+              <n-space align="center" justify="space-between" style="width: 420px">
+                <n-text depth="3" style="font-size: 12px">
+                  {{ sourceStatusLabel }}
+                </n-text>
+                <n-button size="tiny" quaternary :loading="loadingSource" @click="() => loadSourceData(true)">
+                  Refresh data
+                </n-button>
+              </n-space>
               <div class="editor-data-show">
                 <n-space>
                   <n-text depth="3">Filter input (data):</n-text>
@@ -101,19 +109,20 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, toRef, toRefs, toRaw, reactive } from 'vue'
+import { ref, computed, watch, toRaw } from 'vue'
 import { useTargetData } from '../../../hooks/useTargetData.hook'
 import { MonacoEditor } from '@/components/Pages/MonacoEditor'
 import { icon } from '@/plugins'
 import { goDialog, toString } from '@/utils'
 import { customizeHttp } from '@/api/http'
+import { customizeMcp } from '@/api/mcp'
+import { RequestDataTypeEnum } from '@/enums/httpEnum'
 import cloneDeep from 'lodash/cloneDeep'
+import { getLastRawResponse, setLastRawResponse } from '../../hooks/useLastRawResponse'
 
 const { DocumentTextIcon } = icon.ionicons5
 const { FilterIcon, FilterEditIcon } = icon.carbon
 const { targetData, chartEditStore } = useTargetData()
-const { requestDataType } = toRefs(targetData.value.request)
-const { requestOriginUrl } = toRefs(chartEditStore.getRequestGlobalConfig)
 
 // 受控弹窗
 const showModal = ref(false)
@@ -121,26 +130,67 @@ const showModal = ref(false)
 const filter = ref(targetData.value.filter || `return data`)
 // 过滤错误标识
 const errorFlag = ref(false)
-// 目标静态/接口数据
-const sourceData = ref<any>('')
+// 目标静态/接口数据 — shape `{ data }` matching customizeHttp / customizeMcp
+const sourceData = ref<any>(null)
+const usingCachedData = ref(false)
+const loadingSource = ref(false)
 
-// 动态获取数据
+const sourceStatusLabel = computed(() => {
+  if (loadingSource.value) return 'Fetching…'
+  if (usingCachedData.value && sourceData.value) return 'Using last Call tool / API result'
+  if (sourceData.value) return 'Live fetch'
+  return 'No cached result — Call tool first, or Refresh data'
+})
+
 const fetchTargetData = async () => {
+  loadingSource.value = true
   try {
-    const res = await customizeHttp(toRaw(targetData.value.request), toRaw(chartEditStore.getRequestGlobalConfig))
+    // Pass the live request config (not a shallow toRaw-only snapshot) so MCP params resolve
+    const request = targetData.value.request
+    const res =
+      request.requestDataType === RequestDataTypeEnum.MCP
+        ? await customizeMcp(toRaw(request))
+        : await customizeHttp(toRaw(request), toRaw(chartEditStore.getRequestGlobalConfig))
     if (res) {
       sourceData.value = res
+      setLastRawResponse(targetData.value, res)
+      usingCachedData.value = false
       return
     }
     window['$message'].warning('No response. Check the API.')
-  } catch (error) {
-    console.error(error);
-    window['$message'].warning('Data error. Check parameters.')
+  } catch (error: any) {
+    console.error(error)
+    window['$message'].warning(error?.message || 'Data error. Check parameters.')
+  } finally {
+    loadingSource.value = false
   }
+}
+
+/**
+ * Default: use cached Call tool / API result only (no network).
+ * forceFetch=true: live Refresh data button.
+ */
+const loadSourceData = async (forceFetch = false) => {
+  if (!forceFetch) {
+    const cached = getLastRawResponse(targetData.value)
+    if (cached !== undefined) {
+      sourceData.value = cached
+      usingCachedData.value = true
+      return
+    }
+    // Do NOT auto-call MCP/API on Edit — params/expressions need an intentional Call tool
+    sourceData.value = null
+    usingCachedData.value = false
+    return
+  }
+  await fetchTargetData()
 }
 
 // 过滤结果
 const filterRes = computed(() => {
+  if (!sourceData.value) {
+    return '—'
+  }
   try {
     const fn = new Function('data', 'res', filter.value)
     const response = cloneDeep(sourceData.value)
@@ -189,7 +239,7 @@ watch(
   () => showModal.value,
   (newData: boolean) => {
     if (newData) {
-      fetchTargetData()
+      loadSourceData(false)
       filter.value = targetData.value.filter || `return data`
     }
   }

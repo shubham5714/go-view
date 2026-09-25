@@ -22,7 +22,9 @@ export enum RequestDataTypeEnum {
   // 请求数据
   AJAX = 1,
   // 数据池
-  Pond = 2
+  Pond = 2,
+  // FastMCP tool (tenant-enabled)
+  MCP = 3
 }
 
 // 请求主体类型

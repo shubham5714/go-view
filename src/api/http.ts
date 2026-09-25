@@ -148,8 +148,8 @@ export const customizeHttp = (targetParams: RequestConfigType, globalParams: Req
     useProxy
   } = targetParams
 
-  // Skip static data requests
-  if (requestDataType === RequestDataTypeEnum.STATIC) return
+  // Skip static / MCP (MCP uses customizeMcp)
+  if (requestDataType === RequestDataTypeEnum.STATIC || requestDataType === RequestDataTypeEnum.MCP) return
 
   if (!requestUrl) {
     return

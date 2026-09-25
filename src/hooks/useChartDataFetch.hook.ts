@@ -1,6 +1,7 @@
 import { ref, toRefs, toRaw, watch } from 'vue'
 import type VChart from 'vue-echarts'
 import { customizeHttp } from '@/api/http'
+import { customizeMcp } from '@/api/mcp'
 import { useChartDataPondFetch } from '@/hooks/'
 import { CreateComponentType, ChartFrameEnum } from '@/packages/index.d'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
@@ -41,6 +42,20 @@ export const useChartDataFetch = (
     }
   }
 
+  const applyFetchResult = (res: any) => {
+    if (!res) return
+    try {
+      const filter = targetComponent.filter
+      const { data } = res
+      echartsUpdateHandle(newFunctionHandle(data, res, filter))
+      if (updateCallback) {
+        updateCallback(newFunctionHandle(data, res, filter))
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   const requestIntervalFn = () => {
     const chartEditStore = useChartEditStore()
 
@@ -59,37 +74,43 @@ export const useChartDataFetch = (
       requestInterval: targetInterval
     } = toRefs(targetComponent.request)
 
-    // 非请求类型
-    if (requestDataType.value !== RequestDataTypeEnum.AJAX) return
+    // Static / Pond handled elsewhere
+    if (
+      requestDataType.value !== RequestDataTypeEnum.AJAX &&
+      requestDataType.value !== RequestDataTypeEnum.MCP
+    ) {
+      return
+    }
 
     try {
-      // 处理地址
-      // @ts-ignore
-      if (requestUrl?.value) {
-        // requestOriginUrl 允许为空
+      clearInterval(fetchInterval)
+
+      const fetchFn = async () => {
+        if (requestDataType.value === RequestDataTypeEnum.MCP) {
+          const res = await customizeMcp(toRaw(targetComponent.request))
+          applyFetchResult(res)
+          return
+        }
+
+        // AJAX
+        // @ts-ignore
+        if (requestUrl?.value) {
+          const completePath = requestOriginUrl && requestOriginUrl.value + requestUrl.value
+          if (!completePath) return
+          const res = await customizeHttp(
+            toRaw(targetComponent.request),
+            toRaw(chartEditStore.getRequestGlobalConfig)
+          )
+          applyFetchResult(res)
+        }
+      }
+
+      if (requestDataType.value === RequestDataTypeEnum.AJAX) {
+        // @ts-ignore
+        if (!requestUrl?.value) return
         const completePath = requestOriginUrl && requestOriginUrl.value + requestUrl.value
         if (!completePath) return
 
-        clearInterval(fetchInterval)
-
-        const fetchFn = async () => {
-          const res = await customizeHttp(toRaw(targetComponent.request), toRaw(chartEditStore.getRequestGlobalConfig))
-          if (res) {
-            try {
-              const filter = targetComponent.filter
-              const { data } = res
-              echartsUpdateHandle(newFunctionHandle(data, res, filter))
-              // 更新回调函数
-              if (updateCallback) {
-                updateCallback(newFunctionHandle(data, res, filter))
-              }
-            } catch (error) {
-              console.error(error)
-            }
-          }
-        }
-
-        // 普通初始化与组件交互处理监听
         watch(
           () => targetComponent.request.requestParams,
           () => {
@@ -100,15 +121,30 @@ export const useChartDataFetch = (
             deep: true
           }
         )
-
-        // 定时时间
-        const time = targetInterval && !isNil(targetInterval.value) ? targetInterval.value : globalRequestInterval.value
-        // 单位
-        const unit = targetInterval && !isNil(targetInterval.value) ? targetUnit.value : globalUnit.value
-        // 开启轮询
-        if (time) {
-          fetchInterval = setInterval(fetchFn, intervalUnitHandle(time, unit))
+      } else if (requestDataType.value === RequestDataTypeEnum.MCP) {
+        if (!targetComponent.request.requestMcp?.mcpToolName || !targetComponent.request.requestMcp?.mcpServerUrl) {
+          return
         }
+
+        watch(
+          () => targetComponent.request.requestMcp,
+          () => {
+            fetchFn()
+          },
+          {
+            immediate: true,
+            deep: true
+          }
+        )
+      }
+
+      // 定时时间
+      const time = targetInterval && !isNil(targetInterval.value) ? targetInterval.value : globalRequestInterval.value
+      // 单位
+      const unit = targetInterval && !isNil(targetInterval.value) ? targetUnit.value : globalUnit.value
+      // 开启轮询
+      if (time) {
+        fetchInterval = setInterval(fetchFn, intervalUnitHandle(time, unit))
       }
       // eslint-disable-next-line no-empty
     } catch (error) {
@@ -124,7 +160,22 @@ export const useChartDataFetch = (
         })
       : requestIntervalFn()
   } else {
-    requestIntervalFn()
+    // Editor: AJAX keeps live fetch.
+    if (targetComponent.request.requestDataType === RequestDataTypeEnum.AJAX) {
+      requestIntervalFn()
+    } else if (targetComponent.request.requestDataType === RequestDataTypeEnum.MCP) {
+      // MCP Call tool writes option.dataset in the data panel — push that to the canvas chart
+      // without re-fetching (re-fetch watch was stacking long MCP calls).
+      watch(
+        () => targetComponent.option?.dataset,
+        (dataset) => {
+          if (dataset === undefined || dataset === null) return
+          echartsUpdateHandle(dataset)
+          if (updateCallback) updateCallback(dataset)
+        },
+        { deep: true }
+      )
+    }
   }
   return { vChartRef }
 }

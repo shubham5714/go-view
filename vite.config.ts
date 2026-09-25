@@ -46,6 +46,14 @@ export default ({ mode }) => defineConfig({
     open: true,
     port: Number(loadEnv(mode, process.cwd()).VITE_DEV_PORT || 3001),
     proxy: {
+      // FastMCP BFF on AI-SOC — must be listed before /api/goview → Spring
+      '/api/goview/mcp': {
+        target: loadEnv(mode, process.cwd()).VITE_AI_SOC_URL || 'http://localhost:3000',
+        changeOrigin: true,
+        // Long-running FastMCP tool calls
+        timeout: 300000,
+        proxyTimeout: 300000,
+      },
       [axiosPre]: {
         // @ts-ignore
         target: loadEnv(mode, process.cwd()).VITE_DEV_PATH,

@@ -36,6 +36,7 @@
     "highlight.js": "^11.5.0",
     "html2canvas": "^1.4.1",
     "iconify-icon": "^1.0.8",
+    "jspdf": "2.5.2",
     "keymaster": "^1.6.2",
     "mitt": "^3.0.0",
     "monaco-editor": "^0.33.0",

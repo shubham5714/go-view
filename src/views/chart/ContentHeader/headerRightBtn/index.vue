@@ -1,18 +1,33 @@
 <template>
   <n-space class="go-mt-0" :wrap="false">
-    <n-button
-      v-for="item in comBtnList"
-      :key="item.key"
-      :type="item.type()"
-      ghost
-      :loading="item.loading?.()"
-      @click="item.event"
-    >
-      <template #icon>
-        <component :is="item.icon"></component>
-      </template>
-      <span>{{ item.title() }}</span>
-    </n-button>
+    <template v-for="item in comBtnList" :key="item.key">
+      <n-dropdown
+        v-if="item.dropdown"
+        trigger="click"
+        placement="bottom-end"
+        :options="item.dropdown"
+        @select="item.onSelect"
+      >
+        <n-button :type="item.type()" ghost>
+          <template #icon>
+            <component :is="item.icon"></component>
+          </template>
+          <span>{{ item.title() }}</span>
+        </n-button>
+      </n-dropdown>
+      <n-button
+        v-else
+        :type="item.type()"
+        ghost
+        :loading="item.loading?.()"
+        @click="item.event"
+      >
+        <template #icon>
+          <component :is="item.icon"></component>
+        </template>
+        <span>{{ item.title() }}</span>
+      </n-button>
+    </template>
   </n-space>
 
   <!-- 发布管理弹窗 -->
@@ -60,6 +75,7 @@ import { ResultEnum } from '@/enums/httpEnum'
 import { SyncEnum } from '@/enums/editPageEnum'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { syncData } from '../../ContentEdit/components/EditTools/hooks/useSyncUpdate.hook'
+import { exportHandle, exportPdfHandle } from '../../ContentEdit/components/EditTools/utils'
 import { useSync } from '../../hooks/useSync.hook'
 import { ProjectInfoEnum } from '@/store/modules/chartEditStore/chartEditStore.d'
 import { changeProjectReleaseApi } from '@/api/path'
@@ -76,7 +92,7 @@ import {
 import { icon } from '@/plugins'
 import { cloneDeep } from 'lodash'
 
-const { BrowsersOutlineIcon, SendIcon, AnalyticsIcon, CloseIcon } = icon.ionicons5
+const { BrowsersOutlineIcon, SendIcon, AnalyticsIcon, CloseIcon, DownloadIcon } = icon.ionicons5
 const { SaveIcon } = icon.carbon
 const chartEditStore = useChartEditStore()
 const { dataSyncUpdate } = useSync()
@@ -218,6 +234,11 @@ const sendHandle = async () => {
   }
 }
 
+const exportSelectHandle = (key: string) => {
+  if (key === 'pdf') exportPdfHandle()
+  else exportHandle()
+}
+
 const btnList = [
   {
     select: true,
@@ -241,6 +262,17 @@ const btnList = [
     type: () => 'default',
     icon: renderIcon(BrowsersOutlineIcon),
     event: previewHandle
+  },
+  {
+    key: 'export',
+    title: () => 'Export',
+    type: () => 'default',
+    icon: renderIcon(DownloadIcon),
+    dropdown: [
+      { label: 'Export Image / JSON', key: 'image' },
+      { label: 'Export PDF', key: 'pdf' }
+    ],
+    onSelect: exportSelectHandle
   },
   {
     key: 'release',

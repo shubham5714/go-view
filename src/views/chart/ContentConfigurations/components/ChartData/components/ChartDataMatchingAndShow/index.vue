@@ -121,7 +121,7 @@
           </div>
         </n-space>
         <n-card size="small">
-          <n-code :code="toString(source)" language="json"></n-code>
+          <n-code :key="codeKey" :code="displayCode" language="json"></n-code>
         </n-card>
       </n-space>
     </n-timeline-item>
@@ -190,7 +190,7 @@ import { toString, isArray, goDialog } from '@/utils'
 import MonacoEditor from '@/components/Pages/MonacoEditor/index.vue'
 
 const { targetData } = useTargetData()
-defineProps({
+const props = defineProps({
   show: {
     type: Boolean,
     required: false
@@ -198,6 +198,12 @@ defineProps({
   ajax: {
     type: Boolean,
     required: true
+  },
+  /** When set, Content uses this immediately (bypasses flaky store watch) */
+  overrideDataset: {
+    type: [Object, Array, String, Number, Boolean] as any,
+    required: false,
+    default: undefined
   }
 })
 
@@ -215,7 +221,40 @@ const noData = ref(false)
 const showRef = ref(false)
 // 编辑的代码
 const editorCode = ref('')
+const codeKey = ref(0)
 
+const displayCode = computed(() => {
+  try {
+    return toString(source.value) || '—'
+  } catch {
+    return '—'
+  }
+})
+
+const applyDatasetToView = (newData?: any) => {
+  noData.value = false
+  if (newData && targetData?.value?.chartConfig?.chartFrame === ChartFrameEnum.ECHARTS) {
+    source.value = newData
+    if (isCharts.value) {
+      dimensions.value = Array.isArray(newData?.dimensions) ? newData.dimensions : []
+      dimensionsAndSource.value = dimensionsAndSourceHandle()
+    }
+  } else if (newData && targetData?.value?.chartConfig?.chartFrame === ChartFrameEnum.VCHART) {
+    source.value = newData
+    initFieldListHandle()
+  } else if (newData !== undefined && newData !== null) {
+    dimensionsAndSource.value = null
+    source.value = newData
+    fieldList.value = []
+  } else {
+    noData.value = true
+    source.value = 'This component has no data source'
+  }
+  if (isArray(newData)) {
+    dimensionsAndSource.value = null
+  }
+  codeKey.value += 1
+}
 // 映射列表, 注意内部的mapping是响应式的，上方需要修改
 const fieldList = ref<
   Array<{
@@ -363,38 +402,25 @@ const saveOlineEditHandle = () => {
 }
 
 watch(
-  () => targetData.value?.option?.dataset,
-  (
-    newData?: {
-      source: any
-      dimensions: any
-    } | null
-  ) => {
-    noData.value = false
-    if (newData && targetData?.value?.chartConfig?.chartFrame === ChartFrameEnum.ECHARTS) {
-      // 只有 DataSet 数据才有对应的格式
-      source.value = newData
-      if (isCharts.value) {
-        dimensions.value = newData.dimensions
-        dimensionsAndSource.value = dimensionsAndSourceHandle()
-      }
-    } else if (newData && targetData?.value?.chartConfig?.chartFrame === ChartFrameEnum.VCHART) {
-      source.value = newData
-      initFieldListHandle()
-    } else if (newData !== undefined && newData !== null) {
-      dimensionsAndSource.value = null
-      source.value = newData
-      fieldList.value = []
-    } else {
-      noData.value = true
-      source.value = 'This component has no data source'
-    }
-    if (isArray(newData)) {
-      dimensionsAndSource.value = null
+  () => props.overrideDataset,
+  (newData) => {
+    if (newData !== undefined) {
+      applyDatasetToView(newData)
     }
   },
+  { immediate: true }
+)
+
+watch(
+  () => targetData.value?.option?.dataset,
+  (newData?: any) => {
+    // Prefer explicit override from Call tool when present
+    if (props.overrideDataset !== undefined) return
+    applyDatasetToView(newData)
+  },
   {
-    immediate: true
+    immediate: true,
+    deep: true
   }
 )
 </script>

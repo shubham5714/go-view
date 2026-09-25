@@ -17,6 +17,7 @@ export enum SelectCreateDataEnum {
   STATIC = 'Static',
   AJAX = 'Dynamic',
   Pond = 'Public API',
+  MCP = 'DRX Tools',
 }
 
 export interface SelectCreateDataType {

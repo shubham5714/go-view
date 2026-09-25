@@ -1,6 +1,7 @@
 export enum TypeEnum {
   BUTTON = 'button',
-  IMPORTUPLOAD = 'importUpload'
+  IMPORTUPLOAD = 'importUpload',
+  DROPDOWN = 'dropdown'
 }
 
 export type BtnListType = {
@@ -9,4 +10,6 @@ export type BtnListType = {
   name: string
   icon: any
   handle?: () => void
+  options?: { label: string; key: string }[]
+  handleSelect?: (key: string) => void
 }
