@@ -1,8 +1,9 @@
-import { ref, toRefs, toRaw, watch } from 'vue'
+import { ref, toRefs, toRaw, watch, onUnmounted } from 'vue'
 import type VChart from 'vue-echarts'
 import { customizeHttp } from '@/api/http'
 import { customizeMcp } from '@/api/mcp'
 import { useChartDataPondFetch } from '@/hooks/'
+import { beginComponentDataFetch, endComponentDataFetch } from '@/hooks/useComponentDataFetchStatus.hook'
 import { CreateComponentType, ChartFrameEnum } from '@/packages/index.d'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { RequestDataTypeEnum } from '@/enums/httpEnum'
@@ -19,6 +20,9 @@ type ChartEditStoreType = typeof useChartEditStore
  * @param useChartEditStore 若直接引会报错，只能动态传递
  * @param updateCallback 自定义更新函数
  */
+// Mark that this component instance already completed a live fetch (survives page remounts).
+const LIVE_FETCHED_KEY = '__liveDataFetched'
+
 export const useChartDataFetch = (
   targetComponent: CreateComponentType,
   useChartEditStore: ChartEditStoreType,
@@ -42,14 +46,31 @@ export const useChartDataFetch = (
     }
   }
 
+  // Keep last-fetched data on the store component. Preview remounts on page
+  // switch (flushCurrentPage → applyPageToActive); without this, setOption-only
+  // updates are lost and the chart falls back to the originally saved dataset.
+  const persistDataset = (dataset: any) => {
+    if (dataset === undefined || !targetComponent.option) return
+    targetComponent.option.dataset = dataset
+  }
+
+  const markLiveFetched = () => {
+    ;(targetComponent as any)[LIVE_FETCHED_KEY] = true
+  }
+
+  const hasLiveFetched = () => Boolean((targetComponent as any)[LIVE_FETCHED_KEY])
+
   const applyFetchResult = (res: any) => {
     if (!res) return
     try {
       const filter = targetComponent.filter
       const { data } = res
-      echartsUpdateHandle(newFunctionHandle(data, res, filter))
+      const dataset = newFunctionHandle(data, res, filter)
+      persistDataset(dataset)
+      markLiveFetched()
+      echartsUpdateHandle(dataset)
       if (updateCallback) {
-        updateCallback(newFunctionHandle(data, res, filter))
+        updateCallback(dataset)
       }
     } catch (error) {
       console.error(error)
@@ -86,24 +107,35 @@ export const useChartDataFetch = (
       clearInterval(fetchInterval)
 
       const fetchFn = async () => {
-        if (requestDataType.value === RequestDataTypeEnum.MCP) {
-          const res = await customizeMcp(toRaw(targetComponent.request))
-          applyFetchResult(res)
-          return
-        }
+        const componentId = targetComponent.id
+        beginComponentDataFetch(componentId)
+        try {
+          if (requestDataType.value === RequestDataTypeEnum.MCP) {
+            const res = await customizeMcp(toRaw(targetComponent.request))
+            applyFetchResult(res)
+            return
+          }
 
-        // AJAX
-        // @ts-ignore
-        if (requestUrl?.value) {
-          const completePath = requestOriginUrl && requestOriginUrl.value + requestUrl.value
-          if (!completePath) return
-          const res = await customizeHttp(
-            toRaw(targetComponent.request),
-            toRaw(chartEditStore.getRequestGlobalConfig)
-          )
-          applyFetchResult(res)
+          // AJAX
+          // @ts-ignore
+          if (requestUrl?.value) {
+            const completePath = requestOriginUrl && requestOriginUrl.value + requestUrl.value
+            if (!completePath) return
+            const res = await customizeHttp(
+              toRaw(targetComponent.request),
+              toRaw(chartEditStore.getRequestGlobalConfig)
+            )
+            applyFetchResult(res)
+          }
+        } finally {
+          endComponentDataFetch(componentId)
         }
       }
+
+      // Preview remounts (page switch) keep the same store objects with live data.
+      // Skip the immediate re-fetch and only poll on the configured interval.
+      // First mount / new component objects still fetch immediately.
+      const fetchImmediately = !(isPreview() && hasLiveFetched())
 
       if (requestDataType.value === RequestDataTypeEnum.AJAX) {
         // @ts-ignore
@@ -117,7 +149,7 @@ export const useChartDataFetch = (
             fetchFn()
           },
           {
-            immediate: true,
+            immediate: fetchImmediately,
             deep: true
           }
         )
@@ -132,7 +164,7 @@ export const useChartDataFetch = (
             fetchFn()
           },
           {
-            immediate: true,
+            immediate: fetchImmediately,
             deep: true
           }
         )
@@ -155,6 +187,8 @@ export const useChartDataFetch = (
   if (isPreview()) {
     targetComponent.request.requestDataType === RequestDataTypeEnum.Pond
       ? addGlobalDataInterface(targetComponent, useChartEditStore, (newData: any) => {
+          persistDataset(newData)
+          markLiveFetched()
           echartsUpdateHandle(newData)
           if (updateCallback) updateCallback(newData)
         })
@@ -177,5 +211,10 @@ export const useChartDataFetch = (
       )
     }
   }
+
+  onUnmounted(() => {
+    if (fetchInterval) clearInterval(fetchInterval)
+  })
+
   return { vChartRef }
 }

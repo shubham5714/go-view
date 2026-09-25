@@ -17,6 +17,7 @@
       <div class="shape-modal-select" :class="{ active: select }"></div>
       <div class="shape-modal-change" :class="{ selectActive: select, hoverActive: hover }"></div>
     </div>
+    <chart-data-fetch-indicator :component-id="item.id" />
   </div>
 </template>
 
@@ -27,6 +28,7 @@ import { EditCanvasTypeEnum } from '@/store/modules/chartEditStore/chartEditStor
 
 import { useDesignStore } from '@/store/modules/designStore/designStore'
 import { CreateComponentType, CreateComponentGroupType } from '@/packages/index.d'
+import { ChartDataFetchIndicator } from '@/components/ChartDataFetchIndicator'
 import { useSizeStyle, usePointStyle } from '../../hooks/useStyle.hook'
 import { useMousePointHandle } from '../../hooks/useDrag.hook'
 

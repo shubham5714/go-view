@@ -34,8 +34,15 @@ import {
   TargetChartType,
   RecordChartType,
   RequestGlobalConfigType,
-  EditCanvasConfigType
+  EditCanvasConfigType,
+  CanvasPageType
 } from './chartEditStore.d'
+import {
+  createBlankCanvasPage,
+  createDefaultEditCanvasConfig,
+  migrateToMultiPage,
+  syncSharedFieldsToPages
+} from '@/utils/canvasPages'
 
 const chartHistoryStore = useChartHistoryStore()
 const settingStore = useSettingStore()
@@ -155,7 +162,10 @@ export const useChartEditStore = defineStore({
       }
     },
     // 图表数组（需存储给后端）
-    componentList: []
+    componentList: [],
+    // Multi-page (Power BI–style); first page is non-deletable
+    pages: [],
+    currentPageId: ''
   }),
   getters: {
     getProjectInfo(): ProjectInfoType {
@@ -184,15 +194,186 @@ export const useChartEditStore = defineStore({
     },
     getComponentList(): Array<CreateComponentType | CreateComponentGroupType> {
       return this.componentList
+    },
+    getPages(): CanvasPageType[] {
+      return this.pages
+    },
+    getCurrentPageId(): string {
+      return this.currentPageId
+    },
+    getCurrentPageIndex(): number {
+      return this.pages.findIndex(p => p.id === this.currentPageId)
     }
   },
   actions: {
+    /** Ensure at least one page exists (e.g. new empty project) */
+    ensurePagesInitialized() {
+      if (this.pages.length > 0 && this.currentPageId) return
+      const migrated = migrateToMultiPage({
+        editCanvasConfig: this.editCanvasConfig,
+        requestGlobalConfig: this.requestGlobalConfig,
+        componentList: this.componentList
+      })
+      this.pages = migrated.pages || []
+      this.currentPageId = migrated.currentPageId || this.pages[0]?.id || ''
+    },
+
+    /** Write active canvas + components into pages[current] */
+    flushCurrentPage() {
+      this.ensurePagesInitialized()
+      const idx = this.pages.findIndex(p => p.id === this.currentPageId)
+      if (idx === -1) return
+      // Replace whole page object so we never share array refs with the live store
+      this.pages.splice(idx, 1, {
+        id: this.pages[idx].id,
+        name: this.pages[idx].name,
+        editCanvasConfig: cloneDeep(toRaw(this.editCanvasConfig)),
+        componentList: cloneDeep(toRaw(this.componentList))
+      })
+      syncSharedFieldsToPages(this.pages, this.editCanvasConfig)
+    },
+
+    /** Apply a page's config/components into the active store fields */
+    applyPageToActive(page: CanvasPageType) {
+      const shared = this.editCanvasConfig
+      const nextConfig = {
+        ...cloneDeep(toRaw(page.editCanvasConfig)),
+        width: shared.width,
+        height: shared.height,
+        previewScaleType: shared.previewScaleType,
+        projectName: shared.projectName,
+        remarks: shared.remarks
+      } as EditCanvasConfigType
+      const nextList = cloneDeep(toRaw(page.componentList || []))
+
+      this.editCanvasConfig = nextConfig
+      // In-place replace for reliable Vue/Pinia array reactivity
+      this.componentList.splice(0, this.componentList.length)
+      for (const item of nextList) {
+        this.componentList.push(item)
+      }
+      this.currentPageId = page.id
+    },
+
+    switchPage(pageId: string, options?: { forceScale?: boolean }) {
+      if (!pageId || pageId === this.currentPageId) return
+      this.ensurePagesInitialized()
+
+      const targetIndex = this.pages.findIndex(p => p.id === pageId)
+      if (targetIndex === -1) return
+
+      // Snapshot BEFORE flush so we never read a page that was just overwritten
+      const snapshot: CanvasPageType = {
+        id: this.pages[targetIndex].id,
+        name: this.pages[targetIndex].name,
+        editCanvasConfig: cloneDeep(toRaw(this.pages[targetIndex].editCanvasConfig)),
+        componentList: cloneDeep(toRaw(this.pages[targetIndex].componentList || []))
+      }
+
+      this.flushCurrentPage()
+      this.setTargetSelectChart(undefined)
+      chartHistoryStore.clearBackStack()
+      chartHistoryStore.clearForwardStack()
+      this.applyPageToActive(snapshot)
+      // Canvas size is project-shared — do not recompute scale on page switch.
+      // computedScale → scale watcher → canvasPosCenter/reDraw breaks the pan scrollbar.
+      if (options?.forceScale) {
+        this.computedScale()
+      }
+    },
+
+    addPage(name?: string) {
+      this.ensurePagesInitialized()
+      this.flushCurrentPage()
+      const pageName = name || `Page ${this.pages.length + 1}`
+      const page = createBlankCanvasPage(this.editCanvasConfig, pageName)
+      this.pages.push(page)
+      this.setTargetSelectChart(undefined)
+      chartHistoryStore.clearBackStack()
+      chartHistoryStore.clearForwardStack()
+      this.applyPageToActive(page)
+      return page.id
+    },
+
+    /** First page (index 0) cannot be deleted */
+    deletePage(pageId: string) {
+      this.ensurePagesInitialized()
+      if (this.pages.length <= 1) {
+        window['$message']?.warning?.('Cannot delete the only page')
+        return false
+      }
+      const idx = this.pages.findIndex(p => p.id === pageId)
+      if (idx === -1) return false
+      if (idx === 0) {
+        window['$message']?.warning?.('The first page cannot be deleted')
+        return false
+      }
+
+      const wasCurrent = this.currentPageId === pageId
+      if (wasCurrent) {
+        this.flushCurrentPage()
+      } else {
+        // still flush so unsaved active edits aren't lost relative to pages array
+        this.flushCurrentPage()
+      }
+
+      this.pages.splice(idx, 1)
+      if (wasCurrent) {
+        const next = this.pages[Math.min(idx, this.pages.length - 1)]
+        this.setTargetSelectChart(undefined)
+        chartHistoryStore.clearBackStack()
+        chartHistoryStore.clearForwardStack()
+        this.applyPageToActive(next)
+      }
+      return true
+    },
+
+    renamePage(pageId: string, name: string) {
+      const page = this.pages.find(p => p.id === pageId)
+      if (!page) return
+      const trimmed = (name || '').trim()
+      if (!trimmed) return
+      page.name = trimmed
+    },
+
+    /** Project-level canvas size — applied to every page */
+    setProjectCanvasSize(width: number, height: number) {
+      if (width !== undefined && width > 50) this.editCanvasConfig.width = width
+      if (height !== undefined && height > 50) this.editCanvasConfig.height = height
+      this.ensurePagesInitialized()
+      syncSharedFieldsToPages(this.pages, this.editCanvasConfig)
+      this.computedScale()
+    },
+
+    /** Project-level preview adaptation — applied to every page */
+    setProjectPreviewScaleType(type: EditCanvasConfigType['previewScaleType']) {
+      this.editCanvasConfig.previewScaleType = type
+      this.ensurePagesInitialized()
+      syncSharedFieldsToPages(this.pages, this.editCanvasConfig)
+    },
+
+    /** Hydrate pages from loaded/migrated storage (after component recreate) */
+    setPagesFromStorage(pages: CanvasPageType[], currentPageId: string) {
+      this.pages = pages
+      this.currentPageId = currentPageId
+      if (!this.pages.length) {
+        const page = createBlankCanvasPage(this.editCanvasConfig || createDefaultEditCanvasConfig())
+        this.pages = [page]
+        this.currentPageId = page.id
+      }
+    },
+
     // * 获取需要存储的数据项
     getStorageInfo(): ChartEditStorage {
+      this.ensurePagesInitialized()
+      this.flushCurrentPage()
       return {
+        version: 2,
         [ChartEditStoreEnum.EDIT_CANVAS_CONFIG]: this.getEditCanvasConfig,
         [ChartEditStoreEnum.COMPONENT_LIST]: this.getComponentList,
-        [ChartEditStoreEnum.REQUEST_GLOBAL_CONFIG]: this.getRequestGlobalConfig
+        [ChartEditStoreEnum.REQUEST_GLOBAL_CONFIG]: this.getRequestGlobalConfig,
+        pages: cloneDeep(this.pages),
+        currentPageId: this.currentPageId
       }
     },
     // * 获取针对 componentList 顺序排过序的 selectId

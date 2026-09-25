@@ -9,6 +9,8 @@
       <edit-data-sync></edit-data-sync>
     </n-space>
 
+    <EditPageTabs />
+
     <n-space class="bottom-ri">
       <!-- 快捷键提示 -->
       <edit-shortcut-key />
@@ -61,6 +63,7 @@ import { icon } from '@/plugins'
 import { EditHistory } from '../EditHistory/index'
 import { EditShortcutKey } from '../EditShortcutKey/index'
 import { EditDataSync } from '../EditDataSync/index'
+import EditPageTabs from './EditPageTabs.vue'
 import { useDesignStore } from '@/store/modules/designStore/designStore'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { EditCanvasTypeEnum } from '@/store/modules/chartEditStore/chartEditStore.d'
@@ -162,6 +165,7 @@ $max-width: 670px;
   .bottom-ri {
     position: relative;
     top: 15px;
+    flex-shrink: 0;
     .lock-icon {
       padding-top: 4px;
       &.color {

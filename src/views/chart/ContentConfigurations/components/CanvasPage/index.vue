@@ -224,9 +224,9 @@ watch(
 // 画布尺寸规则
 const validator = (x: number) => x > 50
 
-// 修改尺寸
+// 修改尺寸（project-level — shared across all pages）
 const changeSizeHandle = () => {
-  chartEditStore.computedScale()
+  chartEditStore.setProjectCanvasSize(canvasConfig.width, canvasConfig.height)
 }
 
 // 上传图片前置处理
@@ -310,9 +310,9 @@ const customRequest = (options: UploadCustomRequestOptions) => {
   })
 }
 
-// 选择适配方式
+// 选择适配方式（project-level — shared across all pages）
 const selectPreviewType = (key: PreviewScaleEnum) => {
-  chartEditStore.setEditCanvasConfig(EditCanvasConfigEnum.PREVIEW_SCALE_TYPE, key)
+  chartEditStore.setProjectPreviewScaleType(key)
 }
 </script>
 

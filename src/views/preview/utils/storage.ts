@@ -1,4 +1,4 @@
-import { getSessionStorage, fetchRouteParamsLocation, httpErrorHandle, JSONParse } from '@/utils'
+import { getSessionStorage, fetchRouteParamsLocation, httpErrorHandle, JSONParse, migrateToMultiPage } from '@/utils'
 import { ResultEnum } from '@/enums/httpEnum'
 import { StorageEnum } from '@/enums/storageEnum'
 import { ChartEditStorage } from '@/store/modules/chartEditStore/chartEditStore.d'
@@ -9,6 +9,20 @@ const chartEditStore = useChartEditStore()
 
 export interface ChartEditStorageType extends ChartEditStorage {
   id: string
+}
+
+const applyStorageToStore = (parseData: ChartEditStorageType) => {
+  const migrated = migrateToMultiPage(parseData as any)
+  const { editCanvasConfig, requestGlobalConfig, componentList, pages, currentPageId } = migrated
+  chartEditStore.editCanvasConfig = editCanvasConfig
+  chartEditStore.requestGlobalConfig = requestGlobalConfig
+  chartEditStore.componentList = componentList
+  chartEditStore.setPagesFromStorage(pages || [], currentPageId || pages?.[0]?.id || '')
+  return {
+    ...parseData,
+    ...migrated,
+    id: parseData.id
+  }
 }
 
 // 根据路由 id 获取存储数据的信息
@@ -26,12 +40,8 @@ export const getSessionStorageInfo = async () => {
         // 跳转未发布页
         return { isRelease: false }
       }
-      const parseData = { ...JSONParse(content), id }
-      const { editCanvasConfig, requestGlobalConfig, componentList } = parseData
-      chartEditStore.editCanvasConfig = editCanvasConfig
-      chartEditStore.requestGlobalConfig = requestGlobalConfig
-      chartEditStore.componentList = componentList
-      return parseData
+      const parseData = { ...JSONParse(content), id } as ChartEditStorageType
+      return applyStorageToStore(parseData)
     } else {
       httpErrorHandle()
     }
@@ -39,11 +49,7 @@ export const getSessionStorageInfo = async () => {
     // 本地读取
     for (let i = 0; i < storageList.length; i++) {
       if (id.toString() === storageList[i]['id']) {
-        const { editCanvasConfig, requestGlobalConfig, componentList } = storageList[i]
-        chartEditStore.editCanvasConfig = editCanvasConfig
-        chartEditStore.requestGlobalConfig = requestGlobalConfig
-        chartEditStore.componentList = componentList
-        return storageList[i]
+        return applyStorageToStore(storageList[i])
       }
     }
   }

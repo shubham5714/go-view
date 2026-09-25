@@ -4,32 +4,42 @@ import { CreateComponentType } from '@/packages/index.d'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { RequestGlobalConfigType, RequestDataPondItemType } from '@/store/modules/chartEditStore/chartEditStore.d'
 import { newFunctionHandle, intervalUnitHandle } from '@/utils'
+import { beginComponentDataFetch, endComponentDataFetch } from '@/hooks/useComponentDataFetchStatus.hook'
 
 // 获取类型
 type ChartEditStoreType = typeof useChartEditStore
 
+const LIVE_FETCHED_KEY = '__liveDataFetched'
+
 // 数据池存储的数据类型
 type DataPondMapType = {
+  componentId: string
   updateCallback: (...args: any) => any
   filter?: string | undefined
+  isLiveFetched?: () => boolean
 }
 
 // 数据池 Map 中请求对应 callback
 const mittDataPondMap = new Map<string, DataPondMapType[]>()
+// Active poll timers — cleared on remount so intervals are not leaked/stacked
+const pondFetchIntervals = new Map<string, ReturnType<typeof setInterval>>()
 
 // 创建单个数据项轮询接口
 const newPondItemInterval = (
   requestGlobalConfig: RequestGlobalConfigType,
   requestDataPondItem: ComputedRef<RequestDataPondItemType>,
-  dataPondMapItem?: DataPondMapType[]
+  dataPondMapItem?: DataPondMapType[],
+  pondKey?: string
 ) => {
-  if (!dataPondMapItem) return
-  let fetchInterval: any = 0
+  if (!dataPondMapItem || !pondKey) return
 
-  clearInterval(fetchInterval)
+  const existing = pondFetchIntervals.get(pondKey)
+  if (existing) clearInterval(existing)
 
   // 请求
   const fetchFn = async () => {
+    const componentIds = dataPondMapItem.map(item => item.componentId).filter(Boolean)
+    componentIds.forEach(id => beginComponentDataFetch(id))
     try {
       const res = await customizeHttp(toRaw(requestDataPondItem.value.dataPondRequestConfig), toRaw(requestGlobalConfig))
       if (res) {
@@ -45,6 +55,8 @@ const newPondItemInterval = (
       }
     } catch (error) {
       return error
+    } finally {
+      componentIds.forEach(id => endComponentDataFetch(id))
     }
   }
 
@@ -59,10 +71,12 @@ const newPondItemInterval = (
     }
   )
 
-
-  // 立即调用
-  fetchFn()
-
+  // Skip immediate re-fetch when all subscribers already hold live data
+  // (preview page remount). First init still fetches immediately.
+  const alreadyLive = dataPondMapItem.every(item => item.isLiveFetched?.())
+  if (!alreadyLive) {
+    fetchFn()
+  }
 
   const targetInterval = requestDataPondItem.value.dataPondRequestConfig.requestInterval
   const targetUnit = requestDataPondItem.value.dataPondRequestConfig.requestIntervalUnit
@@ -75,7 +89,10 @@ const newPondItemInterval = (
   // 单位
   const unit = targetInterval ? targetUnit : globalUnit
   // 开启轮询
-  if (time) fetchInterval = setInterval(fetchFn, intervalUnitHandle(time, unit))
+  if (time) {
+    const fetchInterval = setInterval(fetchFn, intervalUnitHandle(time, unit))
+    pondFetchIntervals.set(pondKey, fetchInterval)
+  }
 }
 
 /**
@@ -96,14 +113,18 @@ export const useChartDataPondFetch = () => {
     // 新增数据项
     const mittPondIdArr = mittDataPondMap.get(requestDataPondId) || []
     mittPondIdArr.push({
+      componentId: targetComponent.id,
       updateCallback: updateCallback,
-      filter: targetComponent.filter
+      filter: targetComponent.filter,
+      isLiveFetched: () => Boolean((targetComponent as any)[LIVE_FETCHED_KEY])
     })
     mittDataPondMap.set(requestDataPondId, mittPondIdArr)
   }
 
   // 清除旧数据
   const clearMittDataPondMap = () => {
+    pondFetchIntervals.forEach(interval => clearInterval(interval))
+    pondFetchIntervals.clear()
     mittDataPondMap.clear()
   }
 
@@ -117,7 +138,12 @@ export const useChartDataPondFetch = () => {
         return requestGlobalConfig.requestDataPond.find(item => item.dataPondId === pondKey)
       }) as ComputedRef<RequestDataPondItemType>
       if (requestDataPondItem.value) {
-        newPondItemInterval(chartEditStore.requestGlobalConfig, requestDataPondItem, mittDataPondMap.get(pondKey))
+        newPondItemInterval(
+          chartEditStore.requestGlobalConfig,
+          requestDataPondItem,
+          mittDataPondMap.get(pondKey),
+          pondKey
+        )
       }
     }
   }

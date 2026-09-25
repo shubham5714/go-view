@@ -31,6 +31,7 @@
         }"
         v-on="useLifeHandler(item)"
       ></component>
+      <chart-data-fetch-indicator :component-id="item.id" />
     </div>
   </div>
 </template>
@@ -41,6 +42,7 @@ import { CreateComponentGroupType } from '@/packages/index.d'
 import { animationsClass, getFilterStyle, getTransformStyle, getBlendModeStyle } from '@/utils'
 import { getSizeStyle, getComponentAttrStyle, getStatusStyle, getPreviewConfigStyle } from '../../utils'
 import { useLifeHandler } from '@/hooks'
+import { ChartDataFetchIndicator } from '@/components/ChartDataFetchIndicator'
 
 const props = defineProps({
   groupData: {

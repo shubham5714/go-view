@@ -54,8 +54,10 @@ const useSyncUpdateHandle = () => {
     //   document.hasFocus() && syncData()
     // }, editToJsonInterval)
 
-    // 失焦同步数据
-    addEventListener('blur', syncDataToPreview)
+    // Do not sync on window blur. Leaving the editor (browser tab switch,
+    // clicking the preview window, Alt-Tab) remounted preview from the
+    // editor snapshot, wiping live-fetched datasets and re-triggering
+    // immediate fetches. Preview updates on explicit open/save instead.
 
     // 监听编辑器保存事件 刷新工作台图表
     addEventListener(SavePageEnum.JSON, updateFn)
@@ -67,7 +69,6 @@ const useSyncUpdateHandle = () => {
   // 关闭侦听
   const unUse = () => {
     // clearInterval(timer)
-    removeEventListener('blur', syncDataToPreview)
     removeEventListener(SavePageEnum.JSON, updateFn)
   }
 

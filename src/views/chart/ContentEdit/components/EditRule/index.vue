@@ -249,6 +249,9 @@ window.onKeySpacePressHold = (isHold: boolean) => {
 #mb-ruler {
   top: 0;
   left: 0;
+  /* Leave native scrollbar gutters clickable (overlay sits above .edit-screens) */
+  width: calc(100% - 7px) !important;
+  height: calc(100% - 7px) !important;
 }
 
 /* 横线 */
@@ -293,6 +296,10 @@ window.onKeySpacePressHold = (isHold: boolean) => {
 
 <style lang="scss" scoped>
 @include go('sketch-rule') {
+  /* Contain absolutely positioned .edit-screens / #mb-ruler inside the canvas
+     area. Without this they anchor to #go-chart-edit-layout and the horizontal
+     scrollbar renders under the bottom page tabs (z-index: 5), which steal clicks. */
+  position: relative;
   overflow: hidden;
   width: 100%;
   height: 100%;
@@ -317,11 +324,16 @@ window.onKeySpacePressHold = (isHold: boolean) => {
 
     &::-webkit-scrollbar {
       width: 7px;
+      height: 7px;
     }
 
     &::-webkit-scrollbar-thumb {
       border-radius: 5px;
       background-color: rgba(144, 146, 152, 0.3);
+    }
+
+    &::-webkit-scrollbar-thumb:horizontal {
+      min-width: 40px;
     }
     // 修复右下角白点用的
     &::-webkit-scrollbar-corner {

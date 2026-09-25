@@ -1,8 +1,8 @@
 import { onUnmounted } from 'vue';
 import html2canvas from 'html2canvas'
-import { getUUID, httpErrorHandle, fetchRouteParamsLocation, base64toFile, JSONStringify, JSONParse } from '@/utils'
+import { getUUID, httpErrorHandle, fetchRouteParamsLocation, base64toFile, JSONStringify, JSONParse, migrateToMultiPage } from '@/utils'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
-import { EditCanvasTypeEnum, ChartEditStoreEnum, ProjectInfoEnum, ChartEditStorage } from '@/store/modules/chartEditStore/chartEditStore.d'
+import { EditCanvasTypeEnum, ChartEditStoreEnum, ProjectInfoEnum, ChartEditStorage, CanvasPageType } from '@/store/modules/chartEditStore/chartEditStore.d'
 import { useChartHistoryStore } from '@/store/modules/chartHistoryStore/chartHistoryStore'
 import { StylesSetting } from '@/components/Pages/ChartItemSetting'
 import { useSystemStore } from '@/store/modules/systemStore/systemStore'
@@ -21,6 +21,7 @@ import { CreateComponentType, CreateComponentGroupType, ConfigType } from '@/pac
 import { BaseEvent, EventLife } from '@/enums/eventEnum'
 import { PublicGroupConfigClass } from '@/packages/public/publicConfig'
 import merge from 'lodash/merge'
+import cloneDeep from 'lodash/cloneDeep'
 
 /**
  * * 画布-版本升级对旧数据无法兼容的补丁
@@ -117,25 +118,34 @@ export const useSync = () => {
       chartHistoryStore.clearBackStack()
       chartHistoryStore.clearForwardStack()
     }
+
+    // Migrate legacy single-canvas → multi-page
+    const migrated = migrateToMultiPage(projectData as any)
+    projectData = migrated
+
     // 画布补丁处理
     projectData.editCanvasConfig = canvasVersionUpdatePolyfill(projectData.editCanvasConfig)
 
-    // 列表组件注册
-    projectData.componentList.forEach(async (e: CreateComponentType | CreateComponentGroupType) => {
-      const intComponent = (target: CreateComponentType) => {
-        if (!window['$vue'].component(target.chartConfig.chartKey)) {
-          window['$vue'].component(target.chartConfig.chartKey, fetchChartComponent(target.chartConfig))
-          window['$vue'].component(target.chartConfig.conKey, fetchConfigComponent(target.chartConfig))
-        }
+    const intComponent = (target: CreateComponentType) => {
+      if (!window['$vue'].component(target.chartConfig.chartKey)) {
+        window['$vue'].component(target.chartConfig.chartKey, fetchChartComponent(target.chartConfig))
+        window['$vue'].component(target.chartConfig.conKey, fetchConfigComponent(target.chartConfig))
       }
+    }
 
-      if (e.isGroup) {
-        (e as CreateComponentGroupType).groupList.forEach(groupItem => {
-          intComponent(groupItem)
-        })
-      } else {
-        intComponent(e as CreateComponentType)
-      }
+    // Register components from all pages
+    const allLists = (projectData.pages || []).map(p => p.componentList)
+    if (!allLists.length) allLists.push(projectData.componentList || [])
+    allLists.forEach(list => {
+      list.forEach((e: CreateComponentType | CreateComponentGroupType) => {
+        if (e.isGroup) {
+          ;(e as CreateComponentGroupType).groupList.forEach(groupItem => {
+            intComponent(groupItem)
+          })
+        } else {
+          intComponent(e as CreateComponentType)
+        }
+      })
     })
 
     // 创建函数-重新创建是为了处理类种方法消失的问题
@@ -169,50 +179,73 @@ export const useSync = () => {
       }
     }
 
-    // 数据赋值
-    for (const key in projectData) {
-      // 组件
-      if (key === ChartEditStoreEnum.COMPONENT_LIST) {
-        let loadIndex = 0
-        const listLength = projectData[key].length
-        for (const comItem of projectData[key]) {
-          // 设置加载数量
-          let percentage = parseInt((parseFloat(`${++loadIndex / listLength}`) * 100).toString())
-          chartLayoutStore.setItemUnHandle(ChartLayoutStoreEnum.PERCENTAGE, percentage)
-          // 判断类型
-          if (comItem.isGroup) {
-            // 创建分组
-            let groupClass = new PublicGroupConfigClass()
-            if (changeId) {
-              groupClass = componentMerge(groupClass, { ...comItem, id: getUUID() })
-            } else {
-              groupClass = componentMerge(groupClass, comItem)
-            }
-
-            // 异步注册子应用
-            const targetList: CreateComponentType[] = []
-            for (const groupItem of (comItem as CreateComponentGroupType).groupList) {
-              await create(groupItem, e => {
-                targetList.push(e)
-              })
-            }
-            groupClass.groupList = targetList
-
-            // 分组插入到列表
-            chartEditStore.addComponentList(groupClass, false, true)
+    const hydrateList = async (
+      list: Array<CreateComponentType | CreateComponentGroupType>
+    ): Promise<Array<CreateComponentType | CreateComponentGroupType>> => {
+      const result: Array<CreateComponentType | CreateComponentGroupType> = []
+      for (const comItem of list) {
+        if (comItem.isGroup) {
+          let groupClass = new PublicGroupConfigClass()
+          if (changeId) {
+            groupClass = componentMerge(groupClass, { ...comItem, id: getUUID() })
           } else {
-            await create(comItem as CreateComponentType)
+            groupClass = componentMerge(groupClass, comItem)
           }
-          if (percentage === 100) {
-            // 清除历史记录
-            chartHistoryStore.clearBackStack()
-            chartHistoryStore.clearForwardStack()
+          const targetList: CreateComponentType[] = []
+          for (const groupItem of (comItem as CreateComponentGroupType).groupList) {
+            await create(groupItem, e => {
+              targetList.push(e)
+            })
           }
+          groupClass.groupList = targetList
+          result.push(groupClass)
+        } else {
+          await create(comItem as CreateComponentType, e => {
+            result.push(e)
+          })
         }
-      } else if (key === ChartEditStoreEnum.EDIT_CANVAS_CONFIG || key === ChartEditStoreEnum.REQUEST_GLOBAL_CONFIG) {
-        componentMerge(chartEditStore[key], projectData[key], true)
       }
+      return result
     }
+
+    // Merge project-level configs
+    componentMerge(chartEditStore.editCanvasConfig, projectData.editCanvasConfig, true)
+    componentMerge(chartEditStore.requestGlobalConfig, projectData.requestGlobalConfig, true)
+
+    // Hydrate every page's components, then activate current page
+    const pages = projectData.pages || []
+    const hydratedPages: CanvasPageType[] = []
+    let loadIndex = 0
+    const totalComponents = pages.reduce((n, p) => n + (p.componentList?.length || 0), 0) || 1
+
+    for (const page of pages) {
+      const hydratedList = await hydrateList(page.componentList || [])
+      loadIndex += page.componentList?.length || 0
+      const percentage = parseInt((parseFloat(`${loadIndex / totalComponents}`) * 100).toString())
+      chartLayoutStore.setItemUnHandle(ChartLayoutStoreEnum.PERCENTAGE, percentage)
+      hydratedPages.push({
+        id: page.id,
+        name: page.name,
+        editCanvasConfig: cloneDeep(page.editCanvasConfig),
+        componentList: hydratedList
+      })
+    }
+
+    const currentPageId = projectData.currentPageId || hydratedPages[0]?.id || ''
+    chartEditStore.setPagesFromStorage(hydratedPages, currentPageId)
+
+    const currentPage = hydratedPages.find(p => p.id === currentPageId) || hydratedPages[0]
+    if (currentPage) {
+      chartEditStore.componentList = []
+      for (const item of currentPage.componentList) {
+        chartEditStore.addComponentList(item, false, true)
+      }
+      // Page-specific visuals (size already merged from project editCanvasConfig)
+      componentMerge(chartEditStore.editCanvasConfig, currentPage.editCanvasConfig, true)
+    }
+
+    chartHistoryStore.clearBackStack()
+    chartHistoryStore.clearForwardStack()
 
     // 清除数量
     chartLayoutStore.setItemUnHandle(ChartLayoutStoreEnum.PERCENTAGE, 0)

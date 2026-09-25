@@ -20,6 +20,7 @@
         <edit-range>
           <!-- 滤镜预览 -->
           <div
+            :key="`page-${chartEditStore.currentPageId}-${chartEditStore.componentList.length}`"
             :style="{
               ...getFilterStyle(chartEditStore.getEditCanvasConfig),
               ...rangeStyle

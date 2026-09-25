@@ -24,19 +24,21 @@
     ></preview-render-group>
 
     <!-- 单组件 -->
-    <component
-      v-else
-      :is="item.chartConfig.chartKey"
-      :id="item.id"
-      :chartConfig="item"
-      :themeSetting="themeSetting"
-      :themeColor="themeColor"
-      :style="{ 
-        ...getSizeStyle(item.attr),
-        ...getFilterStyle(item.styles)
-      }"
-      v-on="useLifeHandler(item)"
-    ></component>
+    <template v-else>
+      <component
+        :is="item.chartConfig.chartKey"
+        :id="item.id"
+        :chartConfig="item"
+        :themeSetting="themeSetting"
+        :themeColor="themeColor"
+        :style="{ 
+          ...getSizeStyle(item.attr),
+          ...getFilterStyle(item.styles)
+        }"
+        v-on="useLifeHandler(item)"
+      ></component>
+      <chart-data-fetch-indicator :component-id="item.id" />
+    </template>
   </div>
 </template>
 
@@ -51,6 +53,7 @@ import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore
 import { animationsClass, getFilterStyle, getTransformStyle, getBlendModeStyle, colorCustomMerge } from '@/utils'
 import { getSizeStyle, getComponentAttrStyle, getStatusStyle, getPreviewConfigStyle } from '../../utils'
 import { useLifeHandler } from '@/hooks'
+import { ChartDataFetchIndicator } from '@/components/ChartDataFetchIndicator'
 
 // 初始化数据池
 const { initDataPond, clearMittDataPondMap } = useChartDataPondFetch()

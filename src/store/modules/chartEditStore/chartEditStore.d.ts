@@ -187,7 +187,17 @@ export enum ChartEditStoreEnum {
   // 以下需要存储
   EDIT_CANVAS_CONFIG = 'editCanvasConfig',
   REQUEST_GLOBAL_CONFIG = 'requestGlobalConfig',
-  COMPONENT_LIST = 'componentList'
+  COMPONENT_LIST = 'componentList',
+  PAGES = 'pages',
+  CURRENT_PAGE_ID = 'currentPageId'
+}
+
+/** One independent canvas page (Power BI–style) */
+export type CanvasPageType = {
+  id: string
+  name: string
+  editCanvasConfig: EditCanvasConfigType
+  componentList: Array<CreateComponentType | CreateComponentGroupType>
 }
 
 // 请求公共类型
@@ -269,11 +279,16 @@ export interface ChartEditStoreType {
   [ChartEditStoreEnum.RECORD_CHART]?: RecordChartType
   [ChartEditStoreEnum.REQUEST_GLOBAL_CONFIG]: RequestGlobalConfigType
   [ChartEditStoreEnum.COMPONENT_LIST]: Array<CreateComponentType | CreateComponentGroupType>
+  [ChartEditStoreEnum.PAGES]: CanvasPageType[]
+  [ChartEditStoreEnum.CURRENT_PAGE_ID]: string
 }
 
 // 存储数据类型
 export interface ChartEditStorage {
+  version?: number
   [ChartEditStoreEnum.EDIT_CANVAS_CONFIG]: EditCanvasConfigType
   [ChartEditStoreEnum.REQUEST_GLOBAL_CONFIG]: RequestGlobalConfigType
   [ChartEditStoreEnum.COMPONENT_LIST]: Array<CreateComponentType | CreateComponentGroupType>
+  pages?: CanvasPageType[]
+  currentPageId?: string
 }

@@ -6,7 +6,7 @@
         <!-- 缩放层 -->
         <div ref="previewRef" class="go-preview-scale">
           <!-- 展示层 -->
-          <div :style="previewRefStyle" v-if="show">
+          <div :style="previewRefStyle" v-if="show" :key="pageRenderKey">
             <!-- 渲染层 -->
             <preview-render-list></preview-render-list>
           </div>
@@ -17,18 +17,21 @@
       <!-- 缩放层 -->
       <div ref="previewRef" class="go-preview-scale">
         <!-- 展示层 -->
-        <div :style="previewRefStyle" v-if="show">
+        <div :style="previewRefStyle" v-if="show" :key="pageRenderKey">
           <!-- 渲染层 -->
           <preview-render-list></preview-render-list>
         </div>
       </div>
     </template>
+
+    <PreviewPageTabs />
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 import { PreviewRenderList } from './components/PreviewRenderList'
+import PreviewPageTabs from './components/PreviewPageTabs/index.vue'
 import { getFilterStyle, setTitle } from '@/utils'
 import { getEditCanvasConfigStyle, getSessionStorageInfo, keyRecordHandle, dragCanvas } from './utils'
 import { useComInstall } from './hooks/useComInstall.hook'
@@ -39,12 +42,13 @@ import type { ChartEditStorageType } from './index.d'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { useInitVChartsTheme } from '@/hooks'
 
-// const localStorageInfo: ChartEditStorageType = getSessionStorageInfo() as ChartEditStorageType
-
 await getSessionStorageInfo()
 const chartEditStore = useChartEditStore() as unknown as ChartEditStorageType
+const piniaStore = useChartEditStore()
 
 setTitle(`Preview - ${chartEditStore.editCanvasConfig.projectName}`)
+
+const pageRenderKey = computed(() => piniaStore.getCurrentPageId || 'page')
 
 const previewRefStyle = computed(() => {
   return {
