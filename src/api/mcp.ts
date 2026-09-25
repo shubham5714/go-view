@@ -182,9 +182,8 @@ export const listGoviewMcpTools = async (
 /**
  * Execute the selected FastMCP tool. Returns `{ data }` compatible with chart filter pipeline.
  * Uses fetch (not axios) so Vite proxy / long MCP responses always settle the promise.
+ * Each call has its own timeout AbortController — concurrent calls must not cancel each other.
  */
-let executeAbort: AbortController | null = null
-
 export const customizeMcp = async (targetParams: RequestConfigType) => {
   if (!targetParams || targetParams.requestDataType !== RequestDataTypeEnum.MCP) {
     return
@@ -202,13 +201,7 @@ export const customizeMcp = async (targetParams: RequestConfigType) => {
     return
   }
 
-  // Cancel any previous in-flight Call tool so UI cannot stay stuck on loading
-  if (executeAbort) {
-    executeAbort.abort()
-    executeAbort = null
-  }
   const controller = new AbortController()
-  executeAbort = controller
   const timeoutId = window.setTimeout(() => controller.abort(), 300000)
 
   try {
@@ -261,6 +254,5 @@ export const customizeMcp = async (targetParams: RequestConfigType) => {
     throw new Error(String(error?.message || 'DRX tool call failed.'))
   } finally {
     window.clearTimeout(timeoutId)
-    if (executeAbort === controller) executeAbort = null
   }
 }

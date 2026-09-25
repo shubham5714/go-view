@@ -20,7 +20,7 @@
         <edit-range>
           <!-- 滤镜预览 -->
           <div
-            :key="`page-${chartEditStore.currentPageId}-${chartEditStore.componentList.length}`"
+            :key="`page-${chartEditStore.currentPageId}-${exportRenderNonce}`"
             :style="{
               ...getFilterStyle(chartEditStore.getEditCanvasConfig),
               ...rangeStyle
@@ -94,7 +94,8 @@ import {
   getTransformStyle,
   getBlendModeStyle,
   colorCustomMerge,
-  addWindowUnload
+  addWindowUnload,
+  exportRenderNonce
 } from '@/utils'
 import { useContextMenu } from '@/views/chart/hooks/useContextMenu.hook'
 import { MenuOptionsItemType } from '@/views/chart/hooks/useContextMenu.hook.d'
