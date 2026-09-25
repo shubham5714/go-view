@@ -6,7 +6,7 @@ import { CreateComponentType, CreateComponentGroupType, PickCreateComponentType 
 import { useContextMenu } from '@/views/chart/hooks/useContextMenu.hook'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { EditCanvasTypeEnum } from '@/store/modules/chartEditStore/chartEditStore.d'
-import { loadingStart, loadingFinish, loadingError, setComponentPosition, JSONParse } from '@/utils'
+import { loadingStart, loadingFinish, loadingError, setComponentPosition, JSONParse, isExportingCanvas } from '@/utils'
 import { throttle, cloneDeep } from 'lodash'
 
 const chartEditStore = useChartEditStore()
@@ -323,6 +323,7 @@ export const useMouseHandle = () => {
   const mouseenterHandle = (e: MouseEvent, item: CreateComponentType | CreateComponentGroupType) => {
     e.preventDefault()
     e.stopPropagation()
+    if (isExportingCanvas.value) return
     if (!chartEditStore.getEditCanvas.isSelect) {
       chartEditStore.setTargetHoverChart(item.id)
     }

@@ -11,7 +11,8 @@ import {
   downloadTextFile,
   JSONStringify,
   waitForPageDataReady,
-  bumpExportRenderNonce
+  bumpExportRenderNonce,
+  isExportingCanvas
 } from '@/utils'
 
 const chartEditStore = useChartEditStore()
@@ -39,6 +40,8 @@ const prepareExportRange = (): PreparedExport | null => {
   }
 
   isExporting = true
+  isExportingCanvas.value = true
+  chartEditStore.setTargetHoverChart(undefined)
   const watermark = document.getElementById('go-edit-watermark')
   const scaleTemp = chartEditStore.getEditCanvas.scale
   chartEditStore.setScale(1, true)
@@ -50,6 +53,9 @@ const prepareExportRange = (): PreparedExport | null => {
 const restoreExportRange = (prepared: PreparedExport) => {
   if (prepared.watermark) prepared.watermark.style.display = 'none'
   chartEditStore.setScale(prepared.scaleTemp, true)
+  chartEditStore.setTargetHoverChart(undefined)
+  chartEditStore.setTargetSelectChart(undefined)
+  isExportingCanvas.value = false
   isExporting = false
 }
 
@@ -192,6 +198,7 @@ export const exportPdfHandle = async () => {
 
       setLoading(`${pageLabel} — rendering…`)
       chartEditStore.setTargetSelectChart(undefined)
+      chartEditStore.setTargetHoverChart(undefined)
       chartEditStore.applyPageToActive({
         id: page.id,
         name: page.name,
@@ -203,6 +210,10 @@ export const exportPdfHandle = async () => {
 
       const range = (document.querySelector('.go-edit-range') as HTMLElement) || prepared.range
       await waitForChartsReady(range)
+      // Clear again in case remount/layout left a hover frame painted
+      chartEditStore.setTargetHoverChart(undefined)
+      chartEditStore.setTargetSelectChart(undefined)
+      await nextTick()
 
       const canvas = await capturePageCanvas(range, chartEditStore.getEditCanvasConfig.background)
 
