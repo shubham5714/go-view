@@ -127,6 +127,7 @@
 
 <script setup lang="ts">
 import { ref, nextTick, watch } from 'vue'
+import { storeToRefs } from 'pinia'
 import { backgroundImageSize } from '@/settings/designSetting'
 import { swatchesColors } from '@/settings/chartThemes/index'
 import { FileTypeEnum } from '@/enums/fileTypeEnum'
@@ -146,8 +147,8 @@ const { ScaleIcon, FitToScreenIcon, FitToHeightIcon, FitToWidthIcon } = icon.car
 
 const chartEditStore = useChartEditStore()
 const systemStore = useSystemStore()
-const canvasConfig = chartEditStore.getEditCanvasConfig
-const editCanvas = chartEditStore.getEditCanvas
+// storeToRefs keeps bindings on the live page config after page switches
+const { editCanvasConfig: canvasConfig, editCanvas } = storeToRefs(chartEditStore)
 
 const uploadFileListRef = ref()
 const switchSelectColorLoading = ref(false)
@@ -212,7 +213,7 @@ const previewTypeList = [
 ]
 
 watch(
-  () => canvasConfig.selectColor,
+  () => canvasConfig.value.selectColor,
   newValue => {
     selectColorValue.value = newValue ? 0 : 1
   },
@@ -226,7 +227,7 @@ const validator = (x: number) => x > 50
 
 // 修改尺寸（project-level — shared across all pages）
 const changeSizeHandle = () => {
-  chartEditStore.setProjectCanvasSize(canvasConfig.width, canvasConfig.height)
+  chartEditStore.setProjectCanvasSize(canvasConfig.value.width, canvasConfig.value.height)
 }
 
 // 上传图片前置处理
@@ -249,7 +250,7 @@ const beforeUploadHandle = async ({ file }) => {
 
 // 应用颜色
 const selectColorValueHandle = (value: number) => {
-  canvasConfig.selectColor = value == 0
+  canvasConfig.value.selectColor = value == 0
 }
 
 // 清除背景
@@ -269,7 +270,7 @@ const switchSelectColorHandle = () => {
 // 清除颜色
 const clearColor = () => {
   chartEditStore.setEditCanvasConfig(EditCanvasConfigEnum.BACKGROUND, undefined)
-  if (canvasConfig.backgroundImage) {
+  if (canvasConfig.value.backgroundImage) {
     chartEditStore.setEditCanvasConfig(EditCanvasConfigEnum.SELECT_COLOR, false)
   }
   switchSelectColorHandle()

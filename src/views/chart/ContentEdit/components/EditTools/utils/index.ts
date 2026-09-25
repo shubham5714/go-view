@@ -61,6 +61,42 @@ const restoreExportRange = (prepared: PreparedExport) => {
 
 const settlePaint = (ms = 500) => new Promise<void>(resolve => setTimeout(resolve, ms))
 
+/**
+ * Native rAF is paused in hidden tabs (stalls ECharts / html2canvas).
+ * During export, drive frames with setTimeout instead. Returns a restore fn.
+ */
+const installBackgroundSafeAnimationFrame = (): (() => void) => {
+  const originalRaf = window.requestAnimationFrame.bind(window)
+  const originalCaf = window.cancelAnimationFrame.bind(window)
+  const timers = new Map<number, ReturnType<typeof setTimeout>>()
+  let nextId = 1
+
+  window.requestAnimationFrame = (callback: FrameRequestCallback) => {
+    const id = nextId++
+    timers.set(
+      id,
+      setTimeout(() => {
+        timers.delete(id)
+        callback(performance.now())
+      }, 16)
+    )
+    return id
+  }
+  window.cancelAnimationFrame = (id: number) => {
+    const timer = timers.get(id)
+    if (timer === undefined) return
+    clearTimeout(timer)
+    timers.delete(id)
+  }
+
+  return () => {
+    window.requestAnimationFrame = originalRaf
+    window.cancelAnimationFrame = originalCaf
+    timers.forEach(clearTimeout)
+    timers.clear()
+  }
+}
+
 /** Turn off ECharts / CSS / carousel animations so capture is not mid-tween. */
 const disableExportAnimations = (
   list: Array<CreateComponentType | CreateComponentGroupType>
@@ -89,11 +125,7 @@ const disableExportAnimations = (
 /** Wait for Vue flush, ECharts `finished`, then a short settle. */
 const waitForChartsReady = async (root: HTMLElement) => {
   await nextTick()
-  await new Promise<void>(resolve => {
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => resolve())
-    })
-  })
+  await settlePaint(32)
 
   const nodes = Array.from(root.querySelectorAll<HTMLElement>('[_echarts_instance_]'))
   await Promise.all(
@@ -163,6 +195,7 @@ export const exportPdfHandle = async () => {
     loadingMsg.content = text
   }
 
+  const restoreAnimationFrame = installBackgroundSafeAnimationFrame()
   try {
     const { width, height, projectName } = chartEditStore.getEditCanvasConfig
     const pdfWidth = (width * 25.4) / 96
@@ -237,6 +270,7 @@ export const exportPdfHandle = async () => {
     console.error(error)
     window['$message'].error('PDF export failed!')
   } finally {
+    restoreAnimationFrame()
     if (originalPageSnapshot) {
       chartEditStore.applyPageToActive(originalPageSnapshot)
       bumpExportRenderNonce()

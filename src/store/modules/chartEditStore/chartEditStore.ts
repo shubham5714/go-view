@@ -246,7 +246,9 @@ export const useChartEditStore = defineStore({
       } as EditCanvasConfigType
       const nextList = cloneDeep(toRaw(page.componentList || []))
 
-      this.editCanvasConfig = nextConfig
+      // Mutate in place — replacing the object breaks CanvasPage / EditRule
+      // refs that captured getEditCanvasConfig() once (background color/image UI).
+      Object.assign(this.editCanvasConfig, nextConfig)
       // In-place replace for reliable Vue/Pinia array reactivity
       this.componentList.splice(0, this.componentList.length)
       for (const item of nextList) {

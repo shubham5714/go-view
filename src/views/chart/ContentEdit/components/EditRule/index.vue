@@ -31,7 +31,8 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, reactive, onMounted, toRefs, watch, onUnmounted, computed } from 'vue'
+import { ref, reactive, onMounted, watch, onUnmounted, computed } from 'vue'
+import { storeToRefs } from 'pinia'
 import { listen } from 'dom-helpers'
 import { useDesignStore } from '@/store/modules/designStore/designStore'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
@@ -53,7 +54,9 @@ const refSketchRuleBox = ref()
 const $container = ref()
 const isPressSpace = ref(false)
 const cursorStyle = ref('auto')
-const { width, height } = toRefs(chartEditStore.getEditCanvasConfig)
+const { editCanvasConfig } = storeToRefs(chartEditStore)
+const width = computed(() => editCanvasConfig.value.width)
+const height = computed(() => editCanvasConfig.value.height)
 const startX = ref(0)
 const startY = ref(0)
 const lines = reactive({ h: [], v: [] })
