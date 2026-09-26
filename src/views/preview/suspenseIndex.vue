@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onUnmounted } from 'vue'
 import { PreviewRenderList } from './components/PreviewRenderList'
 import PreviewPageTabs from './components/PreviewPageTabs/index.vue'
 import { getFilterStyle, setTitle } from '@/utils'
@@ -41,6 +41,7 @@ import { PreviewScaleEnum } from '@/enums/styleEnum'
 import type { ChartEditStorageType } from './index.d'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { useInitVChartsTheme } from '@/hooks'
+import { disposePreviewFetchSession } from '@/hooks/previewFetchSession'
 
 await getSessionStorageInfo()
 const chartEditStore = useChartEditStore() as unknown as ChartEditStorageType
@@ -72,6 +73,11 @@ keyRecordHandle()
 
 // 处理全局的 vChart 主题
 useInitVChartsTheme(chartEditStore)
+
+// Leave Preview (or full remount via wrapper key) — drop durable sessions.
+onUnmounted(() => {
+  disposePreviewFetchSession()
+})
 </script>
 
 <style lang="scss" scoped>

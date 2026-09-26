@@ -43,28 +43,17 @@
 </template>
 
 <script setup lang="ts">
-import { PropType, computed, onMounted } from 'vue'
-import { useChartDataPondFetch } from '@/hooks'
-import { ChartEditStorageType } from '../../index.d'
+import { computed } from 'vue'
 import { PreviewRenderGroup } from '../PreviewRenderGroup/index'
 import { CreateComponentGroupType } from '@/packages/index.d'
-import { chartColors } from '@/settings/chartThemes/index'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { animationsClass, getFilterStyle, getTransformStyle, getBlendModeStyle, colorCustomMerge } from '@/utils'
 import { getSizeStyle, getComponentAttrStyle, getStatusStyle, getPreviewConfigStyle } from '../../utils'
 import { useLifeHandler } from '@/hooks'
 import { ChartDataFetchIndicator } from '@/components/ChartDataFetchIndicator'
 
-// 初始化数据池
-const { initDataPond, clearMittDataPondMap } = useChartDataPondFetch()
+// Pond / AJAX / MCP polling is owned by previewFetchSession (survives page remounts).
 const chartEditStore = useChartEditStore()
-
-// const props = defineProps({
-//   localStorageInfo: {
-//     type: Object as PropType<ChartEditStorageType>,
-//     required: true
-//   }
-// })
 
 // 主题色
 const themeSetting = computed(() => {
@@ -76,12 +65,6 @@ const themeSetting = computed(() => {
 const themeColor = computed(() => {
   const colorCustomMergeData = colorCustomMerge(chartEditStore.editCanvasConfig.chartCustomThemeColorInfo)
   return colorCustomMergeData[chartEditStore.editCanvasConfig.chartThemeColor]
-})
-
-// 组件渲染结束初始化数据池
-clearMittDataPondMap()
-onMounted(() => {
-  initDataPond(useChartEditStore)
 })
 </script>
 

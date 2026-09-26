@@ -2,8 +2,12 @@ import { ref, toRefs, toRaw, watch, onUnmounted } from 'vue'
 import type VChart from 'vue-echarts'
 import { customizeHttp } from '@/api/http'
 import { customizeMcp } from '@/api/mcp'
-import { useChartDataPondFetch } from '@/hooks/'
 import { beginComponentDataFetch, endComponentDataFetch } from '@/hooks/useComponentDataFetchStatus.hook'
+import {
+  attachPreviewComponentFetch,
+  attachPreviewPondSubscriber,
+  requestPreviewComponentFetch
+} from '@/hooks/previewFetchSession'
 import { CreateComponentType, ChartFrameEnum } from '@/packages/index.d'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { RequestDataTypeEnum } from '@/enums/httpEnum'
@@ -20,9 +24,6 @@ type ChartEditStoreType = typeof useChartEditStore
  * @param useChartEditStore 若直接引会报错，只能动态传递
  * @param updateCallback 自定义更新函数
  */
-// Mark that this component instance already completed a live fetch (survives page remounts).
-const LIVE_FETCHED_KEY = '__liveDataFetched'
-
 export const useChartDataFetch = (
   targetComponent: CreateComponentType,
   useChartEditStore: ChartEditStoreType,
@@ -30,9 +31,7 @@ export const useChartDataFetch = (
 ) => {
   const vChartRef = ref<typeof VChart | null>(null)
   let fetchInterval: any = 0
-
-  // 数据池
-  const { addGlobalDataInterface } = useChartDataPondFetch()
+  const stopWatchers: Array<() => void> = []
 
   // 组件类型
   const { chartFrame } = targetComponent.chartConfig
@@ -46,19 +45,64 @@ export const useChartDataFetch = (
     }
   }
 
-  // Keep last-fetched data on the store component. Preview remounts on page
-  // switch (flushCurrentPage → applyPageToActive); without this, setOption-only
-  // updates are lost and the chart falls back to the originally saved dataset.
+  const applyDatasetToView = (dataset: any) => {
+    if (dataset === undefined) return
+    echartsUpdateHandle(dataset)
+    if (updateCallback) updateCallback(dataset)
+  }
+
+  // ---------- Preview: durable session (survives page remounts) ----------
+  if (isPreview()) {
+    const requestDataType = targetComponent.request.requestDataType
+
+    if (requestDataType === RequestDataTypeEnum.Pond) {
+      const detach = attachPreviewPondSubscriber(targetComponent, useChartEditStore, applyDatasetToView)
+      onUnmounted(() => {
+        detach()
+      })
+      return { vChartRef }
+    }
+
+    if (requestDataType === RequestDataTypeEnum.AJAX || requestDataType === RequestDataTypeEnum.MCP) {
+      const detach = attachPreviewComponentFetch(targetComponent, useChartEditStore, applyDatasetToView)
+
+      if (requestDataType === RequestDataTypeEnum.AJAX) {
+        stopWatchers.push(
+          watch(
+            () => targetComponent.request.requestParams,
+            () => {
+              requestPreviewComponentFetch(targetComponent.id)
+            },
+            { deep: true }
+          )
+        )
+      } else {
+        stopWatchers.push(
+          watch(
+            () => targetComponent.request.requestMcp,
+            () => {
+              requestPreviewComponentFetch(targetComponent.id)
+            },
+            { deep: true }
+          )
+        )
+      }
+
+      onUnmounted(() => {
+        stopWatchers.forEach(stop => stop())
+        detach()
+      })
+      return { vChartRef }
+    }
+
+    return { vChartRef }
+  }
+
+  // ---------- Editor (and non-preview): existing local interval ownership ----------
   const persistDataset = (dataset: any) => {
     if (dataset === undefined || !targetComponent.option) return
     targetComponent.option.dataset = dataset
   }
-
-  const markLiveFetched = () => {
-    ;(targetComponent as any)[LIVE_FETCHED_KEY] = true
-  }
-
-  const hasLiveFetched = () => Boolean((targetComponent as any)[LIVE_FETCHED_KEY])
 
   const applyFetchResult = (res: any) => {
     if (!res) return
@@ -67,7 +111,6 @@ export const useChartDataFetch = (
       const { data } = res
       const dataset = newFunctionHandle(data, res, filter)
       persistDataset(dataset)
-      markLiveFetched()
       echartsUpdateHandle(dataset)
       if (updateCallback) {
         updateCallback(dataset)
@@ -80,14 +123,12 @@ export const useChartDataFetch = (
   const requestIntervalFn = () => {
     const chartEditStore = useChartEditStore()
 
-    // 全局数据
     const {
       requestOriginUrl,
       requestIntervalUnit: globalUnit,
       requestInterval: globalRequestInterval
     } = toRefs(chartEditStore.getRequestGlobalConfig)
 
-    // 目标组件
     const {
       requestDataType,
       requestUrl,
@@ -95,7 +136,6 @@ export const useChartDataFetch = (
       requestInterval: targetInterval
     } = toRefs(targetComponent.request)
 
-    // Static / Pond handled elsewhere
     if (
       requestDataType.value !== RequestDataTypeEnum.AJAX &&
       requestDataType.value !== RequestDataTypeEnum.MCP
@@ -116,7 +156,6 @@ export const useChartDataFetch = (
             return
           }
 
-          // AJAX
           // @ts-ignore
           if (requestUrl?.value) {
             const completePath = requestOriginUrl && requestOriginUrl.value + requestUrl.value
@@ -132,11 +171,6 @@ export const useChartDataFetch = (
         }
       }
 
-      // Preview remounts (page switch) keep the same store objects with live data.
-      // Skip the immediate re-fetch and only poll on the configured interval.
-      // First mount / new component objects still fetch immediately.
-      const fetchImmediately = !(isPreview() && hasLiveFetched())
-
       if (requestDataType.value === RequestDataTypeEnum.AJAX) {
         // @ts-ignore
         if (!requestUrl?.value) return
@@ -149,7 +183,7 @@ export const useChartDataFetch = (
             fetchFn()
           },
           {
-            immediate: fetchImmediately,
+            immediate: true,
             deep: true
           }
         )
@@ -164,52 +198,37 @@ export const useChartDataFetch = (
             fetchFn()
           },
           {
-            immediate: fetchImmediately,
+            immediate: true,
             deep: true
           }
         )
       }
 
-      // 定时时间
       const time = targetInterval && !isNil(targetInterval.value) ? targetInterval.value : globalRequestInterval.value
-      // 单位
       const unit = targetInterval && !isNil(targetInterval.value) ? targetUnit.value : globalUnit.value
-      // 开启轮询
       if (time) {
         fetchInterval = setInterval(fetchFn, intervalUnitHandle(time, unit))
       }
-      // eslint-disable-next-line no-empty
     } catch (error) {
       console.log(error)
     }
   }
 
-  if (isPreview()) {
-    targetComponent.request.requestDataType === RequestDataTypeEnum.Pond
-      ? addGlobalDataInterface(targetComponent, useChartEditStore, (newData: any) => {
-          persistDataset(newData)
-          markLiveFetched()
-          echartsUpdateHandle(newData)
-          if (updateCallback) updateCallback(newData)
-        })
-      : requestIntervalFn()
-  } else {
-    // Editor: AJAX keeps live fetch.
-    if (targetComponent.request.requestDataType === RequestDataTypeEnum.AJAX) {
-      requestIntervalFn()
-    } else if (targetComponent.request.requestDataType === RequestDataTypeEnum.MCP) {
-      // MCP Call tool writes option.dataset in the data panel — push that to the canvas chart
-      // without re-fetching (re-fetch watch was stacking long MCP calls).
-      watch(
-        () => targetComponent.option?.dataset,
-        (dataset) => {
-          if (dataset === undefined || dataset === null) return
-          echartsUpdateHandle(dataset)
-          if (updateCallback) updateCallback(dataset)
-        },
-        { deep: true }
-      )
-    }
+  // Editor: AJAX keeps live fetch. Pond polling is Preview-only (previewFetchSession).
+  if (targetComponent.request.requestDataType === RequestDataTypeEnum.AJAX) {
+    requestIntervalFn()
+  } else if (targetComponent.request.requestDataType === RequestDataTypeEnum.MCP) {
+    // MCP Call tool writes option.dataset in the data panel — push that to the canvas chart
+    // without re-fetching (re-fetch watch was stacking long MCP calls).
+    watch(
+      () => targetComponent.option?.dataset,
+      (dataset) => {
+        if (dataset === undefined || dataset === null) return
+        echartsUpdateHandle(dataset)
+        if (updateCallback) updateCallback(dataset)
+      },
+      { deep: true }
+    )
   }
 
   onUnmounted(() => {
