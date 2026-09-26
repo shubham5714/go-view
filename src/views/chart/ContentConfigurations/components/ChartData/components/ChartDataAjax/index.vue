@@ -99,6 +99,8 @@ import { ChartDataMatchingAndShow } from '../ChartDataMatchingAndShow'
 import { useTargetData } from '../../../hooks/useTargetData.hook'
 import { newFunctionHandle } from '@/utils'
 import { getLastRawResponse, setLastRawResponse } from '../../hooks/useLastRawResponse'
+import { bumpCanvasComponentRender } from '@/hooks'
+import { syncEchartsSeriesToDataset } from '@/packages/public/chart'
 
 const { HelpOutlineIcon, FlashIcon, PulseIcon } = icon.ionicons5
 const { targetData, chartEditStore } = useTargetData()
@@ -139,6 +141,8 @@ const sendHandle = async () => {
         return
       }
       targetData.value.option.dataset = newFunctionHandle(data, res, targetData.value.filter)
+      syncEchartsSeriesToDataset(targetData.value.option)
+      bumpCanvasComponentRender(targetData.value.id)
       showMatching.value = true
       return
     }
@@ -158,6 +162,8 @@ const applyFilterLocally = () => {
     return
   }
   targetData.value.option.dataset = newFunctionHandle(cached?.data, cached, targetData.value.filter)
+  syncEchartsSeriesToDataset(targetData.value.option)
+  bumpCanvasComponentRender(targetData.value.id)
   showMatching.value = true
 }
 

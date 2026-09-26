@@ -170,7 +170,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch, onMounted, onBeforeUnmount, computed, toRaw, nextTick, shallowRef } from 'vue'
+import { ref, reactive, watch, watchEffect, onMounted, onBeforeUnmount, computed, toRaw, nextTick, shallowRef } from 'vue'
 import { icon } from '@/plugins'
 import { SettingItemBox } from '@/components/Pages/ChartItemSetting'
 import { selectTimeOptions } from '../../index.d'
@@ -185,6 +185,9 @@ import {
 } from '@/utils'
 import { customizeMcp, listGoviewMcpTools, type McpToolOption, type McpToolField } from '@/api/mcp'
 import { getLastRawResponse, setLastRawResponse } from '../../hooks/useLastRawResponse'
+import { bumpCanvasComponentRender } from '@/hooks'
+import { syncEchartsSeriesToDataset } from '@/packages/public/chart'
+import cloneDeep from 'lodash/cloneDeep'
 
 const { HelpOutlineIcon, FlashIcon } = icon.ionicons5
 const { targetData } = useTargetData()
@@ -377,11 +380,22 @@ const loadTools = async (force = false) => {
   }
 }
 
-const applyResultToUi = (nextDataset: any) => {
-  previewDataset.value = nextDataset
+const applyResultToUi = (nextDataset: any, options?: { remountCanvas?: boolean }) => {
+  // Fresh reference so store watchers and shallow canvas listeners always see a change
+  const dataset =
+    nextDataset !== undefined && nextDataset !== null && typeof nextDataset === 'object'
+      ? cloneDeep(nextDataset)
+      : nextDataset
+  previewDataset.value = dataset
   resultVersion.value += 1
   try {
-    targetData.value.option.dataset = nextDataset
+    targetData.value.option.dataset = dataset
+    // Align series count BEFORE remount — otherwise remount races the chart watch
+    // and paints with the default 2-series demo config (double bars).
+    syncEchartsSeriesToDataset(targetData.value.option)
+    if (options?.remountCanvas !== false) {
+      bumpCanvasComponentRender(targetData.value.id)
+    }
   } catch (e) {
     console.error(e)
   }
@@ -435,29 +449,30 @@ watch(
   { deep: true }
 )
 
-watch(
-  () => targetData.value?.filter,
-  (filter) => {
-    if (lastFilter !== filter && firstFocus) {
-      lastFilter = filter
-      applyFilterLocally()
-    }
-    firstFocus++
+// Same pattern as ChartDataAjax: watchEffect runs once on mount (skip via firstFocus),
+// then re-applies the cached Call tool result whenever the filter is saved/changed.
+watchEffect(() => {
+  const filter = targetData.value?.filter
+  if (lastFilter !== filter && firstFocus) {
+    lastFilter = filter
+    applyFilterLocally()
   }
-)
+  firstFocus++
+})
 
 onMounted(() => {
   alive = true
-  // Show current dataset until first Call tool
+  // Sync Content panel only — do not remount the canvas on panel open
   const existing = targetData.value?.option?.dataset
   if (existing !== undefined) {
-    applyResultToUi(existing)
+    applyResultToUi(existing, { remountCanvas: false })
   }
   loadTools(false)
 })
 
 onBeforeUnmount(() => {
   alive = false
+  lastFilter = null
 })
 </script>
 

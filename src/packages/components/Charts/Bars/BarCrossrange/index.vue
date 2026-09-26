@@ -18,13 +18,11 @@ import { useCanvasInitOptions } from '@/hooks/useCanvasInitOptions.hook'
 import { use } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { BarChart } from 'echarts/charts'
-import { mergeTheme } from '@/packages/public/chart'
+import { mergeTheme, syncEchartsSeriesToDataset } from '@/packages/public/chart'
 import config, { includes, seriesItem } from './config'
 import { useChartDataFetch } from '@/hooks'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
 import { DatasetComponent, GridComponent, TooltipComponent, LegendComponent } from 'echarts/components'
-import isObject from 'lodash/isObject'
-import cloneDeep from 'lodash/cloneDeep'
 
 const props = defineProps({
   themeSetting: {
@@ -51,19 +49,14 @@ const option = computed(() => {
   return mergeTheme(props.chartConfig.option, props.themeSetting, includes)
 })
 
-// dataset 无法变更条数的补丁
+// Sync series count to dataset dimensions (dims[0]=category, rest=series).
+// immediate: true so remounts after Call tool don't keep the default 2-series demo.
 watch(
   () => props.chartConfig.option.dataset,
-  (newData: { dimensions: any }, oldData) => {
+  () => {
     try {
-      if (!isObject(newData) || !('dimensions' in newData)) return
-      if (Array.isArray(newData?.dimensions)) {
-        const seriesArr = []
-        for (let i = 0; i < newData.dimensions.length - 1; i++) {
-          seriesArr.push(cloneDeep(seriesItem))
-        }
+      if (syncEchartsSeriesToDataset(props.chartConfig.option, seriesItem)) {
         replaceMergeArr.value = ['series']
-        props.chartConfig.option.series = seriesArr
         nextTick(() => {
           replaceMergeArr.value = []
         })
@@ -73,7 +66,8 @@ watch(
     }
   },
   {
-    deep: false
+    deep: false,
+    immediate: true
   }
 )
 

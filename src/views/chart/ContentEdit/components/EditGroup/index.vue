@@ -34,6 +34,7 @@
       >
         <component
           class="edit-content-chart"
+          :key="`${item.id}-${getCanvasComponentRenderNonce(item.id)}`"
           :class="animationsClass(item.styles.animations)"
           :is="item.chartConfig.chartKey"
           :chartConfig="item"
@@ -58,6 +59,7 @@ import { CreateComponentType, CreateComponentGroupType } from '@/packages/index.
 import { MenuOptionsItemType } from '@/views/chart/hooks/useContextMenu.hook.d'
 import { animationsClass, getFilterStyle, getTransformStyle, getBlendModeStyle, colorCustomMerge } from '@/utils'
 import { useChartEditStore } from '@/store/modules/chartEditStore/chartEditStore'
+import { getCanvasComponentRenderNonce } from '@/hooks'
 import { useContextMenu, divider } from '@/views/chart/hooks/useContextMenu.hook'
 import { useMouseHandle } from '../../hooks/useDrag.hook'
 import { useComponentStyle, useSizeStyle } from '../../hooks/useStyle.hook'

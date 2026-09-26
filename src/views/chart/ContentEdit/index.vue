@@ -53,6 +53,7 @@
               >
                 <component
                   class="edit-content-chart"
+                  :key="`${item.id}-${getCanvasComponentRenderNonce(item.id)}`"
                   :class="animationsClass(item.styles.animations)"
                   :is="item.chartConfig.chartKey"
                   :chartConfig="item"
@@ -106,7 +107,7 @@ import { useAddKeyboard } from '../hooks/useKeyboard.hook'
 import { useSync } from '../hooks/useSync.hook'
 import { dragHandle, dragoverHandle, mousedownHandleUnStop, useMouseHandle } from './hooks/useDrag.hook'
 import { useComponentStyle, useSizeStyle } from './hooks/useStyle.hook'
-import { useInitVChartsTheme } from '@/hooks'
+import { useInitVChartsTheme, getCanvasComponentRenderNonce } from '@/hooks'
 
 import { ContentBox } from '../ContentBox/index'
 import { EditGroup } from './components/EditGroup'

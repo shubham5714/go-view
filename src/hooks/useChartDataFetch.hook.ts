@@ -215,24 +215,33 @@ export const useChartDataFetch = (
   }
 
   // Editor: AJAX keeps live fetch. Pond polling is Preview-only (previewFetchSession).
+  // MCP Call tool writes option.dataset in the data panel — do not re-fetch here
+  // (re-fetch watch was stacking long MCP calls).
   if (targetComponent.request.requestDataType === RequestDataTypeEnum.AJAX) {
     requestIntervalFn()
-  } else if (targetComponent.request.requestDataType === RequestDataTypeEnum.MCP) {
-    // MCP Call tool writes option.dataset in the data panel — push that to the canvas chart
-    // without re-fetching (re-fetch watch was stacking long MCP calls).
+  }
+
+  // Always push option.dataset changes to the canvas. Charts often mount as STATIC
+  // then switch to MCP/AJAX without remounting, so a mount-gated MCP-only watch
+  // would never attach and Call tool would leave the component stale until reload.
+  // Prefer reference changes (Call tool / filter assign a new dataset object).
+  stopWatchers.push(
     watch(
       () => targetComponent.option?.dataset,
-      (dataset) => {
+      (dataset, prev) => {
         if (dataset === undefined || dataset === null) return
+        // Skip no-op re-entry from updateCallback writing the same ref back
+        if (dataset === prev) return
         echartsUpdateHandle(dataset)
         if (updateCallback) updateCallback(dataset)
       },
-      { deep: true }
+      { deep: false }
     )
-  }
+  )
 
   onUnmounted(() => {
     if (fetchInterval) clearInterval(fetchInterval)
+    stopWatchers.forEach(stop => stop())
   })
 
   return { vChartRef }
